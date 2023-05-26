@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/deploy', [\App\Http\Controllers\ApiController::class, 'deploy']);
+Route::get('/deploy', [\App\Http\Controllers\ApiController::class, 'handleWebhook']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
