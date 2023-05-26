@@ -29,9 +29,9 @@ class ApiController extends Controller
 
     public function checkGitHubHash() {
         $payload = file_get_contents('php://input');
-        if(!$this->verifyPatreonHash()) {
-            return false;
-        }
+//        if(!$this->verifyPatreonHash()) {
+//            return false;
+//        }
         if ($payload['ref'] === 'refs/heads/dev') {
             return false;
         }
