@@ -20,7 +20,6 @@ class ApiController extends Controller
             }
             if ($data['ref'] === 'refs/heads/dev') {
                 $scriptPath = base_path('deploy.sh');
-                Log::info($scriptPath);
                 $process = new Process(['/bin/bash', $scriptPath]);
                 $process->setWorkingDirectory(base_path());
                 $process->run(function($type, $buffer) {
