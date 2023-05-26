@@ -33,7 +33,8 @@ class ApiController extends Controller
                 if ($process->isSuccessful()) {
                     return response('Деплой выполнен успешно', 200);
                 } else {
-                    return response('Ошибка при выполнении деплоя', 500);
+                    //return response('Ошибка при выполнении деплоя', 500);
+                    return $process->getOutput();
                 }
             } else {
                 return response('Изменения не по ветке dev, игнорируем запрос', 200);
