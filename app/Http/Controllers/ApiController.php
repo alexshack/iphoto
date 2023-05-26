@@ -19,7 +19,13 @@ class ApiController extends Controller
             if(!$this->check($request)) {
                 return response('Ошибка авторизации', 403);
             }
-            if ($data['ref'] === 'refs/heads/dev') {
+            $branch = '';
+            if(Config::get('app.env') == 'production') {
+                $branch = 'refs/heads/master';
+            } else {
+                $branch = 'refs/heads/dev';
+            }
+            if ($data['ref'] === $branch) {
                 $scriptPath = base_path('deploy.sh');
                 $process = new Process(['/bin/bash', $scriptPath]);
                 $process->setWorkingDirectory(base_path());
