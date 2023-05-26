@@ -45,7 +45,8 @@ class ApiController extends Controller
 
         $githubtoken = $request->header('X-Hub-Signature');
         $myTokenHash = 'sha1=' . hash_hmac('sha1',$request->getContent(), $this->secret);
-        Log::info($githubtoken . '=' . $myTokenHash);
+        Log::info($githubtoken);
+        Log::info($myTokenHash);
     }
 
     public function deploy() {
