@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -11,7 +12,8 @@ class ApiController extends Controller
     protected $secret = '23fsefdsfsdf';
 
     public function deploy() {
-        if($this->checkGitHubHash() && $this->checkGitHubPushEvent()) {
+        if($this->checkGitHubHash()) {
+            Log::info('git webhook checked');
             $process = new Process('sh '.env('DEV_AUTO_DEPLOY_SCRIPT_PATH'));
             $process->run();
 
@@ -26,11 +28,7 @@ class ApiController extends Controller
 
     public function checkGitHubHash() {
         $payload = file_get_contents('php://input');
-        $signature = $_SERVER['HTTP_X_HUB_SIGNATURE'] ?? '';
-        list($algorithm, $hash) = explode('=', $signature, 2);
-        $expectedHash = hash_hmac($algorithm, $payload, $this->secret);
-
-        if ($hash !== $expectedHash) {
+        if(!$this->verifyPatreonHash()) {
             return false;
         }
         if ($payload['ref'] === 'refs/heads/dev') {
@@ -39,11 +37,15 @@ class ApiController extends Controller
         return true;
     }
 
-    public function checkGitHubPushEvent() {
-        $event = $_SERVER['HTTP_X_GITHUB_EVENT'] ?? '';
-        if ($event !== 'push') {
-            return false;
+    function verifyPatreonHash() {
+        $patreonBody = request()->getContent();
+        $patreonSignature = request()->header('X-Patreon-Signature');
+        $webhookHash = hash_hmac('md5', $patreonBody, $this->secret);
+
+        if(strtolower($webhookHash) == strtolower($patreonSignature)) {
+            return true; // Verification succeeded
+        } else {
+            return false; // Verification failed
         }
-        return true;
     }
 }
