@@ -13,15 +13,11 @@ class ApiController extends Controller
 
     public function handleWebhook(Request $request)
     {
-        $json = $request->post();
-        //$payload = json_decode($json);
-        dd($json);
-        exit;
+        if($request->has('payload')) {
+            $json = $request->post('payload');
+            $data = json_decode($json, true);
 
-        if($request->has('ref')) {
-            $ref = $request->input('ref');
-
-            if ($ref === 'refs/heads/dev') {
+            if ($data['ref'] === 'refs/heads/dev') {
                 $process = new Process(['git', 'pull', 'origin', 'dev']);
                 $process->run();
 
@@ -36,7 +32,6 @@ class ApiController extends Controller
         } else {
             return response('Некорректный запрос Webhook', 400);
         }
-
 
     }
 
