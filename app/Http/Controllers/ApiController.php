@@ -13,15 +13,16 @@ class ApiController extends Controller
 
     public function deploy() {
         if($this->checkGitHubHash()) {
-            Log::info('git webhook checked');
-            $process = new Process('sh '.env('DEV_AUTO_DEPLOY_SCRIPT_PATH'));
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            echo $process->getOutput();
+//            Log::info('git webhook checked');
+//            $process = new Process('sh '.env('DEV_AUTO_DEPLOY_SCRIPT_PATH'));
+//            $process->run();
+//
+//            if (!$process->isSuccessful()) {
+//                throw new ProcessFailedException($process);
+//            }
+//
+//            echo $process->getOutput();
+            exec('git pull origin dev');
         }
 
     }
