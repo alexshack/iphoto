@@ -19,13 +19,17 @@ class ApiController extends Controller
 
             if ($data['ref'] === 'refs/heads/dev') {
                 $scriptPath = base_path('deploy.sh');
-                $process = new Process(['sh', $scriptPath], base_path());
+                Log::info($scriptPath);
+                $process = new Process(['/bin/bash', $scriptPath]);
+                $process->run();
 
-                $process->run(null, [
-                    'PHP_FPM' => 'php8.1-fpm',
-                    'PHP_PATH' => PHP_BINARY,
-                    'BRANCH' => 'dev'
-                ]);
+//                $process = new Process(['sh', $scriptPath], base_path());
+//
+//                $process->run(null, [
+//                    'PHP_FPM' => 'php8.1-fpm',
+//                    'PHP_PATH' => PHP_BINARY,
+//                    'BRANCH' => 'dev'
+//                ]);
 
 //                $process = new Process(['git', 'pull', 'origin', 'dev']);
 //                $process->run();
