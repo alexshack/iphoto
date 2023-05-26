@@ -15,18 +15,26 @@ class ApiController extends Controller
     {
         $payload = json_decode($request->getContent(), true);
 
-        if ($payload['ref'] === 'refs/heads/dev') {
-            $process = new Process(['git', 'pull', 'origin', 'dev']);
-            $process->run();
+        if($request->has('ref')) {
+            $ref = $request->input('ref');
 
-            if ($process->isSuccessful()) {
-                return response('Деплой выполнен успешно', 200);
+            if ($ref === 'refs/heads/dev') {
+                $process = new Process(['git', 'pull', 'origin', 'dev']);
+                $process->run();
+
+                if ($process->isSuccessful()) {
+                    return response('Деплой выполнен успешно', 200);
+                } else {
+                    return response('Ошибка при выполнении деплоя', 500);
+                }
             } else {
-                return response('Ошибка при выполнении деплоя', 500);
+                return response('Изменения не по ветке dev, игнорируем запрос', 200);
             }
         } else {
-            return response('Изменения не по ветке dev, игнорируем запрос', 200);
+            return response('Некорректный запрос Webhook', 400);
         }
+
+
     }
 
     public function deploy() {
