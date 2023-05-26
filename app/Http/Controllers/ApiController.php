@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -44,9 +45,9 @@ class ApiController extends Controller
     {
 
         $githubtoken = $request->header('X-Hub-Signature');
-        $myTokenHash = 'sha1=' . hash_hmac('sha1',$request->getContent(), env('GITHUB_SECRET_KEY'));
+        $myTokenHash = 'sha1=' . hash_hmac('sha1',$request->getContent(), Config::get('app.github_secret'));
         if($githubtoken != $myTokenHash) {
-            Log::info(env('GITHUB_SECRET_KEY'));
+            Log::info(Config::get('app.github_secret'));
             Log::info($githubtoken);
             Log::info($myTokenHash);
             return false;

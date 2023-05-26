@@ -126,6 +126,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'github_secret' => env('GITHUB_SECRET_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
