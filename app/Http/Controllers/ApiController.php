@@ -21,7 +21,10 @@ class ApiController extends Controller
                 $scriptPath = base_path('deploy.sh');
                 Log::info($scriptPath);
                 $process = new Process(['/bin/bash', $scriptPath]);
-                $process->run();
+                $process->setWorkingDirectory(base_path());
+                $process->run(function($type, $buffer) {
+                    Log::info($buffer);
+                });
 
 //                $process = new Process(['sh', $scriptPath], base_path());
 //
