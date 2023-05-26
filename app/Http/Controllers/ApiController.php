@@ -46,6 +46,7 @@ class ApiController extends Controller
         $githubtoken = $request->header('X-Hub-Signature');
         $myTokenHash = 'sha1=' . hash_hmac('sha1',$request->getContent(), env('GITHUB_SECRET_KEY'));
         if($githubtoken != $myTokenHash) {
+            Log::info(env('GITHUB_SECRET_KEY'));
             Log::info($githubtoken);
             Log::info($myTokenHash);
             return false;
