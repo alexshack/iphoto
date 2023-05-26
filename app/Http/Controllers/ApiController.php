@@ -16,7 +16,7 @@ class ApiController extends Controller
         if($request->has('payload')) {
             $json = $request->post('payload');
             $data = json_decode($json, true);
-
+            $this->check();
             if ($data['ref'] === 'refs/heads/dev') {
                 $scriptPath = base_path('deploy.sh');
                 Log::info($scriptPath);
@@ -26,22 +26,10 @@ class ApiController extends Controller
                     Log::info($buffer);
                 });
 
-//                $process = new Process(['sh', $scriptPath], base_path());
-//
-//                $process->run(null, [
-//                    'PHP_FPM' => 'php8.1-fpm',
-//                    'PHP_PATH' => PHP_BINARY,
-//                    'BRANCH' => 'dev'
-//                ]);
-
-//                $process = new Process(['git', 'pull', 'origin', 'dev']);
-//                $process->run();
-
                 if ($process->isSuccessful()) {
                     return response('Деплой выполнен успешно', 200);
                 } else {
-                    //return response('Ошибка при выполнении деплоя', 500);
-                    return $process->getOutput();
+                    return response('Ошибка при выполнении деплоя', 500);
                 }
             } else {
                 return response('Изменения не по ветке dev, игнорируем запрос', 200);
@@ -50,6 +38,13 @@ class ApiController extends Controller
             return response('Некорректный запрос Webhook', 400);
         }
 
+    }
+
+    public function check()
+    {
+        $githubtoken = Request::header('X-Hub-Signature');
+        $myTokenHash = 'sha1=' . hash_hmac('sha1',request()->getContent(), $this->secret);
+        Log::info($githubtoken . '=' . $myTokenHash);
     }
 
     public function deploy() {
