@@ -16,7 +16,7 @@ class ApiController extends Controller
         if($request->has('payload')) {
             $json = $request->post('payload');
             $data = json_decode($json, true);
-            $this->check();
+            $this->check($request);
             if ($data['ref'] === 'refs/heads/dev') {
                 $scriptPath = base_path('deploy.sh');
                 Log::info($scriptPath);
@@ -40,10 +40,11 @@ class ApiController extends Controller
 
     }
 
-    public function check()
+    public function check(Request $request)
     {
-        $githubtoken = request()->header('X-Hub-Signature');
-        $myTokenHash = 'sha1=' . hash_hmac('sha1',request()->getContent(), $this->secret);
+
+        $githubtoken = $request->header('X-Hub-Signature');
+        $myTokenHash = 'sha1=' . hash_hmac('sha1',$request->getContent(), $this->secret);
         Log::info($githubtoken . '=' . $myTokenHash);
     }
 
