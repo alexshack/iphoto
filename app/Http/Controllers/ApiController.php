@@ -18,8 +18,17 @@ class ApiController extends Controller
             $data = json_decode($json, true);
 
             if ($data['ref'] === 'refs/heads/dev') {
-                $process = new Process(['git', 'pull', 'origin', 'dev']);
-                $process->run();
+                $scriptPath = base_path('deploy.sh');
+                $process = new Process(['sh', $scriptPath], base_path());
+
+                $process->run(null, [
+                    'PHP_FPM' => 'php8.1-fpm',
+                    'PHP_PATH' => PHP_BINARY,
+                    'BRANCH' => 'dev'
+                ]);
+
+//                $process = new Process(['git', 'pull', 'origin', 'dev']);
+//                $process->run();
 
                 if ($process->isSuccessful()) {
                     return response('Деплой выполнен успешно', 200);
