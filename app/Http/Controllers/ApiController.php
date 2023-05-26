@@ -14,6 +14,8 @@ class ApiController extends Controller
     public function handleWebhook(Request $request)
     {
         $payload = json_decode($request->getContent(), true);
+        dd($payload);
+        exit;
 
         if($request->has('ref')) {
             $ref = $request->input('ref');
