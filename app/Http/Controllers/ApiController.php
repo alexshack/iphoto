@@ -42,7 +42,7 @@ class ApiController extends Controller
 
     public function check()
     {
-        $githubtoken = Request::header('X-Hub-Signature');
+        $githubtoken = request()->header('X-Hub-Signature');
         $myTokenHash = 'sha1=' . hash_hmac('sha1',request()->getContent(), $this->secret);
         Log::info($githubtoken . '=' . $myTokenHash);
     }
