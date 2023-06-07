@@ -248,7 +248,7 @@
 																<th class="border-bottom-0">Город</th>
 																<th class="border-bottom-0">Точка</th>
 																<th class="border-bottom-0 text-center">Сотрудники на точке</th>
-																<th class="border-bottom-0 text-center">Время снятия кассы</th>
+																<th class="border-bottom-0 text-center">Время закрытия смены</th>
 																<th class="border-bottom-0 text-center">Касса</th>
 																<th class="border-bottom-0 text-center">Расходы</th>
 																<th class="border-bottom-0 text-center">Зарплата</th>
