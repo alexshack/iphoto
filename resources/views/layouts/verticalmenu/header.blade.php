@@ -29,6 +29,7 @@
 										<div class="dropdown profile-dropdown">
 											<a href="#" class="nav-link pr-1 pl-0 leading-none" data-toggle="dropdown">
 												<span>
+													<!-- фото из профиля -->
 													<img src="{{URL::asset('assets/images/users/16.jpg')}}" alt="img" class="avatar avatar-md bradius">
 												</span>
 											</a>

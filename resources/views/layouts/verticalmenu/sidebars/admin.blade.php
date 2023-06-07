@@ -1,7 +1,7 @@
 				<!--aside open-->
 				<aside class="app-sidebar">
 					<div class="app-sidebar__logo">
-						<a class="header-brand" href="{{url('index')}} ">
+						<a class="header-brand" href="{{url('/')}} ">
 							<img src="{{URL::asset('assets/images/brand/logo.png')}}" class="header-brand-img desktop-lgo" alt="Dayonelogo">
 							<img src="{{URL::asset('assets/images/brand/logo-white.png')}}" class="header-brand-img dark-logo" alt="Dayonelogo">
 							<img src="{{URL::asset('assets/images/brand/favicon.png')}}" class="header-brand-img mobile-logo" alt="Dayonelogo">
