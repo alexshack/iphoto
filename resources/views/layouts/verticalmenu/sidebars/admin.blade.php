@@ -32,15 +32,15 @@
 									<li class="sub-slide">
 										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Краснодар</span><i class="sub-angle fa fa-angle-right"></i></a>
 										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('admin/place')}} ">ТЦ OZ Mall</a></li>
-											<li><a class="sub-slide-item" href="{{url('admin/place')}} ">Галерея</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">ТЦ OZ Mall</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Галерея</a></li>
 										</ul>
 									</li>
 									<li class="sub-slide">
 										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Белгород</span><i class="sub-angle fa fa-angle-right"></i></a>
 										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('admin/place')}} ">Зоопарк</a></li>
-											<li><a class="sub-slide-item" href="{{url('admin/place')}} ">Сити Молл</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Зоопарк</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Сити Молл</a></li>
 										</ul>
 									</li>
 								</ul>
@@ -51,11 +51,11 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/cities')}}" class="slide-item">Города</a></li>
-									<li><a href="{{url('admin/managers')}}" class="slide-item">Менеджеры</a></li>
-									<li><a href="{{url('admin/places')}}" class="slide-item">Точки</a></li>
-									<li><a href="{{url('admin/employees')}}" class="slide-item">Сотрудники</a></li>
-									<li><a href="{{url('admin/hr')}}" class="slide-item">Рекрутеры</a></li>
+									<li><a href="{{url('structure/cities')}}" class="slide-item">Города</a></li>
+									<li><a href="{{url('structure/managers')}}" class="slide-item">Менеджеры</a></li>
+									<li><a href="{{url('structure/places')}}" class="slide-item">Точки</a></li>
+									<li><a href="{{url('structure/employees')}}" class="slide-item">Сотрудники</a></li>
+									<li><a href="{{url('structure/hr')}}" class="slide-item">Рекрутеры</a></li>
 								</ul>
 
 							</li>							
@@ -68,10 +68,10 @@
 									<span class="side-menu__label">Документы</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/days')}} " class="slide-item"> Смены</a></li>
-									<li><a href="{{url('admin/money-incomes')}} " class="slide-item"> Поступления ДС</a></li>
-									<li><a href="{{url('admin/money-expenses')}} " class="slide-item"> Расходы ДС</a></li>
-									<li><a href="{{url('admin/money-moves')}} " class="slide-item"> Перемещение ДС</a></li>
+									<li><a href="{{url('money/days')}} " class="slide-item"> Смены</a></li>
+									<li><a href="{{url('money/incomes')}} " class="slide-item"> Поступления ДС</a></li>
+									<li><a href="{{url('money/expenses')}} " class="slide-item"> Расходы ДС</a></li>
+									<li><a href="{{url('money/moves')}} " class="slide-item"> Перемещение ДС</a></li>
 								</ul>
 							</li>
 							<li class="slide">
@@ -80,10 +80,10 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/money-sales-types')}} " class="slide-item"> Виды продаж</a></li>
-									<li><a href="{{url('admin/money-incomes-types')}} " class="slide-item"> Виды поступлений</a></li>
-									<li><a href="{{url('admin/money-expenses-types')}} " class="slide-item"> Виды расходов</a></li>
-									<li><a href="{{url('admin/money-moves-types')}} " class="slide-item"> Виды перемещений</a></li>
+									<li><a href="{{url('money/sales-types')}} " class="slide-item"> Виды продаж</a></li>
+									<li><a href="{{url('money/incomes-types')}} " class="slide-item"> Виды поступлений</a></li>
+									<li><a href="{{url('money/expenses-types')}} " class="slide-item"> Виды расходов</a></li>
+									<li><a href="{{url('money/moves-types')}} " class="slide-item"> Виды перемещений</a></li>
 								</ul>
 							</li>
 
@@ -94,9 +94,8 @@
 									<span class="side-menu__label">Документы</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/salary-calcs')}} " class="slide-item"> Начисления</a></li>
-									<li><a href="{{url('admin/salary-pays')}} " class="slide-item"> Выплаты</a></li>
-									<li><a href="{{url('admin/salary-bonuses')}} " class="slide-item"> Штрафы и премии</a></li>
+									<li><a href="{{url('salary/calcs')}} " class="slide-item"> Начисления</a></li>
+									<li><a href="{{url('salary/pays')}} " class="slide-item"> Выплаты</a></li>
 								</ul>
 							</li>
 							<li class="slide">
@@ -105,12 +104,11 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/employees-statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
-									<li><a href="{{url('admin/employees-roles')}} " class="slide-item"> Роли сотрудников</a></li>
-									<li><a href="{{url('admin/employees-salary-calcs-types')}} " class="slide-item"> Начисление ЗП сотрудников</a></li>
-									<li><a href="{{url('admin/managers-salary-calcs-types')}} " class="slide-item"> Начисление ЗП менеджеров</a></li>
-									<li><a href="{{url('admin/employees-salary-bonuses-types')}} " class="slide-item"> Виды штрафов и премий</a></li>
-									<li><a href="{{url('admin/salary-pays-types')}} " class="slide-item"> Типы выплат</a></li>
+									<li><a href="{{url('employees/statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
+									<li><a href="{{url('employees/roles')}} " class="slide-item"> Роли сотрудников</a></li>
+									<li><a href="{{url('salary/employees-calcs-types')}} " class="slide-item"> Начисления ЗП сотрудников</a></li>
+									<li><a href="{{url('salary/managers-calcs-types')}} " class="slide-item"> Начисления ЗП менеджеров</a></li>
+									<li><a href="{{url('salary/pays-types')}} " class="slide-item"> Типы выплат</a></li>
 								</ul>
 							</li>							
 
@@ -121,13 +119,13 @@
 									<span class="side-menu__label">Документы</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('admin/goods-incomes')}} " class="slide-item"> Поступления</a></li>
-									<li><a href="{{url('admin/goods-outs')}} " class="slide-item"> Списания</a></li>
-									<li><a href="{{url('admin/goods-moves')}} " class="slide-item"> Перемещения</a></li>
+									<li><a href="{{url('goods/incomes')}} " class="slide-item"> Поступления</a></li>
+									<li><a href="{{url('goods/outs')}} " class="slide-item"> Списания</a></li>
+									<li><a href="{{url('goods/moves')}} " class="slide-item"> Перемещения</a></li>
 								</ul>
 							</li>
 							<li class="slide">
-								<a class="side-menu__item" href="{{url('admin/goods')}}">
+								<a class="side-menu__item" href="{{url('goods')}}">
 									<i class="feather feather-server sidemenu_icon"></i>
 									<span class="side-menu__label">Товары</span>
 								</a>

@@ -9,8 +9,8 @@
         <meta content="" name="author">
         <meta name="keywords" content=""/>
 
-        <!-- Title -->
-        <title>Я - Фотограф</title>
+        <!-- Title Фамилия Имя текущего юзера-->
+        <title>Админов Админ - Я Фотограф</title>
 
         @include('layouts.verticalmenu.styles')
 
