@@ -247,8 +247,9 @@
 																<th class="border-bottom-0 text-center">Статус</th>
 																<th class="border-bottom-0">Город</th>
 																<th class="border-bottom-0">Точка</th>
-																<th class="border-bottom-0 text-center">Сотрудники на точке</th>
+																<th class="border-bottom-0 text-center">Сотрудники</th>
 																<th class="border-bottom-0 text-center">Время закрытия смены</th>
+																<th class="border-bottom-0 text-center">Кто закрыл</th>
 																<th class="border-bottom-0 text-center">Касса</th>
 																<th class="border-bottom-0 text-center">Расходы</th>
 																<th class="border-bottom-0 text-center">Зарплата</th>
@@ -267,7 +268,7 @@
 																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Сити Молл</a>
 																</td>																
 																<td class="text-center">
-																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
+																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые были на смене -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
 																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
@@ -283,6 +284,13 @@
 																	</div>
 																</td>
 																<td data-order="1303682400" class="text-center">15:00</td><!-- data-order: time -->
+																<td class="text-center">
+																	<div class="avatar-list"><!-- сотрудник, который закрыл смену -->
+																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
+																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																		</a>
+																	</div>
+																</td>																
 																<td data-order="12000" class="text-right">12 000₽</td><!-- data-order: int -->
 																<td data-order="500" class="text-right">500₽</td><!-- data-order: int -->
 																<td data-order="2000" class="text-right">2 000₽</td><!-- data-order: int -->
@@ -311,6 +319,8 @@
 																	</div>
 																</td>
 																<td data-order="1303682400" class="text-center">15:00</td>
+																<td class="text-center">
+																</td>
 																<td data-order="12000" class="text-right">12 000₽</td>
 																<td data-order="500" class="text-right">500₽</td>
 																<td data-order="2000" class="text-right">2 000₽</td>
