@@ -29,7 +29,7 @@ $(function (e) {
     "order": [[ 0, "desc" ]],
     "info": false,
     "paging": false,
-    columnDefs: [ { orderable: false, targets: [3] } ],
+    columnDefs: [ { orderable: false, targets: [3, 5] } ],
     language: {
       decimal: ",",
       thousands:" ",
