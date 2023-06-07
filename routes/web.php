@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\AdminDashboard;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
+/* AUTH */
+Route::get('login', function () {
+    return view('auth.login');
+});
+Route::get('forgot', function () {
+    return view('auth.forgot');
+});
+Route::get('reset', function () {
+    return view('auth.reset');
+});
+Route::get('change-password', function () {
+    return view('auth.change');
+});
+Route::get('lock', function () {
+    return view('auth.lock');
+});
+
+/* ADMIN */
+Route::get('/admin', function () {
+    return view('admin.index');
+});
+
+
