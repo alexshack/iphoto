@@ -38,8 +38,18 @@ Route::get('lock', function () {
 });
 
 /* ADMIN */
-Route::get('/admin', function () {
+Route::get('admin', function () {
     return view('admin.index');
 });
 
 
+/* STRUCTURE */
+Route::get('structure/employees', function () {
+    return view('structure.employees');
+});
+Route::get('structure/employees/0', function () {
+    return view('structure.employee');
+});
+Route::get('structure/employees/add', function () {
+    return view('structure.employee');
+});

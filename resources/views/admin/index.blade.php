@@ -3,7 +3,6 @@
 @section('styles')
 
 
-
 		<!-- INTERNAL Data table css -->
 		<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
 
@@ -14,7 +13,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Администратор<span class="font-weight-normal text-muted ml-2">Главная</span></h4>
+								<h4 class="page-title">Главная<span class="font-weight-normal text-muted ml-2">Администратор</span></h4>
 							</div>
 							<div class="page-rightheader ml-md-auto">
 
@@ -160,8 +159,8 @@
 									<div class="panel-body tabs-menu-body table_tabs1 p-0 border-0">
 										<div class="tab-content">
 											<div class="tab-pane active" id="tab-today">
-												<div class="table-responsive pt-3 pl-3 pr-3">
-													<table class="table table-vcenter text-nowrap mb-0" id="days-today">
+												<div class="table-responsive p-3">
+													<table class="table table-bordered border-bottom dataTable no-footer table-vcenter text-nowrap" id="days-today">
 														<thead>
 															<tr>
 																<th class="border-bottom-0 text-center">Статус</th>
@@ -186,19 +185,19 @@
 																<td data-order="Сити Молл">
 																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Сити Молл</a>
 																</td>																
-																<td class="text-center">
+																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
 																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
 																		</a>
 																	</div>
 																</td>
@@ -217,16 +216,16 @@
 																<td data-order="Зоопарк">
 																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Зоопарк</a>
 																</td>																
-																<td class="text-center">
+																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
 																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
 																		</a>
 																	</div>
 																</td>
@@ -240,8 +239,8 @@
 												</div>
 											</div>
 											<div class="tab-pane" id="tab-yesterday">
-												<div class="table-responsive pt-3 pl-3 pr-3">
-													<table class="table table-vcenter text-nowrap mb-0" id="days-yesterday">
+												<div class="table-responsive p-3">
+													<table class="table table-bordered border-bottom dataTable no-footer table-vcenter text-nowrap" id="days-yesterday">
 														<thead>
 															<tr>
 																<th class="border-bottom-0 text-center">Статус</th>
@@ -267,27 +266,27 @@
 																<td data-order="Сити Молл"><!-- data-order: place->name -->
 																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Сити Молл</a>
 																</td>																
-																<td class="text-center">
+																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
 																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые были на смене -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
 																		</a>
 																	</div>
 																</td>
 																<td data-order="1303682400" class="text-center">15:00</td><!-- data-order: time -->
-																<td class="text-center">
+																<td class="text-center" data-search="Сотрудник Сотрудников"><!-- Имя фамилия через запятую -->
 																	<div class="avatar-list"><!-- сотрудник, который закрыл смену -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
 																	</div>
 																</td>																
@@ -305,21 +304,21 @@
 																<td data-order="Зоопарк">
 																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Зоопарк</a>
 																</td>																
-																<td class="text-center">
+																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
 																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
 																		</a>
 																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-md brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
+																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
 																		</a>
 																	</div>
 																</td>
 																<td data-order="1303682400" class="text-center">15:00</td>
-																<td class="text-center">
+																<td class="text-center" data-search=""><!-- Имя фамилия через запятую -->
 																</td>
 																<td data-order="12000" class="text-right">12 000₽</td>
 																<td data-order="500" class="text-right">500₽</td>

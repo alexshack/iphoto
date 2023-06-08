@@ -22,10 +22,16 @@
 							</div>
 						</div>
 						<ul class="side-menu">
+							<li class="slide">
+								<a class="side-menu__item" href="{{url('admin')}}">
+									<i class="feather feather-home sidemenu_icon"></i>
+									<span class="side-menu__label">Главная</span>
+								</a>
+							</li>
 							<li class="side-item side-item-category mt-4">Компания</li>
 							<li class="slide">
 								<a class="side-menu__item" data-toggle="slide" href="#">
-									<i class="feather feather-home sidemenu_icon"></i>
+									<i class="feather feather-camera sidemenu_icon"></i>
 									<span class="side-menu__label">Структура</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
@@ -126,7 +132,7 @@
 							</li>
 							<li class="slide">
 								<a class="side-menu__item" href="{{url('goods')}}">
-									<i class="feather feather-server sidemenu_icon"></i>
+									<i class="feather feather-box sidemenu_icon"></i>
 									<span class="side-menu__label">Товары</span>
 								</a>
 							</li>
