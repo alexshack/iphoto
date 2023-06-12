@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminDashboard;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,4 +52,14 @@ Route::get('structure/employees/0', function () {
 });
 Route::get('structure/employees/add', function () {
     return view('structure.employee');
+});
+
+Route::get('structure/managers', function () {
+    return view('structure.managers');
+});
+Route::get('structure/managers/0', function () {
+    return view('structure.manager');
+});
+Route::get('structure/managers/add', function () {
+    return view('structure.manager');
 });
