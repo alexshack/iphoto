@@ -58,8 +58,8 @@
 								</a>
 								<ul class="slide-menu">
 									<li><a href="{{url('structure/cities')}}" class="slide-item">Города</a></li>
-									<li><a href="{{url('structure/managers')}}" class="slide-item">Менеджеры</a></li>
 									<li><a href="{{url('structure/places')}}" class="slide-item">Точки</a></li>
+									<li><a href="{{url('structure/managers')}}" class="slide-item">Менеджеры</a></li>
 									<li><a href="{{url('structure/employees')}}" class="slide-item">Сотрудники</a></li>
 									<li><a href="{{url('structure/hr')}}" class="slide-item">Рекрутеры</a></li>
 								</ul>
@@ -99,8 +99,8 @@
 									<span class="side-menu__label">Документы</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('salary/calcs')}} " class="slide-item"> Начисления</a></li>
-									<li><a href="{{url('salary/pays')}} " class="slide-item"> Выплаты</a></li>
+									<li><a href="{{url('salary/calcs')}}" class="slide-item"> Начисления</a></li>
+									<li><a href="{{url('salary/pays')}}" class="slide-item"> Выплаты</a></li>
 								</ul>
 							</li>
 							<li class="slide">
@@ -109,10 +109,10 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('salary/statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
-									<li><a href="{{url('salary/roles')}} " class="slide-item"> Роли сотрудников</a></li>
-									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Типы начислений</a></li>
-									<li><a href="{{url('salary/pays-types')}} " class="slide-item"> Типы выплат</a></li>
+									<li><a href="{{url('salary/employee-statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
+									<li><a href="{{url('salary/employee-positions')}} " class="slide-item"> Должности сотрудников</a></li>
+									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Виды начислений</a></li>
+									<li><a href="{{url('salary/pays-types')}} " class="slide-item"> Виды выплат</a></li>
 								</ul>
 							</li>							
 

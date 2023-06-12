@@ -74,3 +74,20 @@ Route::get('money/incomes-types', function () {
 Route::get('money/expenses-types', function () {
     return view('money.expenses-types');
 });
+
+/* SALARY */
+Route::get('salary/employee-statuses', function () {
+    return view('salary.employee-statuses');
+});
+Route::get('salary/employee-positions', function () {
+    return view('salary.employee-positions');
+});
+Route::get('salary/calcs-types', function () {
+    return view('salary.calcs-types');
+});
+Route::get('salary/calcs-types/0', function () {
+    return view('salary.calcs-type');
+});
+Route::get('salary/calcs-types/add', function () {
+    return view('salary.calcs-type');
+});

@@ -12,7 +12,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Иванов Иван<span class="font-weight-normal text-muted ml-2">Менеджер</span></h4>
+								<h4 class="page-title">Иванов Иван<a href="{{url('structure/managers')}}" class="font-weight-normal text-muted ml-2">Менеджеры</a></h4>
 							</div>
 						</div>
 						<!--End Page header-->

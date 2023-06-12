@@ -20,9 +20,6 @@
 		<!--Sidemenu js-->
 		<script src="{{URL::asset('assets/plugins/sidemenu/sidemenu.js')}}"></script>
 
-		<!-- P-scroll js-->
-		<script src="{{URL::asset('assets/plugins/p-scrollbar/p-scrollbar.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/p-scrollbar/p-scroll1.js')}}"></script>
 
 		<!--Sidebar js-->
 		<script src="{{URL::asset('assets/plugins/sidebar/sidebar.js')}}"></script>
