@@ -112,7 +112,6 @@
 									<li><a href="{{url('salary/employee-statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
 									<li><a href="{{url('salary/employee-positions')}} " class="slide-item"> Должности сотрудников</a></li>
 									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Виды начислений</a></li>
-									<li><a href="{{url('salary/pays-types')}} " class="slide-item"> Виды выплат</a></li>
 								</ul>
 							</li>							
 
