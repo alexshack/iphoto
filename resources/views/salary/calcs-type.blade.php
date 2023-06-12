@@ -2,9 +2,8 @@
 
 @section('styles')
 
-		<!-- INTERNAL Data table css -->
-		<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
-		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
+		<!-- INTERNAL Sumoselect css-->
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
 
 @endsection
 
@@ -20,7 +19,7 @@
 
 
 						<!-- Row -->
-						<div class="row">
+						<div class="row calcs-type">
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
@@ -30,56 +29,169 @@
 										<form class="form-horizontal">
 											<div class="form-group row">
 												<label class="form-label col-md-3">Название</label>
-												<input type="text" class="form-control col-md-9" placeholder="Введите название">
-											</div>									
+												<div class="col-md-9">
+													<input type="text" class="form-control" placeholder="Введите название" value="Проценты 17/13">
+												</div>
+											</div>
 											<div class="card-pay">
 												<label class="form-label">Выберите тип начисления</label>
 												<ul class="tabs-menu nav">
-													<li class=""><a href="#tab20" class="active" data-toggle="tab">Процент от кассы</a></li>
-													<li><a href="#tab21" data-toggle="tab" class="">Процент от товара</a></li>
-													<li><a href="#tab22" data-toggle="tab" class="">Оклад</a></li>
-													<li><a href="#tab23" data-toggle="tab" class="">Фиксированная смена</a></li>
-													<li><a href="#tab24" data-toggle="tab" class="">Ввод вручную</a></li>
+													<!--Отдельное поле в таблице Тип начислений - у каждого типа - одно из пяти жестких значений. У каждого сохраняется свой набор значений полей -->
+													<li class=""><a href="#tab-1" class="active" data-toggle="tab">Процент от кассы</a></li>
+													<li><a href="#tab-2" data-toggle="tab" class="">Процент от товара</a></li>
+													<li><a href="#tab-3" data-toggle="tab" class="">Оклад</a></li>
+													<li><a href="#tab-4" data-toggle="tab" class="">Фиксированная смена</a></li>
+													<li><a href="#tab-5" data-toggle="tab" class="">Ввод вручную</a></li>
 												</ul>
 												<div class="tab-content">
-													<div class="tab-pane active show" id="tab20">
+													<div class="tab-pane active show" id="tab-1">
 														<form class="form-horizontal">
 															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="ДА">
+																</div>
+															</div>																
+															<div class="form-group row">
+																<label class="form-label col-md-3">Должности, участвующие в расчете</label>
+																<div class="col-md-9">
+																	<select multiple="multiple" class="select-position">
+																		<!--Список из таблицы Должности сотрудников -->
+																	   <option selected value="122">Фотограф</option>
+																	   <option selected value="135">Ретушер</option>
+																	   <option value="150">Продавец</option>
+																	</select>
+																</div>
+															</div>															
+															<div class="form-group row">
 																<label class="form-label col-md-3">Процент, если один сотрудник</label>
-																<input type="number" class="form-control col-md-9" placeholder="Введите значение процента">
+																<div class="col-md-9">
+																	<input type="number" class="form-control" placeholder="Введите значение процента" value="13">
+																</div>
 															</div>
 															<div class="form-group row">
 																<label class="form-label col-md-3">Процент, если больше одного сотрудника</label>
-																<input type="number" class="form-control col-md-9" placeholder="Введите значение процента">
+																<div class="col-md-9">
+																	<input type="number" class="form-control" placeholder="Введите значение процента"  value="17">
+																</div>
 															</div>															
-															<div class="form-group row">
-																<label class="form-label col-md-3">Процент, если больше одного сотрудника</label>
-																<input type="number" class="form-control col-md-9" placeholder="Введите значение процента">
-															</div>	
+
 															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
 														</form>
 													</div>
-													<div class="tab-pane" id="tab21">
-														<p>Paypal is easiest way to pay online</p>
-														<p><a href="#" class="btn btn-primary"><i class="fa fa-paypal"></i> Log in my Paypal</a></p>
-														<p class="mb-0"><strong>Note:</strong> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
+													<div class="tab-pane show" id="tab-2">
+														<form class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="ДА">
+																</div>
+															</div>																
+															<div class="form-group row">
+																<label class="form-label col-md-3">Товар, участвующий в расчете</label>
+																<div class="col-md-9">
+																	<select multiple="multiple" class="select-position">
+																		<!--Список из таблицы Товары, из категории с пометкой Для индивидуального расчета -->
+																	   <option selected value="122">Рамка</option>
+																	   <option value="135">Фотосессия</option>
+																	</select>
+																</div>
+															</div>															
+															<div class="form-group row">
+																<label class="form-label col-md-3">Процент</label>
+																<div class="col-md-9">
+																	<input type="number" class="form-control" placeholder="Введите значение процента" value="17">
+																</div>
+															</div>
+															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+														</form>
 													</div>
-													<div class="tab-pane" id="tab22">
-														<p>Bank account details</p>
-														<dl class="card-text">
-														  <dt>BANK: </dt>
-														  <dd> THE UNION BANK 0456</dd>
-														</dl>
-														<dl class="card-text">
-														  <dt>Accaunt number: </dt>
-														  <dd> 67542897653214</dd>
-														</dl>
-														<dl class="card-text">
-														  <dt>IBAN: </dt>
-														  <dd>543218769</dd>
-														</dl>
-														<p class="mb-0"><strong>Note:</strong> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
+													<div class="tab-pane show" id="tab-3">
+														<form class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="ДА">
+																</div>
+															</div>																
+															<div class="form-group row">
+																<label class="form-label col-md-3">Статусы, участвующие в расчете</label>
+																<div class="col-md-9">
+																	<select multiple="multiple" class="select-position">
+																		<!--Список из таблицы Статусы сотрудников -->
+																	   <option selected value="122">Стажер</option>
+																	   <option value="135">Сотрудник</option>
+																	</select>
+																</div>
+															</div>															
+															<div class="form-group row">
+																<label class="form-label col-md-3">Процент от оклада</label>
+																<div class="col-md-9">
+																	<input type="number" class="form-control" placeholder="Введите значение процента" value="100">
+																</div>
+															</div>														
+
+															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+														</form>
 													</div>
+													<div class="tab-pane show" id="tab-4">
+														<form class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="ДА">
+																</div>
+															</div>																
+															<div class="form-group row">
+																<label class="form-label col-md-3">Должности, участвующие в расчете</label>
+																<div class="col-md-9">
+																	<select multiple="multiple" class="select-position">
+																		<!--Список из таблицы Должности сотрудников -->
+																	   <option value="122">Фотограф</option>
+																	   <option value="135">Ретушер</option>
+																	   <option value="150">Продавец</option>
+																	   <option selected value="155">Ассортимент</option>
+																	</select>
+																</div>
+															</div>															
+															<div class="form-group row">
+																<label class="form-label col-md-3">Количество часов за смену</label>
+																<div class="col-md-9">
+																	<input type="number" class="form-control" placeholder="Введите значение часов" value="8">
+																</div>
+															</div>														
+
+															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+														</form>
+													</div>
+													<div class="tab-pane show" id="tab-5">
+														<form class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="НЕТ">
+																</div>
+															</div>																
+															<div class="form-group row">
+																<label class="form-label col-md-3">Должности, участвующие в расчете</label>
+																<div class="col-md-9">
+																	<select multiple="multiple" class="select-position">
+																		<!--Список из таблицы Должности сотрудников -->
+																	   <option selected value="122">Фотограф</option>
+																	   <option selected value="135">Ретушер</option>
+																	   <option selected value="150">Продавец</option>
+																	   <option selected value="155">Ассортимент</option>
+																	</select>
+																</div>
+															</div>															
+															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
+														</form>
+													</div>																										
 												</div>
 											</div>
 										</form>
@@ -98,11 +210,8 @@
 
 @section('scripts')
 
-		<!-- INTERNAL Data tables -->
-		<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
+		<!-- INTERNAL Sumoselect js-->
+		<script src="{{URL::asset('assets/plugins/sumoselect/jquery.sumoselect.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/salary/calcs-type.js')}}"></script>

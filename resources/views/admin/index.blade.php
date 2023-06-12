@@ -351,6 +351,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
+		<!-- INTERNAL Vertical-scroll js-->
+<!-- 		<script src="{{URL::asset('assets/plugins/vertical-scroll/jquery.bootstrap.newsbox.js')}}"></script>
+		<script src="{{URL::asset('assets/plugins/vertical-scroll/vertical-scroll.js')}}"></script> -->
+
 
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/admin/index.js')}}"></script>

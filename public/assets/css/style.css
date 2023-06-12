@@ -3,3 +3,6 @@
 .avatar-list-stacked a:hover .avatar{
 	z-index:2;
 }
+.calcs-type .card {
+	margin-bottom: 200px;
+}
