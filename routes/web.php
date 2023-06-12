@@ -63,3 +63,14 @@ Route::get('structure/managers/0', function () {
 Route::get('structure/managers/add', function () {
     return view('structure.manager');
 });
+
+/* MONEY */
+Route::get('money/sales-types', function () {
+    return view('money.sales-types');
+});
+Route::get('money/incomes-types', function () {
+    return view('money.incomes-types');
+});
+Route::get('money/expenses-types', function () {
+    return view('money.expenses-types');
+});

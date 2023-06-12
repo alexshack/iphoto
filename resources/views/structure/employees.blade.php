@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('styles')
 
@@ -139,7 +139,6 @@
 															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/employees/0')}}">
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
 														</td>
 													</tr>
 													<tr>
@@ -165,7 +164,6 @@
 															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/employees/0')}}">
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
 														</td>
 													</tr>
 													<tr>
@@ -191,7 +189,6 @@
 															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/employees/0')}}">
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
 														</td>
 													</tr>													
 												</tbody>

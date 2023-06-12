@@ -80,16 +80,15 @@
 									<li><a href="{{url('money/moves')}} " class="slide-item"> Перемещение ДС</a></li>
 								</ul>
 							</li>
-							<li class="slide">
-								<a class="side-menu__item" data-toggle="slide" href="#">
-									<i class="feather feather-server sidemenu_icon"></i>
+ 							<li class="slide">
+ 								<a class="side-menu__item" data-toggle="slide" href="#">
+ 									<i class="feather feather-server sidemenu_icon"></i>
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
 									<li><a href="{{url('money/sales-types')}} " class="slide-item"> Виды продаж</a></li>
 									<li><a href="{{url('money/incomes-types')}} " class="slide-item"> Виды поступлений</a></li>
 									<li><a href="{{url('money/expenses-types')}} " class="slide-item"> Виды расходов</a></li>
-									<li><a href="{{url('money/moves-types')}} " class="slide-item"> Виды перемещений</a></li>
 								</ul>
 							</li>
 
@@ -110,10 +109,9 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('employees/statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
-									<li><a href="{{url('employees/roles')}} " class="slide-item"> Роли сотрудников</a></li>
-									<li><a href="{{url('salary/employees-calcs-types')}} " class="slide-item"> Начисления ЗП сотрудников</a></li>
-									<li><a href="{{url('salary/managers-calcs-types')}} " class="slide-item"> Начисления ЗП менеджеров</a></li>
+									<li><a href="{{url('salary/statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
+									<li><a href="{{url('salary/roles')}} " class="slide-item"> Роли сотрудников</a></li>
+									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Типы начислений</a></li>
 									<li><a href="{{url('salary/pays-types')}} " class="slide-item"> Типы выплат</a></li>
 								</ul>
 							</li>							
