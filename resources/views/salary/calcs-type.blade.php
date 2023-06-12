@@ -33,6 +33,16 @@
 													<input type="text" class="form-control" placeholder="Введите название" value="Проценты 17/13">
 												</div>
 											</div>
+											<div class="form-group row">
+												<label class="form-label  col-md-3">Статус</label>
+												<div class="col-md-9">
+													<select class="form-control custom-select select2">
+														<!--Список задается жестко -->
+													   <option selected value="1">Активен</option>
+													   <option value="0">Не активен</option>
+													</select>
+												</div>
+											</div>											
 											<div class="card-pay">
 												<label class="form-label">Выберите тип начисления</label>
 												<ul class="tabs-menu nav">
