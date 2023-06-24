@@ -24,8 +24,6 @@
 		<script src="{{URL::asset('assets/plugins/p-scrollbar/p-scrollbar.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/p-scrollbar/p-scroll1.js')}}"></script>
 
-		<!--Sidebar js-->
-		<script src="{{URL::asset('assets/plugins/sidebar/sidebar.js')}}"></script>
 
 		<!-- Select2 js -->
 		<script src="{{URL::asset('assets/plugins/select2/select2.full.min.js')}}"></script>

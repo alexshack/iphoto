@@ -82,6 +82,7 @@ Route::get('salary/employee-statuses', function () {
 Route::get('salary/employee-positions', function () {
     return view('salary.employee-positions');
 });
+
 Route::get('salary/calcs-types', function () {
     return view('salary.calcs-types');
 });
@@ -90,4 +91,24 @@ Route::get('salary/calcs-types/0', function () {
 });
 Route::get('salary/calcs-types/add', function () {
     return view('salary.calcs-type');
+});
+
+Route::get('salary/calcs', function () {
+    return view('salary.calcs');
+});
+Route::get('salary/calcs/0', function () {
+    return view('salary.calc');
+});
+Route::get('salary/calcs/add', function () {
+    return view('salary.calc');
+});
+
+Route::get('salary/pays', function () {
+    return view('salary.pays');
+});
+Route::get('salary/pays/0', function () {
+    return view('salary.pay');
+});
+Route::get('salary/pays/add', function () {
+    return view('salary.pay');
 });

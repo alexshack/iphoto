@@ -22,8 +22,6 @@
 		<!---Icons css-->
 		<link href="{{URL::asset('assets/plugins/icons/icons.css')}}" rel="stylesheet" />
 
-		<!---Sidebar css-->
-		<link href="{{URL::asset('assets/plugins/sidebar/sidebar.css')}}" rel="stylesheet" />
 
 		<!-- Select2 css -->
 		<link href="{{URL::asset('assets/plugins/select2/select2.min.css')}}" rel="stylesheet" />
