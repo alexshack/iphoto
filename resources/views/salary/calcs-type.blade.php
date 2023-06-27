@@ -201,7 +201,7 @@
 												</div>
 											</div>
 											<div class="form-group row">
-												<div class="form-label col-md-3">Участвует в выплате аванса</div>
+												<div class="form-label col-md-3">Участвует в выплате оклада</div>
 												<label class="custom-switch col-md-9">
 													<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
 													<span class="custom-switch-indicator custom-switch-indicator-xl"></span>
