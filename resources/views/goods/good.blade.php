@@ -5,8 +5,6 @@
 		<!-- INTERNAL Sumoselect css-->
 		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
 
-		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">			
 
 @endsection
 
@@ -30,6 +28,16 @@
 									</div>
 									<div class="card-body">
 										<form class="form-horizontal">
+											<div class="form-group row">
+												<label class="form-label  col-md-3">Категория</label>
+												<div class="col-md-9">
+													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите категорию товара">
+														<option label="Выберите категорию товара"></option>
+														<option value="1">Принтеры</option>
+														<option value="2">Расходники</option>
+													</select>
+												</div>
+											</div>
 											<div class="form-group row">
 												<label class="form-label col-md-3">Наименование</label>
 												<div class="col-md-9">
@@ -212,8 +220,6 @@
 
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
-		<!-- INTERNAL Bootstrap-Datepicker js-->
-		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/goods/good.js')}}"></script>
