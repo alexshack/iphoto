@@ -16,7 +16,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Начисления<span class="font-weight-normal text-muted ml-2">Учет зарплаты</span></h4>
+								<h4 class="page-title">Расходы ДС<span class="font-weight-normal text-muted ml-2">Финансовый учет</span></h4>
 							</div>
 							<div class="page-rightheader ml-md-auto">
 								<div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
@@ -32,7 +32,7 @@
 										</div>
 									</div>						
 									<div class="btn-list">
-										<a href="{{url('salary/calcs/add')}}"  class="btn btn-primary mr-3">Добавить начисление</a>
+										<a href="{{url('money/expenses/add')}}"  class="btn btn-primary mr-3">Добавить расход</a>
 									</div>
 								</div>
 							</div>
@@ -45,19 +45,18 @@
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
-										<h4 class="card-title">Начисления</h4>
+										<h4 class="card-title">Расходы за период</h4>
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
-											<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="calcs">
+											<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="expenses">
 												<thead>
 													<tr>
 														<th class="border-bottom-0">#</th>
 														<th class="border-bottom-0">Дата</th>
-														<th class="border-bottom-0">Вид начисления</th>
+														<th class="border-bottom-0">Вид расхода</th>
 														<th class="border-bottom-0">Город</th>
-														<th class="border-bottom-0">Точка</th>
-														<th class="border-bottom-0">Сотрудник</th>
+														<th class="border-bottom-0">Плательщик</th>
 														<th class="border-bottom-0">Сумма</th>
 														<th class="border-bottom-0">Действия</th>
 													</tr>
@@ -65,57 +64,36 @@
 												<tbody>
 													<tr>
 														<td>2520</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>"><a href="/money/days/0">24.06.2023</a></td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Проценты 17/13</td>
+														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
+														<td>Такси</td>
 														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
 														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
+														<td data-order="750" class="text-right">750₽</td>
 														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
+															<!-- кнопки редактирования и удаления показываются только если дата поступления в текущем месяце -->
 														</td>
 													</tr>
 													<tr>
 														<td>2521</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>"><a href="/money/days/0">24.06.2023</a></td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Оклад</td>
+														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
+														<td>Аренда</td>
 														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="940" class="text-right">940₽</td>
+														<td data-order="Иванов Иван"><a href="/structure/managers/0">Менеджеров Менеджер</a></td>
+														<td data-order="40000" class="text-right">40 000₽</td>
 														<td>
 															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
 														</td>
 													</tr>
 													<tr>
 														<td>2522</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.06.2023</td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Премия</td>
+														<td data-order="<?php strtotime('24.06.2023') ?>">24.06.2023</td>
+														<td>Такси</td>
 														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
 														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="10000" class="text-right">10 000₽</td>
+														<td data-order="1000" class="text-right">1 000₽</td>
 														<td>
 															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
-																<i class="feather feather-trash-2"></i>
-															</a>															
-														</td>
-													</tr>
-													<tr>
-														<td>2523</td>
-														<td data-order="<?php strtotime('25.06.2023') ?>">25.06.2023</td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Штраф</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="-1000" class="text-right text-danger">-1 000₽</td><!-- класс text-danger добавляется, если сумма отрицательная -->
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs/0')}}" >
+															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/expenses/0')}}" >
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
 															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
@@ -151,6 +129,6 @@
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 		
 		<!-- INTERNAL Index js-->
-		<script src="{{URL::asset('assets/js/salary/calcs.js')}}"></script>
+		<script src="{{URL::asset('assets/js/money/expenses.js')}}"></script>
 
 @endsection

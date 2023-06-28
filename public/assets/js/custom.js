@@ -302,6 +302,7 @@
 
 	$('.select2-show-search').select2({
 		minimumResultsForSearch: 5,
+		width: '100%'
 	});
 
 	//______Product carosuel

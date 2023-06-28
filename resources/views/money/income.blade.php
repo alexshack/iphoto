@@ -2,9 +2,6 @@
 
 @section('styles')
 
-		<!-- INTERNAL Sumoselect css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
-
 		<!-- INTERNAL Bootstrap DatePicker css-->
 		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">			
 
@@ -15,7 +12,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('salary/pays')}}" class="font-weight-normal text-muted ml-2">Выплаты</a></h4>
+								<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('money/incomes')}}" class="font-weight-normal text-muted ml-2">Поступления ДС</a></h4>
 							</div>
 						</div>
 						<!--End Page header-->
@@ -26,7 +23,7 @@
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
-										<h4 class="card-title">Данные выплаты</h4>
+										<h4 class="card-title">Данные поступления</h4>
 									</div>
 									<div class="card-body">
 										<form class="form-horizontal">
@@ -37,21 +34,14 @@
 												</div>
 											</div>
 											<div class="form-group row">
-												<label class="form-label  col-md-3">Вид выплаты</label>
+												<label class="form-label  col-md-3">Вид поступления</label>
 												<div class="col-md-9">
-													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите вид начисления">
+													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите вид поступления">
 														<option label="Выберите вид начисления"></option>
-														<!-- Задаются жестко-->
-														<option value="1">Аванс</option>
-														<option value="2">Оклад</option>
-														<option value="2">Зарплата</option>
+														<!-- incomes-types where incomes-types.status = active -->
+														<option value="1">Перевод от собственников</option>
+														<option value="2">Другое</option>
 													</select>
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="form-label  col-md-3">Расчетный месяц</label>
-												<div class="col-md-9">
-													<input class="form-control" id="datepicker-month" placeholder="Выберите месяц" value="Июнь 2023" type="text">
 												</div>
 											</div>											
 											<div class="form-group row">
@@ -69,7 +59,7 @@
 
 											<div class="card-pay">
 												<div class="row">
-													<label class="form-label col-md-3">Выберите тип источника</label>
+													<label class="form-label col-md-3">Выберите тип получателя</label>
 													<ul class="tabs-menu nav col-md-9">
 														<li class=""><a href="#tab-1" class="active" data-toggle="tab">Точка</a></li>
 														<li><a href="#tab-2" data-toggle="tab" class="">Менеджер</a></li>
@@ -111,35 +101,15 @@
 												</div>
 											</div>											
 											<div class="form-group row">
-												<label class="form-label  col-md-3">Сотрудник</label>
-												<div class="col-md-9">
-													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите сотрудника">
-														<option label="Выберите сотрудника"></option>
-														<!-- Сотрудники с фильтром по городу, выбранному выше -->
-														<option value="1">Иванов Иван</option>
-														<option value="2">Сидоренко Георгий</option>
-														<option value="3">Сергеев Сергей</option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group row">
 												<label class="form-label col-md-3">Сумма</label>
 												<div class="col-md-9">
 													<input type="number" class="form-control" placeholder="Введите сумму" value="">
 												</div>
 											</div>
 											<div class="form-group row">
-												<div class="form-label col-md-3">Выдано</div>
-												<label class="custom-switch col-md-9">
-													<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-													<span class="custom-switch-indicator custom-switch-indicator-xl"></span>
-													<span class="custom-switch-description">Да</span>
-												</label>
-											</div>
-											<div class="form-group row">
 												<label class="form-label col-md-3">Примечания</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control" placeholder="Укажите примечания к начислению" value="">
+													<input type="text" class="form-control" placeholder="Укажите примечания к поступлению" value="">
 												</div>
 											</div>
 
@@ -169,10 +139,8 @@
 
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
-		<!-- INTERNAL Bootstrap-Datepicker js-->
-		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
-		<script src="{{URL::asset('assets/js/salary/pay.js')}}"></script>
+		<script src="{{URL::asset('assets/js/money/income.js')}}"></script>
 
 @endsection

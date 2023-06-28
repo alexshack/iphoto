@@ -116,7 +116,7 @@
 							</li>							
 
 							<li class="side-item side-item-category">Товарный учет</li>
-							<li class="slide">
+<!-- 							<li class="slide">
 								<a class="side-menu__item" data-toggle="slide" href="#">
 									<i class="feather feather-layers sidemenu_icon"></i>
 									<span class="side-menu__label">Документы</span><i class="angle fa fa-angle-right"></i>
@@ -126,7 +126,7 @@
 									<li><a href="{{url('goods/outs')}} " class="slide-item"> Списания</a></li>
 									<li><a href="{{url('goods/moves')}} " class="slide-item"> Перемещения</a></li>
 								</ul>
-							</li>
+							</li> -->
 							<li class="slide">
 								<a class="side-menu__item" href="{{url('goods')}}">
 									<i class="feather feather-box sidemenu_icon"></i>

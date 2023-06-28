@@ -1,11 +1,11 @@
 $(function (e) {
 
-  $('#pays').DataTable({
+  $('#incomes').DataTable({
     "order": [[ 1, "asc" ]],
     "info": false,
     "paging": true,
     "pageLength": 100,
-    columnDefs: [ { orderable: false, targets: [9] } ],
+    columnDefs: [ { orderable: false, targets: [6] } ],
     language: {
       decimal: ",",
       thousands:" ",
@@ -26,24 +26,6 @@ $(function (e) {
       
     }
   });
-  var table_oklad = $('#pays-oklad').DataTable({
-    "order": [[ 0, "asc" ]],
-    "info": false,
-    "paging": false,
-    "searching": false,
-    buttons: [ 'excelHtml5' ],
-  });
-  table_oklad.buttons().container().appendTo( '#pays-oklad_wrapper .col-md-6:eq(0)' ); 
-
-  var table_zp = $('#pays-zp').DataTable({
-    "order": [[ 0, "asc" ]],
-    "info": false,
-    "paging": false,
-    "searching": false,
-    buttons: [ 'excel' ],
-  });
-  table_zp.buttons().container().appendTo( '#pays-zp_wrapper .col-md-6:eq(0)' );  
-
 
   $.fn.bootstrapdatepicker.dates['en'] = {
       days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -66,12 +48,5 @@ $(function (e) {
     autoclose: true,
     endDate: '0d'
   });
-  $('#datepicker-month-oklad').bootstrapdatepicker({
-    language: 'ru-RU',
-    format: "MM yyyy",
-    viewMode: "months",
-    minViewMode: "months",
-    autoclose: true,
-    endDate: '0d'
-  });
+
 });

@@ -68,12 +68,43 @@ Route::get('structure/managers/add', function () {
 Route::get('money/sales-types', function () {
     return view('money.sales-types');
 });
+
+Route::get('money/incomes', function () {
+    return view('money.incomes');
+});
+Route::get('money/incomes/0', function () {
+    return view('money.income');
+});
+Route::get('money/incomes/add', function () {
+    return view('money.income');
+});
 Route::get('money/incomes-types', function () {
     return view('money.incomes-types');
+});
+
+Route::get('money/expenses', function () {
+    return view('money.expenses');
+});
+Route::get('money/expenses/0', function () {
+    return view('money.expense');
+});
+Route::get('money/expenses/add', function () {
+    return view('money.expense');
 });
 Route::get('money/expenses-types', function () {
     return view('money.expenses-types');
 });
+
+Route::get('money/moves', function () {
+    return view('money.moves');
+});
+Route::get('money/moves/0', function () {
+    return view('money.move');
+});
+Route::get('money/moves/add', function () {
+    return view('money.move');
+});
+
 
 /* SALARY */
 Route::get('salary/employee-statuses', function () {
@@ -111,4 +142,15 @@ Route::get('salary/pays/0', function () {
 });
 Route::get('salary/pays/add', function () {
     return view('salary.pay');
+});
+
+/* GOODS */
+Route::get('goods', function () {
+    return view('goods.goods');
+});
+Route::get('goods/add', function () {
+    return view('goods.good');
+});
+Route::get('goods/0', function () {
+    return view('goods.good');
 });

@@ -2,9 +2,6 @@
 
 @section('styles')
 
-		<!-- INTERNAL Sumoselect css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
-
 		<!-- INTERNAL Bootstrap DatePicker css-->
 		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">			
 
@@ -15,7 +12,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('salary/pays')}}" class="font-weight-normal text-muted ml-2">Выплаты</a></h4>
+								<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('money/moves')}}" class="font-weight-normal text-muted ml-2">Перемещения ДС</a></h4>
 							</div>
 						</div>
 						<!--End Page header-->
@@ -26,7 +23,7 @@
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
-										<h4 class="card-title">Данные выплаты</h4>
+										<h4 class="card-title">Данные перемещения</h4>
 									</div>
 									<div class="card-body">
 										<form class="form-horizontal">
@@ -36,24 +33,6 @@
 													<input type="text" class="form-control fc-datepicker" placeholder="DD.MM.YYYY" value="">
 												</div>
 											</div>
-											<div class="form-group row">
-												<label class="form-label  col-md-3">Вид выплаты</label>
-												<div class="col-md-9">
-													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите вид начисления">
-														<option label="Выберите вид начисления"></option>
-														<!-- Задаются жестко-->
-														<option value="1">Аванс</option>
-														<option value="2">Оклад</option>
-														<option value="2">Зарплата</option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="form-label  col-md-3">Расчетный месяц</label>
-												<div class="col-md-9">
-													<input class="form-control" id="datepicker-month" placeholder="Выберите месяц" value="Июнь 2023" type="text">
-												</div>
-											</div>											
 											<div class="form-group row">
 												<label class="form-label  col-md-3">Город</label>
 												<div class="col-md-9">
@@ -69,7 +48,7 @@
 
 											<div class="card-pay">
 												<div class="row">
-													<label class="form-label col-md-3">Выберите тип источника</label>
+													<label class="form-label col-md-3">Выберите тип плательщика</label>
 													<ul class="tabs-menu nav col-md-9">
 														<li class=""><a href="#tab-1" class="active" data-toggle="tab">Точка</a></li>
 														<li><a href="#tab-2" data-toggle="tab" class="">Менеджер</a></li>
@@ -109,19 +88,51 @@
 														</div>
 													</div>
 												</div>
-											</div>											
-											<div class="form-group row">
-												<label class="form-label  col-md-3">Сотрудник</label>
-												<div class="col-md-9">
-													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите сотрудника">
-														<option label="Выберите сотрудника"></option>
-														<!-- Сотрудники с фильтром по городу, выбранному выше -->
-														<option value="1">Иванов Иван</option>
-														<option value="2">Сидоренко Георгий</option>
-														<option value="3">Сергеев Сергей</option>
-													</select>
-												</div>
 											</div>
+
+											<div class="card-pay">
+												<div class="row">
+													<label class="form-label col-md-3">Выберите тип получателя</label>
+													<ul class="tabs-menu nav col-md-9">
+														<li class=""><a href="#tab-3" class="active" data-toggle="tab">Точка</a></li>
+														<li><a href="#tab-4" data-toggle="tab" class="">Менеджер</a></li>
+													</ul>
+												</div>
+												<div class="tab-content">
+													<div class="tab-pane active show" id="tab-3">
+														<div class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label  col-md-3">Точка</label>
+																<div class="col-md-9">
+																	<select class="form-control select2-show-search custom-select" data-placeholder="Выберите точку">
+																		<option label="Выберите точку"></option>
+																		<!-- Если Админ, то точки с фильтром по городу, выбранному выше. Если менеджер, то все точки с Точка.Город = Менджер.Город -->
+																		<option value="1">Аквапарк</option>
+																		<option value="2">Зоопарк</option>
+																		<option value="3">Сити-Молл</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="tab-pane show" id="tab-4">
+														<div class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label  col-md-3">Менеджер</label>
+																<div class="col-md-9">
+																	<select class="form-control select2-show-search custom-select" data-placeholder="Выберите менеджера">
+																		<option label="Выберите менеджера"></option>
+																		<!-- Если Админ, то менеджер с фильтром по городу, выбранному выше. Если менеджер, то только он -->
+																		<option value="1">Менеджер 1</option>
+																		<option value="2">Менеджер 2</option>
+																		<option value="3">Менеджер 3</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>																					
 											<div class="form-group row">
 												<label class="form-label col-md-3">Сумма</label>
 												<div class="col-md-9">
@@ -129,17 +140,9 @@
 												</div>
 											</div>
 											<div class="form-group row">
-												<div class="form-label col-md-3">Выдано</div>
-												<label class="custom-switch col-md-9">
-													<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-													<span class="custom-switch-indicator custom-switch-indicator-xl"></span>
-													<span class="custom-switch-description">Да</span>
-												</label>
-											</div>
-											<div class="form-group row">
 												<label class="form-label col-md-3">Примечания</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control" placeholder="Укажите примечания к начислению" value="">
+													<input type="text" class="form-control" placeholder="Укажите примечания к перемещению" value="">
 												</div>
 											</div>
 
@@ -169,10 +172,8 @@
 
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
-		<!-- INTERNAL Bootstrap-Datepicker js-->
-		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
-		<script src="{{URL::asset('assets/js/salary/pay.js')}}"></script>
+		<script src="{{URL::asset('assets/js/money/move.js')}}"></script>
 
 @endsection
