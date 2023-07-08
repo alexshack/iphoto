@@ -6,3 +6,12 @@
 .calcs-type .card {
 	margin-bottom: 200px;
 }
+.tabs-menu1 ul li a {
+	padding: 10px 15px;
+}
+.card-title, .table th {
+	text-transform: none;
+}
+.table.paddings-small td {
+	padding: 0.4rem;
+}

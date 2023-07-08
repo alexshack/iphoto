@@ -65,6 +65,13 @@ Route::get('structure/managers/add', function () {
 });
 
 /* MONEY */
+Route::get('money/days', function () {
+    return view('money.days');
+});
+Route::get('money/days/0', function () {
+    return view('money.day');
+});
+
 Route::get('money/sales-types', function () {
     return view('money.sales-types');
 });
