@@ -297,6 +297,11 @@
 	//______Select2
 	$('.select2').select2({
 		minimumResultsForSearch: Infinity,
+		width: '100%',
+	});
+
+	$('.select2-show-search').select2({
+		minimumResultsForSearch: 5,
 		width: '100%'
 	});
 

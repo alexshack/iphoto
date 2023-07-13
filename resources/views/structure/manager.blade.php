@@ -42,14 +42,14 @@
 									<div class="tabs-menu1">
 										<!-- Tabs -->
 										<ul class="nav panel-tabs">
-											<li class="ml-4"><a href="#tab5" class="active"  data-toggle="tab">Личные данные</a></li>
-											<li><a href="#tab6"  data-toggle="tab">Рабочие данные</a></li>
+											<li class="ml-4"><a href="#tab1" class="active"  data-toggle="tab">Личные данные</a></li>
+											<li><a href="#tab2"  data-toggle="tab">Рабочие данные</a></li>
 										</ul>
 									</div>
 								</div>
 								<div class="panel-body tabs-menu-body hremp-tabs1 p-0">
 									<div class="tab-content">
-										<div class="tab-pane active" id="tab5">
+										<div class="tab-pane active" id="tab1">
 											<div class="card-body">
 												<h4 class="mb-4 font-weight-bold">Основное</h4>
 												<div class="form-group ">
@@ -223,7 +223,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="tab-pane" id="tab6">
+										<div class="tab-pane" id="tab2">
 											<div class="card-body">
 												<h4 class="mb-4 font-weight-bold">Основное</h4>
 												<div class="form-group">

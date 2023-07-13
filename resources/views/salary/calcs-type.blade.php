@@ -44,18 +44,19 @@
 												</div>
 											</div>											
 											<div class="card-pay">
-												<label class="form-label">Выберите тип начисления</label>
-												<ul class="tabs-menu nav">
-													<!--Отдельное поле в таблице Тип начислений - у каждого типа - одно из пяти жестких значений. У каждого сохраняется свой набор значений полей -->
-													<li class=""><a href="#tab-1" class="active" data-toggle="tab">Процент от кассы</a></li>
-													<li><a href="#tab-2" data-toggle="tab" class="">Процент от товара</a></li>
-													<li><a href="#tab-3" data-toggle="tab" class="">Оклад</a></li>
-													<li><a href="#tab-4" data-toggle="tab" class="">Фиксированная смена</a></li>
-													<li><a href="#tab-5" data-toggle="tab" class="">Ввод вручную</a></li>
-												</ul>
+												<div class="row">
+													<label class="form-label col-md-3">Выберите тип начисления</label>
+													<ul class="tabs-menu nav col-md-9">
+														<!--Отдельное поле в таблице Тип начислений - у каждого типа - одно из пяти жестких значений. У каждого сохраняется свой набор значений полей -->
+														<li class=""><a href="#tab-1" class="active" data-toggle="tab">Процент от кассы</a></li>
+														<li><a href="#tab-3" data-toggle="tab" class="">Оклад</a></li>
+														<li><a href="#tab-4" data-toggle="tab" class="">Фиксированная смена</a></li>
+														<li><a href="#tab-5" data-toggle="tab" class="">Ввод вручную</a></li>
+													</ul>
+												</div>
 												<div class="tab-content">
 													<div class="tab-pane active show" id="tab-1">
-														<form class="form-horizontal">
+														<div class="form-horizontal">
 															<div class="form-group row">
 																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
 																<div class="col-md-9">
@@ -87,39 +88,11 @@
 																</div>
 															</div>															
 
-															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
-														</form>
-													</div>
-													<div class="tab-pane show" id="tab-2">
-														<form class="form-horizontal">
-															<div class="form-group row">
-																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
-																<div class="col-md-9">
-																	<!-- зашивается жестко у каждого типа начисления -->
-																	<input type="text" class="form-control" readonly value="ДА">
-																</div>
-															</div>																
-															<div class="form-group row">
-																<label class="form-label col-md-3">Товар, участвующий в расчете</label>
-																<div class="col-md-9">
-																	<select multiple="multiple" class="select-position">
-																		<!--Список из таблицы Товары, из категории с пометкой Для индивидуального расчета -->
-																	   <option selected value="122">Рамка</option>
-																	   <option value="135">Фотосессия</option>
-																	</select>
-																</div>
-															</div>															
-															<div class="form-group row">
-																<label class="form-label col-md-3">Процент</label>
-																<div class="col-md-9">
-																	<input type="number" class="form-control" placeholder="Введите значение процента" value="17">
-																</div>
-															</div>
-															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
-														</form>
+															
+														</div>
 													</div>
 													<div class="tab-pane show" id="tab-3">
-														<form class="form-horizontal">
+														<div class="form-horizontal">
 															<div class="form-group row">
 																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
 																<div class="col-md-9">
@@ -143,12 +116,10 @@
 																	<input type="number" class="form-control" placeholder="Введите значение процента" value="100">
 																</div>
 															</div>														
-
-															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
-														</form>
+														</div>
 													</div>
 													<div class="tab-pane show" id="tab-4">
-														<form class="form-horizontal">
+														<div class="form-horizontal">
 															<div class="form-group row">
 																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
 																<div class="col-md-9">
@@ -174,12 +145,10 @@
 																	<input type="number" class="form-control" placeholder="Введите значение часов" value="8">
 																</div>
 															</div>														
-
-															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
-														</form>
+														</div>
 													</div>
 													<div class="tab-pane show" id="tab-5">
-														<form class="form-horizontal">
+														<div class="form-horizontal">
 															<div class="form-group row">
 																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
 																<div class="col-md-9">
@@ -199,11 +168,27 @@
 																	</select>
 																</div>
 															</div>															
-															<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
-														</form>
+														</div>
 													</div>																										
 												</div>
 											</div>
+											<div class="form-group row">
+												<div class="form-label col-md-3">Участвует в выплате оклада</div>
+												<label class="custom-switch col-md-9">
+													<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+													<span class="custom-switch-indicator custom-switch-indicator-xl"></span>
+													<span class="custom-switch-description">Да</span>
+												</label>
+											</div>
+
+											<!-- Алерт отображается удалением класса d-none -->
+											<div class="alert alert-danger d-none" role="alert">
+												<button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
+												<i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
+												Необходимо заполнить поля:
+											</div>	
+
+											<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
 										</form>
 									</div>
 								</div>
