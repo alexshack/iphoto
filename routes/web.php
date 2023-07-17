@@ -114,6 +114,10 @@ Route::middleware(['web'])->group(function () {
             return view('admin.index');
         })->name('home');
 
+        Route::get('test', function () {
+            return view('structure.employee');
+        });
+
 
         /* AUTH */
         Route::get('login', function () {

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create(PositionContract::TABLE, function (Blueprint $table) {
             $table->id();
             $table->string(PositionContract::FIELD_NAME);
+            $table->integer(PositionContract::FIELD_STATUS)->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

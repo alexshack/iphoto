@@ -283,6 +283,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if($user->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG } == 'employee')
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label mb-0 mt-2">Должность</label>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <select name="work[position_id]"  class="form-control custom-select select2">
+                                                                        <option value="">Не указана</option>
+                                                                        <!-- Загружаются из таблицы Должности -->
+                                                                        @foreach(\App\Models\Position::all() as $position)
+                                                                            <option value="{{ $position->{ \App\Contracts\PositionContract::FIELD_ID } }}" {{ ($position->{ \App\Contracts\PositionContract::FIELD_STATUS } == 2) ? 'disabled' : '' }} {{ ($work->{ \App\Contracts\UserWorkDataContract::FIELD_POSITION_ID } == $position->{ \App\Contracts\PositionContract::FIELD_ID }) ? 'selected' : '' }}>{{ $position->{ \App\Contracts\PositionContract::FIELD_NAME } }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <div class="row">
                                                             <div class="col-md-3">
