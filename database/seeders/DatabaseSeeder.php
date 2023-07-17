@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PositionsSeeder::class,
             CreateSalesTypesSeeder::class,
             CreateIncomesTypesSeeder::class,
+            CreateExpensesTypesSeeder::class,
             CreateAdminSeeder::class,
         ]);
 
