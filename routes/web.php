@@ -78,6 +78,9 @@ Route::middleware(['web'])->group(function () {
             Route::get('structure/hr/add', 'App\Http\Controllers\Structure\HrController@create')->name('admin.structure.hrs.create');
             Route::post('structure/hr/add', 'App\Http\Controllers\Structure\HrController@store')->name('admin.structure.hrs.store');
 
+            /**
+             * Финансовый учет
+             */
             // Виды продаж
             Route::get('money/sales-types', 'App\Http\Controllers\Money\SalesTypeController@index')->name('admin.money.sales_types.index');
             Route::post('money/sales-type/add', 'App\Http\Controllers\Money\SalesTypeController@store')->name('admin.money.sales_types.store');
@@ -91,6 +94,13 @@ Route::middleware(['web'])->group(function () {
             Route::post('money/expenses-type/add', 'App\Http\Controllers\Money\ExpensesTypeController@store')->name('admin.money.expenses_types.store');
             Route::post('money/expenses-types/{id}', 'App\Http\Controllers\Money\ExpensesTypeController@update')->name('admin.money.expenses_types.update');
 
+            /**
+             * Учет зарплаты
+             */
+            // Виды расходов
+            Route::get('salary/employee-status', 'App\Http\Controllers\Salary\EmployeeStatusController@index')->name('admin.salary.employee_statuses.index');
+            Route::post('salary/employee-status/add', 'App\Http\Controllers\Salary\EmployeeStatusController@store')->name('admin.salary.employee_statuses.store');
+            Route::post('salary/employee-statuses/{id}', 'App\Http\Controllers\Salary\EmployeeStatusController@update')->name('admin.salary.employee_statuses.update');
             /*Route::get('structure/managers/0', function () {
                 return view('structure.manager');
             });*/

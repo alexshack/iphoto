@@ -109,7 +109,7 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('salary/employee-statuses')}} " class="slide-item"> Статусы сотрудников</a></li>
+									<li><a href="{{ route('admin.salary.employee_statuses.index') }}" class="slide-item"> Статусы сотрудников</a></li>
 									<li><a href="{{url('salary/employee-positions')}} " class="slide-item"> Должности сотрудников</a></li>
 									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Виды начислений</a></li>
 								</ul>
