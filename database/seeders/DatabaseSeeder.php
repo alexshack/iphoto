@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             CitiesSeeder::class,
             PositionsSeeder::class,
-            CreateSalesTypeRequest::class,
+            CreateSalesTypesSeeder::class,
             CreateIncomesTypesSeeder::class,
             CreateAdminSeeder::class,
         ]);
