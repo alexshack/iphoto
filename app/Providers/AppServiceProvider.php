@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\EmployeePositionRepository;
 use App\Repositories\EmployeeStatusRepository;
 use App\Repositories\ExpensesTypeRepository;
 use App\Repositories\IncomesTypeRepository;
+use App\Repositories\Interfaces\EmployeePositionRepositoryInterface;
 use App\Repositories\Interfaces\EmployeeStatusRepositoryInterface;
 use App\Repositories\Interfaces\ExpensesTypeRepositoryInterface;
 use App\Repositories\Interfaces\IncomesTypeRepositoryInterface;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IncomesTypeRepositoryInterface::class, IncomesTypeRepository::class);
         $this->app->bind(ExpensesTypeRepositoryInterface::class, ExpensesTypeRepository::class);
         $this->app->bind(EmployeeStatusRepositoryInterface::class, EmployeeStatusRepository::class);
+        $this->app->bind(EmployeePositionRepositoryInterface::class, EmployeePositionRepository::class);
     }
 
     /**

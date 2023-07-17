@@ -49,7 +49,7 @@
                                                         <td>{{ $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_NAME } }}</td>
                                                         <td><span class="badge {{ \App\Contracts\Salary\EmployeeStatusContract::STATUS_CLASS_LIST[ $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_STATUS } ] ?? 'badge-secondary' }}">{{ \App\Contracts\Salary\EmployeeStatusContract::STATUS_LIST[$item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_STATUS }] }}</span></td>
                                                         <td>
-                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editEmployeeStatus({{ '\'' . route('admin.salary.employee_statuses.update', ['id' => $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_ID }]) . '\', \'' . $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_NAME } . '\', ' . $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_STATUS } }})">
+                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editEmployeeStatus({{ '\'' . route('admin.salary.employee_statuses.update', ['id' => $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_ID }]) . '\', \'' . $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_NAME } . '\', ' . $item->{ \App\Contracts\Salary\EmployeeStatusContract::FIELD_STATUS } }})">
                                                                 <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
                                                             </a>
                                                         </td>

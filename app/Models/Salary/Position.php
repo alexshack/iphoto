@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Salary;
 
 use App\Contracts\PositionContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

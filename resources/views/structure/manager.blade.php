@@ -293,7 +293,7 @@
                                                                     <select name="work[position_id]"  class="form-control custom-select select2">
                                                                         <option value="">Не указана</option>
                                                                         <!-- Загружаются из таблицы Должности -->
-                                                                        @foreach(\App\Models\Position::all() as $position)
+                                                                        @foreach(\App\Models\Salary\Position::all() as $position)
                                                                             <option value="{{ $position->{ \App\Contracts\PositionContract::FIELD_ID } }}" {{ ($position->{ \App\Contracts\PositionContract::FIELD_STATUS } == 2) ? 'disabled' : '' }} {{ ($work->{ \App\Contracts\UserWorkDataContract::FIELD_POSITION_ID } == $position->{ \App\Contracts\PositionContract::FIELD_ID }) ? 'selected' : '' }}>{{ $position->{ \App\Contracts\PositionContract::FIELD_NAME } }}</option>
                                                                         @endforeach
                                                                     </select>

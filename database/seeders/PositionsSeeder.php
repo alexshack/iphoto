@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Contracts\PositionContract;
-use App\Contracts\UserRoleContract;
-use App\Models\Position;
-use App\Models\Role;
+use App\Models\Salary\Position;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
