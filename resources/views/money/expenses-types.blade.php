@@ -50,7 +50,7 @@
                                                 @foreach($list as $item)
                                                     <tr>
                                                         <td>{{ $item->{ \App\Contracts\Money\ExpensesTypeContract::FIELD_NAME } }}</td>
-                                                        <td>-</td>
+                                                        <td>{{ $item->roles()->pluck(\App\Contracts\UserRoleContract::TABLE . '.' . \App\Contracts\UserRoleContract::FIELD_NAME)->implode(', ') }}</td>
                                                         <td><span class="badge {{ \App\Contracts\Money\ExpensesTypeContract::STATUS_CLASS_LIST[ $item->{ \App\Contracts\Money\ExpensesTypeContract::FIELD_STATUS } ] ?? 'badge-secondary' }}">{{ \App\Contracts\Money\ExpensesTypeContract::STATUS_LIST[$item->{ \App\Contracts\Money\ExpensesTypeContract::FIELD_STATUS }] }}</span></td>
                                                         <td>
                                                             <button class="btn btn-primary btn-icon btn-sm" onclick="document.editExpensesType({{ '\'' . route('admin.money.expenses_types.update', ['id' => $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_ID }]) . '\', \'' . $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_NAME } . '\', ' . $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_STATUS } . ', \'' . json_encode($item->roles()->pluck( \App\Contracts\UserRoleContract::TABLE . '.' . \App\Contracts\UserRoleContract::FIELD_ID)) . '\'' }})">
