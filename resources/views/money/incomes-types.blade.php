@@ -18,7 +18,7 @@
 							<div class="page-rightheader ml-md-auto">
 								<div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
 									<div class="btn-list">
-										<a href=""  data-target="#income-type-crud" data-toggle="modal" class="btn btn-primary mr-3">Добавить вид поступлений</a>
+										<a href=""  data-target="#income-type-add" data-toggle="modal" class="btn btn-primary mr-3">Добавить вид поступлений</a>
 									</div>
 								</div>
 							</div>
@@ -44,24 +44,17 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>Перевод от собственников</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="" data-target="#income-type-crud" data-toggle="modal">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Другое</td>
-														<td><span class="badge badge-danger">Не активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="" data-target="#income-type-crud" data-toggle="modal">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>											
+                                                @foreach($list as $item)
+                                                    <tr>
+                                                        <td>{{ $item->{ \App\Contracts\Money\IncomesTypeContract::FIELD_NAME } }}</td>
+                                                        <td><span class="badge {{ \App\Contracts\Money\IncomesTypeContract::STATUS_CLASS_LIST[ $item->{ \App\Contracts\Money\IncomesTypeContract::FIELD_STATUS } ] ?? 'badge-secondary' }}">{{ \App\Contracts\Money\IncomesTypeContract::STATUS_LIST[$item->{ \App\Contracts\Money\IncomesTypeContract::FIELD_STATUS }] }}</span></td>
+                                                        <td>
+                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editIncomesType({{ '\'' . route('admin.money.incomes_types.update', ['id' => $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_ID }]) . '\', \'' . $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_NAME } . '\', ' . $item->{ \App\Contracts\Money\SalesTypeContract::FIELD_STATUS } }})">
+                                                                <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
 												</tbody>
 											</table>
 										</div>
@@ -76,7 +69,7 @@
 @section('modals')
 
 			<!--Change salary Modal -->
-			<div class="modal fade"  id="income-type-crud">
+			<div class="modal fade"  id="income-type-add">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -86,31 +79,69 @@
 							</button>
 						</div>
 						<div class="modal-body">
+                            <div id="errors-add"></div>
 							<div class="form-group">
 								<label class="form-label">Название</label>
-								<input type="text" class="form-control" placeholder="Введите название">
+								<input type="text" class="form-control" name="name" placeholder="Введите название">
 							</div>
 							<div class="form-group">
 								<label class="form-label">Статус</label>
-								<select class="form-control custom-select select2">
+								<select class="form-control custom-select select2" name="status">
 									<!--Список задается жестко -->
-								   <option selected value="1">Активен</option>
-								   <option value="0">Не активен</option>
+                                    @foreach(\App\Contracts\Money\IncomesTypeContract::STATUS_LIST as $key => $item)
+                                        <option value="{{ $key }}" {{ ($key == 1) ? 'selected' : '' }}>{{ $item }}</option>
+                                    @endforeach
 								</select>
-							</div>							
+							</div>
 						</div>
 						<div class="modal-footer">
 							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
-							<a href="#" class="btn btn-primary">Сохранить</a>
+							<button id="addIncomesType" class="btn btn-primary">Добавить</button>
 						</div>
 					</div>
 				</div>
 			</div>
+            <div class="modal fade"  id="income-type-edit">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Вид поступлений</h5>
+                            <button  class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="errors-edit"></div>
+                            <input type="hidden" name="url" value="">
+                            <div class="form-group">
+                                <label class="form-label">Название</label>
+                                <input type="text" class="form-control" name="name" placeholder="Введите название">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Статус</label>
+                                <select class="form-control custom-select select2" name="status">
+                                    <!--Список задается жестко -->
+                                    @foreach(\App\Contracts\Money\IncomesTypeContract::STATUS_LIST as $key => $item)
+                                        <option value="{{ $key }}" {{ ($key == 1) ? 'selected' : '' }}>{{ $item }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
+                            <button id="updateIncomesType" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 			<!-- End Change salary Modal  -->
 
 @endsection('modals')
 
 @section('scripts')
+    <script>
+        var createUrl = '{{ route('admin.money.incomes_types.store') }}';
+    </script>
 
 		<!-- INTERNAL Data tables -->
 		<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
@@ -119,6 +150,6 @@
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
-		<script src="{{URL::asset('assets/js/money/incomes-types.js')}}"></script>
+		<script src="{{URL::asset('assets/js/money/incomes-types.js?v=1')}}"></script>
 
 @endsection

@@ -22,13 +22,23 @@
 									<h1 class="mb-2">Сброс пароля</h1>
 									<p class="text-muted">Укажите email, на который зарегистрирован ваш аккаунт</p>
 								</div>
-								<form class="card-body pt-3" id="forgot" name="forgot">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+								<form class="card-body pt-3" id="forgot" name="forgot" method="post" action="{{ route('auth.send') }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<div class="form-group">
 										<label class="form-label">Введите E-Mail</label>
-										<input class="form-control" placeholder="Email" type="email">
+										<input class="form-control" placeholder="Email" name="email" type="email">
 									</div>
 									<div class="submit">
-										<a class="btn btn-primary btn-block" href="{{url('reset')}}">Восстановить</a>
+										<button class="btn btn-primary btn-block">Восстановить</button>
 									</div>
 									<div class="text-center mt-4">
 										<p class="text-dark mb-0">Забыли свой email? Пишите администратору</p>
