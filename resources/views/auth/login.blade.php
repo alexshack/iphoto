@@ -22,20 +22,32 @@
 									<h1 class="mb-2">Вход</h1>
 									<p class="text-muted">Вход в ваш аккаунт</p>
 								</div>
-								<form class="card-body pt-3" id="login" name="login">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+								<form class="card-body pt-3" id="login" name="login" action="{{ route('auth.login') }}" method="POST">
+                                    <input type="hidden" name="_method" value="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 									<div class="form-group">
 										<label class="form-label">Email</label>
-										<input class="form-control" placeholder="Введите Email" type="email">
+										<input class="form-control" name="email" placeholder="Введите Email" type="email">
 									</div>
 									<div class="form-group">
 										<label class="form-label">Пароль</label>
-										<input class="form-control" placeholder="Введите пароль" type="password">
+										<input class="form-control" name="password" placeholder="Введите пароль" type="password">
 									</div>
 									<div class="submit">
-										<a class="btn btn-primary btn-block" href="{{url('admin')}}">Войти</a>
+										<button class="btn btn-primary btn-block" href="{{url('admin')}}">Войти</button>
 									</div>
 									<div class="text-center mt-3">
-										<p class="mb-2"><a href="{{url('forgot')}}">Я забыл пароль</a></p>
+										<p class="mb-2"><a href="{{route('auth.forgot')}}">Я забыл пароль</a></p>
 									</div>
 								</form>
 							</div>

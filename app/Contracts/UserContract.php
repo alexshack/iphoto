@@ -12,6 +12,7 @@ interface UserContract
     public const FIELD_REMEMBER_TOKEN = 'remember_token';
     public const FIELD_PHOTO = 'photo';
     public const FIELD_STATUS = 'status';
+    public const FIELD_ROLE_ID = 'role_id';
 
     // Статусы по которым вход в аккаунт запрещен
     public const STATUS_LIST = [
@@ -21,7 +22,10 @@ interface UserContract
     public const FILLABLE_FIELDS = [
         self::FIELD_EMAIL,
         self::FIELD_PASSWORD,
-        self::FIELD_EMAIL_VERIFIED_AT
+        self::FIELD_EMAIL_VERIFIED_AT,
+        self::FIELD_PHOTO,
+        self::FIELD_STATUS,
+        self::FIELD_ROLE_ID,
     ];
 
     public const HIDDEN_FIELDS = [

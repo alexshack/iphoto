@@ -54,4 +54,8 @@ interface UserPersonalDataContract
         self::FIELD_REGISTERED_ADDRESS,
         self::FIELD_ADDRESS
     ];
+
+    public const CASTS_FIELDS = [
+        self::FIELD_BIRTHDAY => 'date'
+    ];
 }

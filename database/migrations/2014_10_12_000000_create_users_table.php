@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string(UserContract::FIELD_EMAIL)->unique();
             $table->timestamp(UserContract::FIELD_EMAIL_VERIFIED_AT)->nullable();
             $table->string(UserContract::FIELD_PASSWORD);
-            $table->string(UserContract::FIELD_PHOTO);
+            $table->string(UserContract::FIELD_PHOTO)->nullable();
             $table->integer(UserContract::FIELD_STATUS)->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -53,11 +53,11 @@ return new class extends Migration
                 ->constrained(UserContract::TABLE)
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            //$table->text(UserWorkDataContract::FIELD_CITY_ID)->nullable();
-            //$table->text(UserWorkDataContract::FIELD_POSITION_ID)->nullable();
+            $table->integer(UserWorkDataContract::FIELD_CITY_ID)->nullable();
+            $table->integer(UserWorkDataContract::FIELD_POSITION_ID)->nullable();
             $table->integer(UserWorkDataContract::FIELD_STATUS)->default(1);
-            $table->text(UserWorkDataContract::FIELD_DATE_OF_EMPLOYMENT)->nullable();
-            $table->text(UserWorkDataContract::FIELD_DATE_OF_TERMINATION)->nullable();
+            $table->date(UserWorkDataContract::FIELD_DATE_OF_EMPLOYMENT)->nullable();
+            $table->date(UserWorkDataContract::FIELD_DATE_OF_TERMINATION)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

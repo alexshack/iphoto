@@ -13,11 +13,11 @@
 							<div class="dropdown user-pro-body text-center">
 								<div class="user-pic">
 									<!-- фото из профиля -->
-									<img src="{{URL::asset('assets/images/users/16.jpg')}}" alt="user-img" class="avatar-xxl rounded-circle mb-1">
+									<img src="{{ Auth::guard()->user()->{ \App\Contracts\UserContract::FIELD_PHOTO } ?? URL::asset('assets/images/users/16.jpg')}}" alt="user-img" class="avatar-xxl rounded-circle mb-1">
 								</div>
 								<div class="user-info">
-									<h5 class=" mb-2">Админ Админов</h5>
-									<span class="text-muted app-sidebar__user-name text-sm">Администратор</span>
+									<h5 class=" mb-2">{{ Auth::user()->getFullName() }}</h5>
+									<span class="text-muted app-sidebar__user-name text-sm">{{ Auth::user()->role->{ \App\Contracts\UserRoleContract::FIELD_NAME } }}</span>
 								</div>
 							</div>
 						</div>
@@ -59,12 +59,12 @@
 								<ul class="slide-menu">
 									<li><a href="{{url('structure/cities')}}" class="slide-item">Города</a></li>
 									<li><a href="{{url('structure/places')}}" class="slide-item">Точки</a></li>
-									<li><a href="{{url('structure/managers')}}" class="slide-item">Менеджеры</a></li>
-									<li><a href="{{url('structure/employees')}}" class="slide-item">Сотрудники</a></li>
-									<li><a href="{{url('structure/hr')}}" class="slide-item">Рекрутеры</a></li>
+									<li><a href="{{ route('admin.structure.managers.index') }}" class="slide-item">Менеджеры</a></li>
+									<li><a href="{{ route('admin.structure.employees.index') }}" class="slide-item">Сотрудники</a></li>
+									<li><a href="{{ route('admin.structure.hrs.index') }}" class="slide-item">Рекрутеры</a></li>
 								</ul>
 
-							</li>							
+							</li>
 
 
 							<li class="side-item side-item-category">Финансовый учет</li>
@@ -86,9 +86,9 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('money/sales-types')}} " class="slide-item"> Виды продаж</a></li>
-									<li><a href="{{url('money/incomes-types')}} " class="slide-item"> Виды поступлений</a></li>
-									<li><a href="{{url('money/expenses-types')}} " class="slide-item"> Виды расходов</a></li>
+									<li><a href="{{ route('admin.money.sales_types.index') }}" class="slide-item"> Виды продаж</a></li>
+									<li><a href="{{ route('admin.money.incomes_types.index') }}" class="slide-item"> Виды поступлений</a></li>
+									<li><a href="{{ route('admin.money.expenses_types.index') }}" class="slide-item"> Виды расходов</a></li>
 								</ul>
 							</li>
 
@@ -113,7 +113,7 @@
 									<li><a href="{{url('salary/employee-positions')}} " class="slide-item"> Должности сотрудников</a></li>
 									<li><a href="{{url('salary/calcs-types')}} " class="slide-item"> Виды начислений</a></li>
 								</ul>
-							</li>							
+							</li>
 
 							<li class="side-item side-item-category">Товарный учет</li>
 <!-- 							<li class="slide">

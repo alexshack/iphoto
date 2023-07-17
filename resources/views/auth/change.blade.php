@@ -21,21 +21,31 @@
 									<h1 class="mb-2">Изменение пароля</h1>
 									<p class="text-muted">Укажите свой текущий пароль и введите новый</p>
 								</div>
-								<form class="card-body pt-3" id="reset" name="reset">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+								<form class="card-body pt-3" id="reset" name="reset" action="{{ route('account.update_password') }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<div class="form-group">
 										<label class="form-label">Текущий пароль</label>
-										<input class="form-control" placeholder="Введите текущий пароль" type="password">
+										<input class="form-control" placeholder="Введите текущий пароль" name="current_password" type="password">
 									</div>
 									<div class="form-group">
 										<label class="form-label">Новый пароль</label>
-										<input class="form-control" placeholder="Введите новый пароль" type="password">
+										<input class="form-control" placeholder="Введите новый пароль" name="password" type="password">
 									</div>
 									<div class="form-group">
 										<label class="form-label">Подтверждение пароля</label>
-										<input class="form-control" placeholder="Введите новый пароль еще раз" type="password">
+										<input class="form-control" placeholder="Введите новый пароль еще раз" name="password_confirmation" type="password">
 									</div>
 									<div class="submit">
-										<a class="btn btn-primary btn-block" href="{{url('login')}}">Сменить пароль</a>
+										<button class="btn btn-primary btn-block">Сменить пароль</button>
 									</div>
 								</form>
 							</div>

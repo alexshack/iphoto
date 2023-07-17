@@ -14,4 +14,12 @@ class UserPersonalData extends Model
     protected $table = UserPersonalDataContract::TABLE;
 
     protected $fillable = UserPersonalDataContract::FILLABLE_FIELDS;
+
+    protected $casts = UserPersonalDataContract::CASTS_FIELDS;
+
+    public function setBirthdayAttribute($value)
+    {
+        if(!empty($value))
+            $this->attributes[UserPersonalDataContract::FIELD_BIRTHDAY] = \Carbon\Carbon::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+    }
 }

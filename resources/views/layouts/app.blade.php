@@ -8,6 +8,7 @@
         <meta content="" name="description">
         <meta content="" name="author">
         <meta name="keywords" content=""/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Title Фамилия Имя текущего юзера-->
         <title>Админов Админ - Я Фотограф</title>

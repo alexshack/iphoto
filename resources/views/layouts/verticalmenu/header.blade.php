@@ -1,4 +1,4 @@
-						<!--app header-->
+                        <!--app header-->
 						<div class="app-header header">
 							<div class="container-fluid">
 								<div class="d-flex">
@@ -30,7 +30,7 @@
 											<a href="#" class="nav-link pr-1 pl-0 leading-none" data-toggle="dropdown">
 												<span>
 													<!-- фото из профиля -->
-													<img src="{{URL::asset('assets/images/users/16.jpg')}}" alt="img" class="avatar avatar-md bradius">
+													<img src="{{ \Illuminate\Support\Facades\Auth::guard()->user()->{ \App\Contracts\UserContract::FIELD_PHOTO } ?? URL::asset('assets/images/users/16.jpg')}}" alt="img" class="avatar avatar-md bradius">
 												</span>
 											</a>
 											<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
@@ -38,15 +38,15 @@
 													<i class="feather feather-user mr-3 fs-16 my-auto"></i>
 													<div class="mt-1">Профиль</div>
 												</a>
-												<a class="dropdown-item d-flex" href="{{url('change-password')}}">
+												<a class="dropdown-item d-flex" href="{{route('account.show_change_password_form')}}">
 													<i class="feather feather-edit-2 mr-3 fs-16 my-auto"></i>
 													<div class="mt-1">Сменить пароль</div>
 												</a>
-												<a class="dropdown-item d-flex" href="{{url('lock')}}">
-													<i class="feather feather-power mr-3 fs-16 my-auto"></i>
-													<div class="mt-1">Заблокировать</div>
-												</a>												
-												<a class="dropdown-item d-flex" href="{{url('login')}}">
+{{--												<a class="dropdown-item d-flex" href="{{url('lock')}}">--}}
+{{--													<i class="feather feather-power mr-3 fs-16 my-auto"></i>--}}
+{{--													<div class="mt-1">Заблокировать</div>--}}
+{{--												</a>												--}}
+												<a class="dropdown-item d-flex" href="{{route('auth.logout')}}">
 													<i class="feather feather-power mr-3 fs-16 my-auto"></i>
 													<div class="mt-1">Выйти</div>
 												</a>

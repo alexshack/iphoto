@@ -21,6 +21,14 @@ interface UserWorkDataContract
         5 => 'Уволен'
     ];
 
+    public const STATUS_CLASS_LIST = [
+        1 => 'badge-secondary',
+        2 => 'badge-info',
+        3 => 'badge-success',
+        4 => 'badge-warning',
+        5 => 'badge-danger',
+    ];
+
     public const FILLABLE_FIELDS = [
         self::FIELD_USER_ID,
         self::FIELD_CITY_ID,
@@ -29,5 +37,10 @@ interface UserWorkDataContract
         self::FIELD_DATE_OF_EMPLOYMENT,
         self::FIELD_DATE_OF_TERMINATION,
         self::FIELD_DATE_OF_TERMINATION
+    ];
+
+    public const CASTS_FIELDS = [
+        self::FIELD_DATE_OF_EMPLOYMENT => 'date',
+        self::FIELD_DATE_OF_TERMINATION => 'date',
     ];
 }
