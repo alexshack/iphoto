@@ -283,7 +283,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if($user->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG } == 'employee')
+                                                    @if(isset($user) && $user->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG } == 'employee')
                                                         <div class="form-group">
                                                             <div class="row">
                                                                 <div class="col-md-3">
