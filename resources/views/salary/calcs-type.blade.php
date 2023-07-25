@@ -49,6 +49,7 @@
 													<ul class="tabs-menu nav col-md-9">
 														<!--Отдельное поле в таблице Тип начислений - у каждого типа - одно из пяти жестких значений. У каждого сохраняется свой набор значений полей -->
 														<li class=""><a href="#tab-1" class="active" data-toggle="tab">Процент от кассы</a></li>
+														<li><a href="#tab-2" data-toggle="tab" class="">Продажа товара</a></li>
 														<li><a href="#tab-3" data-toggle="tab" class="">Оклад</a></li>
 														<li><a href="#tab-4" data-toggle="tab" class="">Фиксированная смена</a></li>
 														<li><a href="#tab-5" data-toggle="tab" class="">Ввод вручную</a></li>
@@ -91,6 +92,18 @@
 															
 														</div>
 													</div>
+													<div class="tab-pane show" id="tab-2">
+														<div class="form-horizontal">
+															<div class="form-group row">
+																<label class="form-label col-md-3">Участвует в автоматическом расчете</label>
+																<div class="col-md-9">
+																	<!-- зашивается жестко у каждого типа начисления -->
+																	<input type="text" class="form-control" readonly value="ДА">
+																</div>
+															</div>																
+													
+														</div>
+													</div>													
 													<div class="tab-pane show" id="tab-3">
 														<div class="form-horizontal">
 															<div class="form-group row">

@@ -38,15 +38,15 @@
 									<li class="sub-slide">
 										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Краснодар</span><i class="sub-angle fa fa-angle-right"></i></a>
 										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">ТЦ OZ Mall</a></li>
-											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Галерея</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">ТЦ OZ Mall</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Галерея</a></li>
 										</ul>
 									</li>
 									<li class="sub-slide">
 										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Белгород</span><i class="sub-angle fa fa-angle-right"></i></a>
 										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Зоопарк</a></li>
-											<li><a class="sub-slide-item" href="{{url('structure/places/0')}} ">Сити Молл</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Зоопарк</a></li>
+											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Сити Молл</a></li>
 										</ul>
 									</li>
 								</ul>
