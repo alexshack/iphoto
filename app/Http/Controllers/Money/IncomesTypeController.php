@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Money;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Money\CreateEmployeeStatusRequest;
+use App\Http\Requests\Money\CreateIncomesTypeRequest;
 use App\Http\Requests\Money\UpdateIncomesTypeRequest;
 use App\Models\Money\IncomesType;
 use App\Repositories\Interfaces\IncomesTypeRepositoryInterface;
@@ -24,7 +25,7 @@ class IncomesTypeController extends Controller
         return view('money.incomes-types')->with(['list' => $list]);
     }
 
-    public function store(CreateEmployeeStatusRequest $request)
+    public function store(CreateIncomesTypeRequest $request)
     {
         try {
             IncomesType::create($request->validated());
