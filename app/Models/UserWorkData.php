@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Contracts\CityContract;
+use App\Contracts\Structure\CityContract;
 use App\Contracts\UserWorkDataContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

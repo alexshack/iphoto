@@ -18,7 +18,7 @@
 							<div class="page-rightheader ml-md-auto">
 								<div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
 									<div class="btn-list">
-										<a href="{{url('structure/cities/add')}}" class="btn btn-primary mr-3">Добавить город</a>
+										<a href="{{ route('admin.structure.cities.create') }}" class="btn btn-primary mr-3">Добавить город</a>
 									</div>
 								</div>
 							</div>
@@ -47,56 +47,35 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>Краснодар</td>
-														<td data-search="Менеджеров Менеджер" data-order="Сотрудников"><!-- Имя фамилия --><!-- Фамилия -->
-															<div class="d-flex">
-																<span class="avatar avatar-md brround mr-3" style="background-image: url({{URL::asset('assets/images/users/1.jpg')}})"></span>
-																<div class="mr-3 mt-0 mt-sm-1 d-block">
-																	<h6 class="mb-1 fs-14">
-																		<a href="{{url('structure/managers/0')}}">Менеджеров Менеджер</a>
-																	</h6>
-																	<p class="text-muted mb-0 fs-12"><a href="tel:+79995554422">+79995554422</a></p>
-																</div>
-															</div>
-														</td>
-														<td>9</td>
-														<td>28</td>
-														<td data-order="1640984400">01.01.2022</td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/0')}}">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/dashboard/0')}}">
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>															
-														</td>
-													</tr>
-													<tr>
-														<td>Белгород</td>
-														<td data-search="Менеджеров Менеджер" data-order="Сотрудников"><!-- Имя фамилия --><!-- Фамилия -->
-															<div class="d-flex">
-																<span class="avatar avatar-md brround mr-3" style="background-image: url({{URL::asset('assets/images/users/1.jpg')}})"></span>
-																<div class="mr-3 mt-0 mt-sm-1 d-block">
-																	<h6 class="mb-1 fs-14">
-																		<a href="{{url('structure/managers/0')}}">Менеджеров Менеджер</a>
-																	</h6>
-																	<p class="text-muted mb-0 fs-12"><a href="tel:+79995554422">+79995554422</a></p>
-																</div>
-															</div>
-														</td>
-														<td>9</td>
-														<td>28</td>
-														<td data-order="1672520400">01.01.2023</td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/0')}}">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/dashboard/0')}}">
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>															
-														</td>
-													</tr>												
+                                                    @foreach($list as $item)
+                                                        <tr>
+                                                            <td>{{ $item->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</td>
+                                                            <td data-search="Менеджеров Менеджер" data-order="Сотрудников"><!-- Имя фамилия --><!-- Фамилия -->
+                                                                @if(!empty($item->{ \App\Contracts\Structure\CityContract::FIELD_MANAGER_ID }))
+                                                                    <div class="d-flex">
+                                                                        <span class="avatar avatar-md brround mr-3" style="background-image: url({{ (!empty($item->getManager()->{ \App\Contracts\UserContract::FIELD_PHOTO })) ? $item->getManager()->{ \App\Contracts\UserContract::FIELD_PHOTO } : URL::asset('assets/images/users/1.jpg')}})"></span>
+                                                                        <div class="mr-3 mt-0 mt-sm-1 d-block">
+                                                                            <h6 class="mb-1 fs-14">
+                                                                                <a href="{{ route('admin.structure.managers.edit', ['id' => $item->{ \App\Contracts\Structure\CityContract::FIELD_MANAGER_ID }]) }}">{{ $item->getManager()->getFullName() }}</a>
+                                                                            </h6>
+                                                                            <p class="text-muted mb-0 fs-12"><a href="tel:+{{ str_replace(['+', '-', '.', ' ', '(', ')'], ['', '', '', '', '', ''], $item->getManager()->getPersonalData()->{ \App\Contracts\UserPersonalDataContract::FIELD_PHONE }) }}">{{ $item->getManager()->getPersonalData()->{ \App\Contracts\UserPersonalDataContract::FIELD_PHONE } }}</a></p>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            </td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td data-order="{{ strtotime($item->{\App\Contracts\Structure\CityContract::FIELD_OPENING_DATE}) }}">{{ $item->{ \App\Contracts\Structure\CityContract::FIELD_OPENING_DATE }->format('d.m.Y') }}</td>
+                                                            <td>
+                                                                <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.structure.cities.edit', ['id' => $item->{ \App\Contracts\Structure\CityContract::FIELD_ID }]) }}">
+                                                                    <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                </a>
+                                                                <a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/dashboard/0')}}">
+                                                                    <i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
 												</tbody>
 											</table>
 										</div>

@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function getMaleCountByRoleSlug(string $slug);
 
     public function getFemaleCountByRoleSlug(string $slug);
+
+    public function getActiveManagers();
 }

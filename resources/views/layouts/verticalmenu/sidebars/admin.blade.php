@@ -57,7 +57,7 @@
 									<span class="side-menu__label">Справочники</span><i class="angle fa fa-angle-right"></i>
 								</a>
 								<ul class="slide-menu">
-									<li><a href="{{url('structure/cities')}}" class="slide-item">Города</a></li>
+									<li><a href="{{ route('admin.structure.cities.index') }}" class="slide-item">Города</a></li>
 									<li><a href="{{url('structure/places')}}" class="slide-item">Точки</a></li>
 									<li><a href="{{ route('admin.structure.managers.index') }}" class="slide-item">Менеджеры</a></li>
 									<li><a href="{{ route('admin.structure.employees.index') }}" class="slide-item">Сотрудники</a></li>

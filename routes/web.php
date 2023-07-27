@@ -62,6 +62,15 @@ Route::middleware(['web'])->group(function () {
             /**
              * Структура
              */
+            // Города
+            Route::get('structure/cities', 'App\Http\Controllers\Structure\CityController@index')->name('admin.structure.cities.index');
+            Route::get('structure/cities/{id}', 'App\Http\Controllers\Structure\CityController@edit')->name('admin.structure.cities.edit');
+            Route::post('structure/cities/{id}', 'App\Http\Controllers\Structure\CityController@update')->name('admin.structure.cities.update');
+            Route::get('structure/city/add', 'App\Http\Controllers\Structure\CityController@create')->name('admin.structure.cities.create');
+            Route::post('structure/city/add', 'App\Http\Controllers\Structure\CityController@store')->name('admin.structure.cities.store');
+            Route::post('structure/city-manager/add', 'App\Http\Controllers\Structure\CityManagerController@store')->name('admin.structure.city_manager.store');
+            Route::delete('structure/city-managers/{id}/delete', 'App\Http\Controllers\Structure\CityManagerController@destroy')->name('admin.structure.city_manager.destroy');
+            Route::post('structure/city-managers/{id}', 'App\Http\Controllers\Structure\CityManagerController@update')->name('admin.structure.city_manager.update');
             // Менеджера
             Route::get('structure/managers', 'App\Http\Controllers\Structure\ManagerController@index')->name('admin.structure.managers.index');
             Route::get('structure/managers/{id}', 'App\Http\Controllers\Structure\ManagerController@edit')->name('admin.structure.managers.edit');
@@ -150,7 +159,7 @@ Route::middleware(['web'])->group(function () {
         });
         Route::get('structure/cities/dashboard/0', function () {
             return view('structure.city-dashboard');
-        });        
+        });
         Route::get('structure/places', function () {
             return view('structure.places');
         });
@@ -159,10 +168,10 @@ Route::middleware(['web'])->group(function () {
         });
         Route::get('structure/places/add', function () {
             return view('structure.place');
-        }); 
+        });
         Route::get('structure/places/dashboard/0', function () {
             return view('structure.place-dashboard');
-        });                                    
+        });
         /* MONEY */
         Route::get('money/days', function () {
             return view('money.days');

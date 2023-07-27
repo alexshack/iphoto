@@ -34,7 +34,7 @@
 										<div class="pro-user mt-3">
 											<h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->getFullName() ?? null }}</h5>
 											<h6 class="pro-user-desc text-muted fs-14">{{ $user->role->{ \App\Contracts\UserRoleContract::FIELD_NAME } }}</h6>
-											<h6 class="pro-user-desc fs-14"><a href="{{url('structure/cities/0')}}">{{ $work->city->{ \App\Contracts\CityContract::FIELD_NAME } }}</a></h6>
+											<h6 class="pro-user-desc fs-14"><a href="{{url('structure/cities/0')}}">{{ $work->city->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</a></h6>
                                             @php
                                                 $status = $work->{ \App\Contracts\UserWorkDataContract::FIELD_STATUS };
                                             @endphp
@@ -277,7 +277,7 @@
                                                                 <select name="work[city_id]"  class="form-control custom-select select2">
                                                                     <option value="">Не указан</option>
                                                                     @foreach(\App\Models\City::all() as $city)
-                                                                        <option value="{{ $city->{ \App\Contracts\CityContract::FIELD_ID } }}" @if(isset($work->{ \App\Contracts\UserWorkDataContract::FIELD_CITY_ID }) && $work->{ \App\Contracts\UserWorkDataContract::FIELD_CITY_ID } == $city->{ \App\Contracts\CityContract::FIELD_ID }) selected @endif>{{ $city->{ \App\Contracts\CityContract::FIELD_NAME } }}</option>
+                                                                        <option value="{{ $city->{ \App\Contracts\Structure\CityContract::FIELD_ID } }}" @if(isset($work->{ \App\Contracts\UserWorkDataContract::FIELD_CITY_ID }) && $work->{ \App\Contracts\UserWorkDataContract::FIELD_CITY_ID } == $city->{ \App\Contracts\Structure\CityContract::FIELD_ID }) selected @endif>{{ $city->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Contracts\CityContract;
+use App\Contracts\Structure\CityContract;
 
 return new class extends Migration
 {

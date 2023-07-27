@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Contracts\CityContract;
+use App\Contracts\Structure\CityContract;
 use App\Contracts\PositionContract;
 use App\Contracts\UserContract;
 use App\Contracts\UserPersonalDataContract;

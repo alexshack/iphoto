@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Contracts\CityContract;
+use App\Contracts\Structure\CityContract;
 use App\Contracts\UserRoleContract;
 use App\Models\City;
 use App\Models\Role;

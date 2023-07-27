@@ -21,6 +21,8 @@ interface UserWorkDataContract
         5 => 'Уволен'
     ];
 
+    public const INACTIVE_STATUS_LIST = [1, 4, 5];
+
     public const STATUS_CLASS_LIST = [
         1 => 'badge-secondary',
         2 => 'badge-info',
