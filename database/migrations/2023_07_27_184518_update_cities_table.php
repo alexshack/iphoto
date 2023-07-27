@@ -16,13 +16,13 @@ return new class extends Migration
     {
         Schema::table(CityContract::TABLE, function (Blueprint $table) {
             $table->integer(CityContract::FIELD_MANAGER_ID)->nullable();
-            $table->date(CityContract::FIELD_OPENING_DATE)->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->date(CityContract::FIELD_OPENING_DATE)->default(DB::raw('CURDATE()'))->nullable();
         });
         Schema::create(CityManagerContract::TABLE, function (Blueprint $table) {
             $table->id();
             $table->integer(CityManagerContract::FIELD_CITY_ID);
             $table->integer(CityManagerContract::FIELD_MANAGER_ID);
-            $table->date(CityManagerContract::FIELD_APPOINTMENT_DATE)->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->date(CityManagerContract::FIELD_APPOINTMENT_DATE)->default(DB::raw('CURDATE()'))->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
