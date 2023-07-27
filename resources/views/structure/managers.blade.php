@@ -123,7 +123,7 @@
                                                         use App\Contracts\UserContract;
                                                         use App\Contracts\UserPersonalDataContract;
                                                         use App\Contracts\UserWorkDataContract;
-                                                        use App\Contracts\CityContract;
+                                                        use App\Contracts\Structure\CityContract;
                                                     @endphp
                                                     @foreach($list as $item)
                                                         <tr>
