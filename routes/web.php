@@ -138,6 +138,31 @@ Route::middleware(['web'])->group(function () {
 //        Route::get('admin', function () {
 //            return view('admin.index');
 //        });
+
+        Route::get('structure/cities', function () {
+            return view('structure.cities');
+        });
+        Route::get('structure/cities/0', function () {
+            return view('structure.city');
+        });
+        Route::get('structure/cities/add', function () {
+            return view('structure.city');
+        });
+        Route::get('structure/cities/dashboard/0', function () {
+            return view('structure.city-dashboard');
+        });        
+        Route::get('structure/places', function () {
+            return view('structure.places');
+        });
+        Route::get('structure/places/0', function () {
+            return view('structure.place');
+        });
+        Route::get('structure/places/add', function () {
+            return view('structure.place');
+        }); 
+        Route::get('structure/places/dashboard/0', function () {
+            return view('structure.place-dashboard');
+        });                                    
         /* MONEY */
         Route::get('money/days', function () {
             return view('money.days');
