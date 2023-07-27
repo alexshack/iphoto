@@ -139,8 +139,9 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td data-order="{{ $item->getWorkData()->city->{ CityContract::FIELD_NAME } }}"><a href="{{url('structure/cities/0')}}">{{ $item->getWorkData()->city->{ CityContract::FIELD_NAME } }}</a></td>
-
+                                                            <td data-order="{{ $item->getWorkData()->city->{ CityContract::FIELD_NAME } }}">
+                                                                <a href="{{ route('admin.structure.cities.edit', ['id' => $item->getWorkData()->{ UserWorkDataContract::FIELD_CITY_ID }]) }}">{{ $item->getWorkData()->city->{ CityContract::FIELD_NAME } }}</a>
+                                                            </td>
                                                             <td>{{ $item->age }}</td>
                                                             <td>{{ $item->getPersonalData()->{ UserPersonalDataContract::FIELD_EMAIL } ?? '-' }}</td>
                                                             <td>{{ $item->getWorkData()->{ UserWorkDataContract::FIELD_DATE_OF_EMPLOYMENT } ?? '-' }}</td>
