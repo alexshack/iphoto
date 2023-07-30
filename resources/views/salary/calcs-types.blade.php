@@ -18,7 +18,7 @@
 							<div class="page-rightheader ml-md-auto">
 								<div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
 									<div class="btn-list">
-										<a href="{{url('salary/calcs-types/add')}}"  class="btn btn-primary mr-3">Добавить вид начисления</a>
+										<a href="{{ route('admin.salary.calc_type.create') }}"  class="btn btn-primary mr-3">Добавить вид начисления</a>
 									</div>
 								</div>
 							</div>
@@ -47,78 +47,22 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>Проценты 17/13</td>
-														<td>Процент от кассы</td>
-														<td>Должность</td>
-														<td>Фотограф, Ретушер, Сотрудник</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Проценты фотографы 3</td>
-														<td>Процент от кассы</td>
-														<td>Должность</td>
-														<td>Фотограф</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Рамки 3 процента</td>
-														<td>Процент от от товара</td>
-														<td>Товар</td>
-														<td>Рамка</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Оклад общий</td>
-														<td>Оклад</td>
-														<td>Статус</td>
-														<td>Стажер, Сотрудник</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Ассортимент</td>
-														<td>Фиксированная смена</td>
-														<td>Должность</td>
-														<td>Ассортимент</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Премия</td>
-														<td>Ввод вручную</td>
-														<td>Должность</td>
-														<td>Ассортимент, Фотограф, Ретушер, Сотрудник</td>
-														<td><span class="badge badge-success">Активен</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs-types/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-														</td>
-													</tr>																																
+                                                    @if(isset($list) && !empty($list))
+                                                        @foreach($list as $item)
+                                                            <tr>
+                                                                <td>{{ $item->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_NAME } }}</td>
+                                                                <td>{{ $item->getTypeName() }}</td>
+                                                                <td>{{ $item->getFilterType() }}</td>
+                                                                <td>{{ $item->getFilter() }}</td>
+                                                                <td><span class="badge {{ \App\Contracts\Salary\CalcsTypeContract::STATUS_CLASS_LIST[ $item->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_STATUS } ] ?? 'badge-secondary' }}">{{ \App\Contracts\Salary\CalcsTypeContract::STATUS_LIST[$item->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_STATUS }] }}</span></td>
+                                                                <td>
+                                                                    <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.salary.calc_type.edit', ['id' => $item->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_ID }]) }}" >
+                                                                        <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
 												</tbody>
 											</table>
 										</div>

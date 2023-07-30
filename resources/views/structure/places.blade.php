@@ -18,7 +18,7 @@
 							<div class="page-rightheader ml-md-auto">
 								<div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
 									<div class="btn-list">
-										<a href="{{url('structure/cities/add')}}" class="btn btn-primary mr-3">Добавить точку</a>
+										<a href="{{ route('admin.structure.places.create') }}" class="btn btn-primary mr-3">Добавить точку</a>
 									</div>
 								</div>
 							</div>
@@ -69,7 +69,7 @@
 															</a>
 															<a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/dashboard/0')}}">
 																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>															
+															</a>
 														</td>
 													</tr>
 													<tr>
@@ -94,7 +94,7 @@
 															</a>
 															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/dashboard/0')}}">
 																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>															
+															</a>
 														</td>
 													</tr>
 													<tr>
@@ -119,9 +119,9 @@
 															</a>
 															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/dashboard/0')}}">
 																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>															
+															</a>
 														</td>
-													</tr>																										
+													</tr>
 												</tbody>
 											</table>
 										</div>

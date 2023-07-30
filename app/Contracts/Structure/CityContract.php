@@ -12,6 +12,8 @@ interface CityContract
 
     public const FILLABLE_FIELDS = [
         self::FIELD_NAME,
+        self::FIELD_MANAGER_ID,
+        self::FIELD_OPENING_DATE,
     ];
 
     public const CASTS = [
@@ -20,10 +22,10 @@ interface CityContract
 
     public const DEMO_CITIES_LIST = [
         [
-            'name' => 'Белгород',
+            self::FIELD_NAME => 'Белгород',
         ],
         [
-            'name' => 'Краснодар',
+            self::FIELD_NAME => 'Краснодар',
         ],
     ];
 }

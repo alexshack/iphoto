@@ -13,7 +13,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Аквапарк Белгород<a href="{{url('structure/places')}}" class="font-weight-normal text-muted ml-2">Точки</a></h4>
+								<h4 class="page-title">Аквапарк Белгород<a href="{{ route('admin.structure.places.index') }}" class="font-weight-normal text-muted ml-2">Точки</a></h4>
 							</div>
 						</div>
 						<!--End Page header-->
@@ -35,14 +35,14 @@
 														<option label="Выберите город"></option>
 														<option value="1">Белгород</option>
 														<option value="2">Краснодар</option>
-													</select>	
-												</div>							
-											</div>											
+													</select>
+												</div>
+											</div>
 											<div class="form-group row">
 												<label class="form-label col-md-3">Дата открытия</label>
 												<div class="col-md-9">
 													<input type="text" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
-												</div>												
+												</div>
 											</div>
 											<div class="form-group row">
 												<div class="form-label col-md-3">Начисления <a href="" data-target="#calc-edit" data-toggle="modal" class="badge badge-primary">Добавить</a></div>
@@ -69,7 +69,7 @@
 																	</a>
 																	<!--кнопка удаления показывается только если текущая дата равна или меньше даты начала -->
 																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>															
+																</td>
 															</tr>
 															<tr>
 																<td>05.05.2017</td>
@@ -81,8 +81,8 @@
 																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 																	</a>
 																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>															
-															</tr>															
+																</td>
+															</tr>
 															<tr>
 																<td>05.05.2017</td>
 																<td></td>
@@ -93,7 +93,7 @@
 																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 																	</a>
 																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>															
+																</td>
 															</tr>
 															<tr>
 																<td>05.05.2017</td>
@@ -105,12 +105,12 @@
 																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 																	</a>
 																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>															
-															</tr>																																										
+																</td>
+															</tr>
 														</tbody>
 													</table>
 												</div>
-											</div>											
+											</div>
 
 
 											<!-- Алерт отображается удалением класса d-none -->
@@ -118,7 +118,7 @@
 												<button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
 												<i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
 												Необходимо заполнить поля:
-											</div>																																	
+											</div>
 											<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
 										</form>
 									</div>
@@ -143,7 +143,7 @@
 							<div class="form-group">
 								<label class="form-label">Дата окончания действия</label>
 								<input type="text" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
-							</div>							
+							</div>
 							<div class="form-group">
 								<label class="form-label">Начисление</label>
 								<select class="form-control select2-show-search custom-select" data-placeholder="Выберите начисление" required>
@@ -154,7 +154,7 @@
 									<option value="2">Продажи товар (Процент от от товара)</option>
 									<option value="2">Оклад общий (Оклад)</option>
 									<option value="2">Ассортимент (Фиксированная смена)</option>
-								</select>								
+								</select>
 							</div>
 						</div>
 						<div class="modal-footer">

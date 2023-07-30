@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface EmployeePositionRepositoryInterface
+interface PlaceRepositoryInterface
 {
     public function getAll();
-
-    public function getActive();
 }

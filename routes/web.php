@@ -71,6 +71,12 @@ Route::middleware(['web'])->group(function () {
             Route::post('structure/city-manager/add', 'App\Http\Controllers\Structure\CityManagerController@store')->name('admin.structure.city_manager.store');
             Route::delete('structure/city-managers/{id}/delete', 'App\Http\Controllers\Structure\CityManagerController@destroy')->name('admin.structure.city_manager.destroy');
             Route::post('structure/city-managers/{id}', 'App\Http\Controllers\Structure\CityManagerController@update')->name('admin.structure.city_manager.update');
+            // Точки
+            Route::get('structure/place', 'App\Http\Controllers\Structure\PlaceController@index')->name('admin.structure.places.index');
+            Route::get('structure/place/add', 'App\Http\Controllers\Structure\PlaceController@create')->name('admin.structure.places.create');
+            Route::post('structure/place/add', 'App\Http\Controllers\Structure\PlaceController@store')->name('admin.structure.places.store');
+            Route::get('structure/places/{id}', 'App\Http\Controllers\Structure\PlaceController@edit')->name('admin.structure.places.edit');
+            Route::post('structure/places/{id}', 'App\Http\Controllers\Structure\PlaceController@update')->name('admin.structure.places.update');
             // Менеджера
             Route::get('structure/managers', 'App\Http\Controllers\Structure\ManagerController@index')->name('admin.structure.managers.index');
             Route::get('structure/managers/{id}', 'App\Http\Controllers\Structure\ManagerController@edit')->name('admin.structure.managers.edit');
@@ -117,7 +123,12 @@ Route::middleware(['web'])->group(function () {
             Route::get('salary/employee-position', 'App\Http\Controllers\Salary\EmployeePositionController@index')->name('admin.salary.employee_positions.index');
             Route::post('salary/employee-position/add', 'App\Http\Controllers\Salary\EmployeePositionController@store')->name('admin.salary.employee_positions.store');
             Route::post('salary/employee-positions/{id}', 'App\Http\Controllers\Salary\EmployeePositionController@update')->name('admin.salary.employee_positions.update');
-
+            // Виды начислений
+            Route::get('salary/calc-type', 'App\Http\Controllers\Salary\CalcsTypeController@index')->name('admin.salary.calc_type.index');
+            Route::get('salary/calc-type/add', 'App\Http\Controllers\Salary\CalcsTypeController@create')->name('admin.salary.calc_type.create');
+            Route::post('salary/calc-type/add', 'App\Http\Controllers\Salary\CalcsTypeController@store')->name('admin.salary.calc_type.store');
+            Route::get('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@edit')->name('admin.salary.calc_type.edit');
+            Route::post('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@update')->name('admin.salary.calc_type.update');
         });
 
         Route::get('/', function () {

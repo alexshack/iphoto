@@ -2,20 +2,26 @@
 
 namespace App\Providers;
 
+use App\Repositories\CalcsTypeRepository;
 use App\Repositories\CityManagerRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\EmployeePositionRepository;
 use App\Repositories\EmployeeStatusRepository;
 use App\Repositories\ExpensesTypeRepository;
 use App\Repositories\IncomesTypeRepository;
+use App\Repositories\Interfaces\CalcsTypeRepositoryInterface;
 use App\Repositories\Interfaces\CityManagerRepositoryInterface;
 use App\Repositories\Interfaces\CityRepositoryInterface;
 use App\Repositories\Interfaces\EmployeePositionRepositoryInterface;
 use App\Repositories\Interfaces\EmployeeStatusRepositoryInterface;
 use App\Repositories\Interfaces\ExpensesTypeRepositoryInterface;
 use App\Repositories\Interfaces\IncomesTypeRepositoryInterface;
+use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
+use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\PlaceCalcRepository;
+use App\Repositories\PlaceRepository;
 use App\Repositories\SalesTypeRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EmployeePositionRepositoryInterface::class, EmployeePositionRepository::class);
         $this->app->bind(CityRepositoryInterface::class, CityRepository::class);
         $this->app->bind(CityManagerRepositoryInterface::class, CityManagerRepository::class);
+        $this->app->bind(CalcsTypeRepositoryInterface::class, CalcsTypeRepository::class);
+        $this->app->bind(PlaceRepositoryInterface::class, PlaceRepository::class);
+        $this->app->bind(PlaceCalcRepositoryInterface::class, PlaceCalcRepository ::class);
     }
 
     /**

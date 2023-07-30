@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-interface EmployeePositionRepositoryInterface
+interface PlaceCalcRepositoryInterface
 {
     public function getAll();
 
-    public function getActive();
+    public function getByPlaceId($id);
 }
