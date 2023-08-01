@@ -29,28 +29,28 @@
 								</a>
 							</li>
 							<li class="side-item side-item-category mt-4">Компания</li>
-							<li class="slide">
-								<a class="side-menu__item" data-toggle="slide" href="#">
-									<i class="feather feather-camera sidemenu_icon"></i>
-									<span class="side-menu__label">Структура</span><i class="angle fa fa-angle-right"></i>
-								</a>
-								<ul class="slide-menu">
-									<li class="sub-slide">
-										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Краснодар</span><i class="sub-angle fa fa-angle-right"></i></a>
-										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">ТЦ OZ Mall</a></li>
-											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Галерея</a></li>
-										</ul>
-									</li>
-									<li class="sub-slide">
-										<a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">Белгород</span><i class="sub-angle fa fa-angle-right"></i></a>
-										<ul class="sub-slide-menu">
-											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Зоопарк</a></li>
-											<li><a class="sub-slide-item" href="{{url('structure/places/dashboard/0')}} ">Сити Молл</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
+                            @if(isset($menuCities) && !empty($menuCities))
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="#">
+                                        <i class="feather feather-camera sidemenu_icon"></i>
+                                        <span class="side-menu__label">Структура</span><i class="angle fa fa-angle-right"></i>
+                                    </a>
+                                    <ul class="slide-menu">
+                                        @foreach($menuCities as $menuCity)
+                                            <li class="sub-slide">
+                                                <a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">{{ $menuCity->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</span><i class="sub-angle fa fa-angle-right"></i></a>
+                                                @if(!empty($menuCity->places))
+                                                    <ul class="sub-slide-menu">
+                                                    @foreach($menuCity->places as $menuPlace)
+                                                            <li><a class="sub-slide-item" href="{{ route('admin.structure.places.edit', ['id' => $menuPlace->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }]) }}">{{ $menuPlace->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } }}</a></li>
+                                                    @endforeach
+                                                    </ul>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endif
 							<li class="slide">
 								<a class="side-menu__item" data-toggle="slide" href="#">
 									<i class="feather feather-server sidemenu_icon"></i>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+ use App\Contracts\Structure\CityContract;
  use App\Contracts\UserPersonalDataContract;
  use App\Contracts\UserWorkDataContract;
 use App\Contracts\UserContract;
@@ -92,6 +93,15 @@ class User extends Authenticatable
             ], $data);
     }
 
+    public function getPhoneWithoutChar()
+    {
+        return str_replace(
+            ['+', '-', '.', ' ', '(', ')'],
+            ['', '', '', '', '', ''],
+            $this->getPersonalData()->{ UserPersonalDataContract::FIELD_PHONE }
+        );
+    }
+
     public function getAgeAttribute()
     {
         if(!empty($this->getPersonalData()->{ UserPersonalDataContract::FIELD_BIRTHDAY })) {
@@ -120,5 +130,10 @@ class User extends Authenticatable
         $filename = Str::uuid().'.'.$photo->getClientOriginalExtension();
         $path = $photo->storeAs('images', $filename);
         return '/storage/' . $path;
+    }
+
+    public function city()
+    {
+        return $this->hasOne(City::class, CityContract::FIELD_MANAGER_ID, UserContract::FIELD_ID);
     }
 }

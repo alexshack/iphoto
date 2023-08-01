@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Contracts\Structure\CityContract;
+use App\Contracts\Structure\PlaceContract;
 use App\Contracts\UserContract;
+use App\Models\Structure\Place;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,5 +28,10 @@ class City extends Model
     public function getManager()
     {
         return $this->user()->first();
+    }
+
+    public function places()
+    {
+        return $this->hasMany(Place::class, PlaceContract::FIELD_CITY_ID, CityContract::FIELD_ID);
     }
 }

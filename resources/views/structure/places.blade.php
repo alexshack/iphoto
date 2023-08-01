@@ -47,81 +47,40 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>Аквапарк</td>
-														<td data-order="Белгород"><a href="{{url('structure/cities/0')}}">Белгород</a></td>
-														<td data-search="Менеджеров Менеджер  +79995554422" data-order="Сотрудников"><!-- Имя фамилия телефон--><!-- Фамилия -->
-															<div class="d-flex">
-																<span class="avatar avatar-md brround mr-3" style="background-image: url({{URL::asset('assets/images/users/1.jpg')}})"></span>
-																<div class="mr-3 mt-0 mt-sm-1 d-block">
-																	<h6 class="mb-1 fs-14">
-																		<a href="{{url('structure/managers/0')}}">Менеджеров Менеджер</a>
-																	</h6>
-																	<p class="text-muted mb-0 fs-12"><a href="tel:+79995554422">+79995554422</a></p>
-																</div>
-															</div>
-														</td>
-														<td data-order="1640984400">01.01.2022</td>
-														<td><span class="badge badge-success">Работает</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/0')}}">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/dashboard/0')}}">
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Парк развлечений</td>
-														<td data-order="Белгород"><a href="{{url('structure/cities/0')}}">Белгород</a></td>
-														<td data-search="Менеджеров Менеджер  +79995554422" data-order="Сотрудников"><!-- Имя фамилия телефон--><!-- Фамилия -->
-															<div class="d-flex">
-																<span class="avatar avatar-md brround mr-3" style="background-image: url({{URL::asset('assets/images/users/1.jpg')}})"></span>
-																<div class="mr-3 mt-0 mt-sm-1 d-block">
-																	<h6 class="mb-1 fs-14">
-																		<a href="{{url('structure/managers/0')}}">Менеджеров Менеджер</a>
-																	</h6>
-																	<p class="text-muted mb-0 fs-12"><a href="tel:+79995554422">+79995554422</a></p>
-																</div>
-															</div>
-														</td>
-														<td data-order="1640984400">01.01.2022</td>
-														<td><span class="badge badge-danger">Закрыта</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/0')}}">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/dashboard/0')}}">
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>
-														</td>
-													</tr>
-													<tr>
-														<td>Динопарк</td>
-														<td data-order="Белгород"><a href="{{url('structure/cities/0')}}">Белгород</a></td>
-														<td data-search="Менеджеров Менеджер  +79995554422" data-order="Сотрудников"><!-- Имя фамилия телефон--><!-- Фамилия -->
-															<div class="d-flex">
-																<span class="avatar avatar-md brround mr-3" style="background-image: url({{URL::asset('assets/images/users/1.jpg')}})"></span>
-																<div class="mr-3 mt-0 mt-sm-1 d-block">
-																	<h6 class="mb-1 fs-14">
-																		<a href="{{url('structure/managers/0')}}">Менеджеров Менеджер</a>
-																	</h6>
-																	<p class="text-muted mb-0 fs-12"><a href="tel:+79995554422">+79995554422</a></p>
-																</div>
-															</div>
-														</td>
-														<td data-order="1640984400">01.01.2022</td>
-														<td><span class="badge badge-warning">Закрыта временно</span></td>
-														<td>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/0')}}">
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/places/dashboard/0')}}">
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
-															</a>
-														</td>
-													</tr>
+                                                @if(isset($list) && !empty($list))
+                                                    @foreach($list as $item)
+                                                        <tr>
+                                                            <td>{{ $item->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } }}</td>
+                                                            <td data-order="Белгород"><a href="{{ route('admin.structure.cities.edit', ['id' => $item->city->{ \App\Contracts\Structure\CityContract::FIELD_ID }]) }}">{{ $item->city->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</a></td>
+                                                            @if(!empty($item->city->user))
+                                                            <td data-search="{{ $item->city->user->getFullName() }}  +{{ $item->city->user->getPhoneWithoutChar() }}" data-order="Сотрудников"><!-- Имя фамилия телефон--><!-- Фамилия -->
+                                                                <div class="d-flex">
+                                                                    <span class="avatar avatar-md brround mr-3" style="background-image: url({{ $item->city->user->{ \App\Contracts\UserContract::FIELD_PHOTO } ?? URL::asset('assets/images/users/1.jpg')}})"></span>
+                                                                    <div class="mr-3 mt-0 mt-sm-1 d-block">
+                                                                        <h6 class="mb-1 fs-14">
+                                                                            <a href="{{ route('admin.structure.managers.edit', ['id' => $item->city->user->{ \App\Contracts\UserContract::FIELD_ID }]) }}">{{ $item->city->user->getFullName() ?? null }}</a>
+                                                                        </h6>
+                                                                        <p class="text-muted mb-0 fs-12"><a href="tel:+{{ $item->city->user->getPhoneWithoutChar() }}">{{ $item->city->user->getPersonalData()->{ \App\Contracts\UserPersonalDataContract::FIELD_PHONE } }}</a></p>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            @else
+                                                            <td>-</td>
+                                                            @endif
+                                                            <td data-order="{{ strtotime($item->{ \App\Contracts\Structure\PlaceContract::FIELD_OPENING_DATE }) }}">{{ $item->{ \App\Contracts\Structure\PlaceContract::FIELD_OPENING_DATE }->format('d.m.Y') }}</td>
+                                                            <td><span class="badge {{ \App\Contracts\Structure\PlaceContract::STATUS_CLASS_LIST[ $item->{ \App\Contracts\Structure\PlaceContract::FIELD_STATUS } ] ?? 'badge-secondary' }}">{{ \App\Contracts\Structure\PlaceContract::STATUS_LIST[$item->{ \App\Contracts\Structure\PlaceContract::FIELD_STATUS }] }}</span></td>
+                                                            <td>
+                                                                <a class="btn btn-primary btn-icon btn-sm" href="{{ route('admin.structure.places.edit', ['id' => $item->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }]) }}">
+                                                                    <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                </a>
+                                                                <a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/dashboard/0')}}">
+                                                                    <i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+
 												</tbody>
 											</table>
 										</div>

@@ -37,7 +37,21 @@ interface PlaceContract
         self::FIELD_OPENING_DATE => 'date'
     ];
 
-    public const DEMO_PLACES_LIST = [
+    public const RULES = [
+        self::FIELD_NAME => 'required|string|max:255',
+        self::FIELD_STATUS => 'required|numeric|in:1,2,3',
+        self::FIELD_CITY_ID => 'required|exists:' . CityContract::TABLE . ',' . CityContract::FIELD_ID,
+        self::FIELD_OPENING_DATE => 'sometimes|date'
+    ];
+
+    public const ATTRIBUTES = [
+        self::FIELD_NAME => 'Название точки',
+        self::FIELD_STATUS => 'Статус',
+        self::FIELD_CITY_ID => 'Город',
+        self::FIELD_OPENING_DATE => 'Дата открытия',
+    ];
+
+    public const DEMO_DATA = [
         [
             self::FIELD_NAME => 'Аквапарк',
         ],

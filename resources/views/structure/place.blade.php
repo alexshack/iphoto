@@ -13,7 +13,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Аквапарк Белгород<a href="{{ route('admin.structure.places.index') }}" class="font-weight-normal text-muted ml-2">Точки</a></h4>
+								<h4 class="page-title">{{ $place->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } ?? null }}<a href="{{ route('admin.structure.places.index') }}" class="font-weight-normal text-muted ml-2">Точки</a></h4>
 							</div>
 						</div>
 						<!--End Page header-->
@@ -27,25 +27,53 @@
 										<h4 class="card-title">Данные точки</h4>
 									</div>
 									<div class="card-body">
-										<form class="form-horizontal">
+                                        @if(session()->has('message'))
+                                            <div class="alert alert-success">
+                                                {{ session('message') }}
+                                            </div>
+                                        @endif
+
+                                        @if(Route::currentRouteName() == 'admin.structure.places.edit')
+										<form class="form-horizontal" action="{{ route('admin.structure.places.update', ['id' => $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }]) }}" method="post">
+                                        @else
+                                        <form class="form-horizontal" action="{{ route('admin.structure.places.store') }}" method="post">
+                                        @endif
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <div class="form-group row">
+                                                <label class="form-label col-md-3">Название точки</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" name="{{ \App\Contracts\Structure\PlaceContract::FIELD_NAME }}" class="form-control"  placeholder="Название точки" value="{{ $place->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } ?? old(\App\Contracts\Structure\PlaceContract::FIELD_NAME) }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="form-label  col-md-3">Статус</label>
+                                                <div class="col-md-9">
+                                                    <select name="{{ \App\Contracts\Structure\PlaceContract::FIELD_STATUS }}" class="form-control custom-select select2">
+                                                        @foreach(\App\Contracts\Structure\PlaceContract::STATUS_LIST as $key => $status)
+                                                            <option value="{{ $key }}" {{ (isset($place) && $place->{ \App\Contracts\Structure\PlaceContract::FIELD_STATUS } == $key) ? 'selected' : '' }}>{{ $status }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
 											<div class="form-group row">
 												<label class="form-label col-md-3">Город</label>
 												<div class="col-md-9">
-													<select class="form-control select2-show-search custom-select" data-placeholder="Выберите город">
-														<option label="Выберите город"></option>
-														<option value="1">Белгород</option>
-														<option value="2">Краснодар</option>
+													<select class="form-control select2-show-search custom-select" name="{{ \App\Contracts\Structure\PlaceContract::FIELD_CITY_ID }}" data-placeholder="Выберите город">
+														@foreach($cities as $city)
+                                                            <option value="{{ $city->{ \App\Contracts\Structure\CityContract::FIELD_ID } }}" {{ (isset($place) && $place->{ \App\Contracts\Structure\PlaceContract::FIELD_CITY_ID } == $city->{ \App\Contracts\Structure\CityContract::FIELD_ID }) ? 'selected' : '' }}>{{ $city->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</option>
+														@endforeach
 													</select>
 												</div>
 											</div>
 											<div class="form-group row">
 												<label class="form-label col-md-3">Дата открытия</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
+													<input type="text" name="{{ \App\Contracts\Structure\PlaceContract::FIELD_OPENING_DATE }}" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY" value="{{ (isset($place)) ? $place->{ \App\Contracts\Structure\PlaceContract::FIELD_OPENING_DATE }->format('d.m.Y') : old(\App\Contracts\Structure\PlaceContract::FIELD_OPENING_DATE) }}">
 												</div>
 											</div>
+                                            @if(Route::currentRouteName() == 'admin.structure.places.edit')
 											<div class="form-group row">
-												<div class="form-label col-md-3">Начисления <a href="" data-target="#calc-edit" data-toggle="modal" class="badge badge-primary">Добавить</a></div>
+												<div class="form-label col-md-3">Начисления <a href="" data-target="#calc-add" data-toggle="modal" class="badge badge-primary">Добавить</a></div>
 												<div class="col-md-9">
 													<table class="table table-vcenter text-nowrap table-bordered border-bottom" id="salary-list">
 														<thead>
@@ -58,67 +86,42 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr>
-																<td>05.05.2016</td>
-																<td>04.05.2016</td>
-																<td>Процент от кассы</td>
-																<td>Проценты 15/10</td>
-																<td>
-																	<a class="btn btn-primary btn-icon btn-sm" href="" data-target="#calc-edit" data-toggle="modal">
-																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																	</a>
-																	<!--кнопка удаления показывается только если текущая дата равна или меньше даты начала -->
-																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>
-															</tr>
-															<tr>
-																<td>05.05.2017</td>
-																<td></td>
-																<td>Процент от кассы</td>
-																<td>Проценты 17/13</td>
-																<td>
-																	<a class="btn btn-primary btn-icon btn-sm" href="" data-target="#calc-edit" data-toggle="modal">
-																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																	</a>
-																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>
-															</tr>
-															<tr>
-																<td>05.05.2017</td>
-																<td></td>
-																<td>Процент от кассы</td>
-																<td>Проценты фотографы 3</td>
-																<td>
-																	<a class="btn btn-primary btn-icon btn-sm" href="" data-target="#calc-edit" data-toggle="modal">
-																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																	</a>
-																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>
-															</tr>
-															<tr>
-																<td>05.05.2017</td>
-																<td></td>
-																<td>Оклад</td>
-																<td>Оклад общий</td>
-																<td>
-																	<a class="btn btn-primary btn-icon btn-sm" href="" data-target="#calc-edit" data-toggle="modal">
-																		<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																	</a>
-																	<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-																</td>
-															</tr>
+                                                            @if(!empty($placeCalcs))
+                                                                @foreach($placeCalcs as $calc)
+                                                                    <tr>
+                                                                        <td>{{ $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }->format('d.m.Y') }}</td>
+                                                                        <td>{{ $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') }}</td>
+                                                                        <td>{{ $calc->calcsType->getTypeName() }}</td>
+                                                                        <td>{{ $calc->calcsType->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_NAME } }}</td>
+                                                                        <td>
+                                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editPlaceCalc({{ '\'' . route('admin.structure.place_calcs.update', ['id' => $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_ID }]) . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_PLACE_ID } . ', \'' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }->format('d.m.Y') . '\', \'' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_CALCS_TYPE_ID } }})">
+                                                                                <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                            </a>
+                                                                            <!--кнопка удаления показывается только если текущая дата равна или меньше даты начала -->
+                                                                            <form style="display: inline-block" action="{{ route('admin.structure.place_calcs.destroy', ['id' => $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_ID }]) }}" method="post">
+                                                                                @csrf
+                                                                                <button class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></button>
+                                                                            </form>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
 														</tbody>
 													</table>
 												</div>
 											</div>
+                                            @endif
 
-
-											<!-- Алерт отображается удалением класса d-none -->
-											<div class="alert alert-danger d-none" role="alert">
-												<button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
-												<i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-												Необходимо заполнить поля:
-											</div>
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger" role="alert">
+                                                    <button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li><i class="fa fa-exclamation mr-2" aria-hidden="true"></i> {{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
 											<button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
 										</form>
 									</div>
@@ -132,44 +135,83 @@
 @section('modals')
 
 			<!--Change place Modal -->
-			<div class="modal fade"  id="calc-edit">
+			<div class="modal fade"  id="calc-add">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-body">
+                            <div id="errors-add"></div>
+                            <input type="hidden" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_PLACE_ID }}" value="{{ request()->route('id') }}" />
 							<div class="form-group">
 								<label class="form-label">Дата начала действия</label>
-								<input type="text" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY" required>
+								<input type="text" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }}" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY" required>
 							</div>
 							<div class="form-group">
 								<label class="form-label">Дата окончания действия</label>
-								<input type="text" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
+								<input type="text" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }}" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
 							</div>
 							<div class="form-group">
 								<label class="form-label">Начисление</label>
-								<select class="form-control select2-show-search custom-select" data-placeholder="Выберите начисление" required>
+								<select class="form-control select2-show-search custom-select" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_CALCS_TYPE_ID }}" data-placeholder="Выберите начисление" required>
 									<option label="Выберите начисление"></option>
 									<!--Выводятся виды начислений, у которых Участвует в автоматическом расчете = ДА -->
-									<option value="1">Проценты 17/13 (Процент от кассы)</option>
-									<option value="2">Проценты фотографы 3 (Процент от кассы)</option>
-									<option value="2">Продажи товар (Процент от от товара)</option>
-									<option value="2">Оклад общий (Оклад)</option>
-									<option value="2">Ассортимент (Фиксированная смена)</option>
+                                    @if(!empty($calcTypes))
+                                        @foreach($calcTypes as $type)
+                                            <option value="{{ $type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_ID } }}">{{ $type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_NAME } }}</option>
+                                        @endforeach
+                                    @endif
 								</select>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
-							<a href="#" class="btn btn-primary">Сохранить</a>
+							<button id="addPlaceCalc" class="btn btn-primary">Добавить</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- End Change place Modal  -->
+            <div class="modal fade"  id="calc-edit">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div id="errors-edit"></div>
+                            <input type="hidden" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_PLACE_ID }}" value="{{ request()->route('id') }}">
+                            <input type="hidden" name="url" value="">
+                            <div class="form-group">
+                                <label class="form-label">Дата начала действия</label>
+                                <input type="text" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }}" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Дата окончания действия</label>
+                                <input type="text" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }}" class="form-control fc-datepicker"  placeholder="DD.MM.YYYY">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Начисление</label>
+                                <select class="form-control select2-show-search custom-select" name="{{ \App\Contracts\Structure\PlaceCalcContract::FIELD_CALCS_TYPE_ID }}" data-placeholder="Выберите начисление" required>
+                                    <option label="Выберите начисление"></option>
+                                    <!--Выводятся виды начислений, у которых Участвует в автоматическом расчете = ДА -->
+                                    @if(!empty($calcTypes))
+                                        @foreach($calcTypes as $type)
+                                            <option value="{{ $type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_ID } }}">{{ $type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_NAME } }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
+                            <button id="updatePlaceCalc" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 @endsection('modals')
 
 @section('scripts')
-
+    <script>
+        var createUrl = '{{ route('admin.structure.place_calcs.store') }}';
+    </script>
 
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
