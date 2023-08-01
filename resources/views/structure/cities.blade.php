@@ -63,7 +63,7 @@
                                                                     </div>
                                                                 @endif
                                                             </td>
-                                                            <td>-</td>
+                                                            <td>{{ $item->places->count() }}</td>
                                                             <td>-</td>
                                                             <td data-order="{{ strtotime($item->{\App\Contracts\Structure\CityContract::FIELD_OPENING_DATE}) }}">{{ $item->{ \App\Contracts\Structure\CityContract::FIELD_OPENING_DATE }->format('d.m.Y') }}</td>
                                                             <td>
