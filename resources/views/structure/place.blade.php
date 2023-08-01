@@ -88,13 +88,16 @@
 														<tbody>
                                                             @if(!empty($placeCalcs))
                                                                 @foreach($placeCalcs as $calc)
+                                                                    @php
+                                                                        $end_date = (!empty($calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE })) ? $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') : ''
+                                                                    @endphp
                                                                     <tr>
                                                                         <td>{{ $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }->format('d.m.Y') }}</td>
-                                                                        <td>{{ $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') }}</td>
+                                                                        <td>{{ !empty($calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }) ? $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') : '-' }}</td>
                                                                         <td>{{ $calc->calcsType->getTypeName() }}</td>
                                                                         <td>{{ $calc->calcsType->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_NAME } }}</td>
                                                                         <td>
-                                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editPlaceCalc({{ '\'' . route('admin.structure.place_calcs.update', ['id' => $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_ID }]) . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_PLACE_ID } . ', \'' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }->format('d.m.Y') . '\', \'' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_END_DATE }->format('d.m.Y') . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_CALCS_TYPE_ID } }})">
+                                                                            <a class="btn btn-primary btn-icon btn-sm" onclick="document.editPlaceCalc({{ '\'' . route('admin.structure.place_calcs.update', ['id' => $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_ID }]) . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_PLACE_ID } . ', \'' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_START_DATE }->format('d.m.Y') . '\', \'' . $end_date . '\', ' . $calc->{ \App\Contracts\Structure\PlaceCalcContract::FIELD_CALCS_TYPE_ID } }})">
                                                                                 <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
                                                                             </a>
                                                                             <!--кнопка удаления показывается только если текущая дата равна или меньше даты начала -->

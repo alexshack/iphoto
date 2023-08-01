@@ -27,7 +27,7 @@ interface PlaceCalcContract
 
     public const RULES = [
         self::FIELD_START_DATE => 'required|date',
-        self::FIELD_END_DATE => 'sometimes|date',
+        self::FIELD_END_DATE => 'sometimes|nullable|date',
         self::FIELD_CALCS_TYPE_ID => 'required|exists:' . CalcsTypeContract::TABLE . ',' . CalcsTypeContract::FIELD_ID,
         self::FIELD_PLACE_ID => 'required|exists:' . PlaceContract::TABLE . ',' . PlaceContract::FIELD_ID
     ];
