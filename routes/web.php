@@ -77,9 +77,9 @@ Route::middleware(['web'])->group(function () {
             Route::post('structure/place/add', 'App\Http\Controllers\Structure\PlaceController@store')->name('admin.structure.places.store');
             Route::get('structure/places/{id}', 'App\Http\Controllers\Structure\PlaceController@edit')->name('admin.structure.places.edit');
             Route::post('structure/places/{id}', 'App\Http\Controllers\Structure\PlaceController@update')->name('admin.structure.places.update');
-            Route::post('structure/place-calc/add', 'App\Http\Controllers\structure\PlaceCalcController@store')->name('admin.structure.place_calcs.store');
-            Route::post('structure/place-calcs/{id}', 'App\Http\Controllers\structure\PlaceCalcController@update')->name('admin.structure.place_calcs.update');
-            Route::post('structure/place-calcs/{id}/delete', 'App\Http\Controllers\structure\PlaceCalcController@destroy')->name('admin.structure.place_calcs.destroy');
+            Route::post('structure/place-calc/add', 'App\Http\Controllers\Structure\PlaceCalcController@store')->name('admin.structure.place_calcs.store');
+            Route::post('structure/place-calcs/{id}', 'App\Http\Controllers\Structure\PlaceCalcController@update')->name('admin.structure.place_calcs.update');
+            Route::post('structure/place-calcs/{id}/delete', 'App\Http\Controllers\Structure\PlaceCalcController@destroy')->name('admin.structure.place_calcs.destroy');
             // Менеджера
             Route::get('structure/managers', 'App\Http\Controllers\Structure\ManagerController@index')->name('admin.structure.managers.index');
             Route::get('structure/managers/{id}', 'App\Http\Controllers\Structure\ManagerController@edit')->name('admin.structure.managers.edit');
