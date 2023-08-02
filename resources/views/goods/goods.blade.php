@@ -7,7 +7,7 @@
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -20,10 +20,10 @@
 							</div>
 							<div class="page-rightheader ml-md-auto">
 								<div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
-			
+
 									<div class="btn-list">
 										<a href="" data-target="#category-add" data-toggle="modal" class="btn btn-primary mr-3">Добавить категорию</a>
-										<a href="{{url('goods/add')}}"  class="btn btn-primary mr-3">Добавить товар</a>
+										<a href="{{ route('admin.goods.create') }}"  class="btn btn-primary mr-3">Добавить товар</a>
 									</div>
 								</div>
 							</div>
@@ -41,6 +41,7 @@
 										</div>
 									</div>
 									<div class="card-body">
+                                        @if(!empty($categories))
 										<div class="row">
 											<div class="col-md-3">
 												<div class="panel panel-primary tabs-style-4">
@@ -48,9 +49,11 @@
 														<div class="tabs-menu ">
 															<!-- Tabs -->
 															<ul class="nav panel-tabs flex-column">
-																<li class=""><a href="#tab21" class="active" data-toggle="tab">Фотографии</a></li>
-																<li><a href="#tab22" data-toggle="tab">Принтеры</a></li>
-																<li><a href="#tab23" data-toggle="tab">Категория 3</a></li>
+                                                                @foreach($categories as $category)
+                                                                    <li>
+                                                                        <a href="#tab{{ $category->{ \App\Contracts\Goods\GoodsCategoryContract::FIELD_ID } }}" data-toggle="tab" class="{{ $loop->first ? 'active' : '' }}">{{ $category->{ \App\Contracts\Goods\GoodsCategoryContract::FIELD_NAME } }}</a>
+                                                                    </li>
+                                                                @endforeach
 															</ul>
 														</div>
 													</div>
@@ -59,120 +62,47 @@
 											<div class="tabs-style-4 col-md-9">
 												<div class="panel-body ">
 													<div class="tab-content">
-														<div class="tab-pane active" id="tab21">
-															<div class="table-responsive">
-																<table class="table goods-table table-vcenter text-nowrap table-bordered border-bottom">
-																	<thead>
-																		<tr>
-																			<th class="border-bottom-0">Вид товара</th>
-																			<th class="border-bottom-0">Наименование</th>
-																			<th class="border-bottom-0">Серийный номер</th>
-																			<th class="border-bottom-0">Действия</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td>Продажа</td>
-																			<td>Фото А4</td>
-																			<td></td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td>Продажа</td>
-																			<td>Фото А6</td>
-																			<td></td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>																		
-																	</tbody>
-																</table>
-															</div>
-														</div>
-														<div class="tab-pane" id="tab22">
-															<div class="table-responsive">
-																<table class="table goods-table table-vcenter text-nowrap table-bordered border-bottom">
-																	<thead>
-																		<tr>
-																			<th class="border-bottom-0">Вид товара</th>
-																			<th class="border-bottom-0">Наименование</th>
-																			<th class="border-bottom-0">Серийный номер</th>
-																			<th class="border-bottom-0">Действия</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td>ТМЦ</td>
-																			<td>Принтер Samsung</td>
-																			<td>W7YK170208</td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td>ТМЦ</td>
-																			<td>Принтер Samsung</td>
-																			<td>W7YK087770</td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>																		
-																	</tbody>
-																</table>
-															</div>
-														</div>
-														<div class="tab-pane" id="tab23">
-															<div class="table-responsive">
-																<table class="table goods-table table-vcenter text-nowrap table-bordered border-bottom">
-																	<thead>
-																		<tr>
-																			<th class="border-bottom-0">Вид товара</th>
-																			<th class="border-bottom-0">Наименование</th>
-																			<th class="border-bottom-0">Серийный номер</th>
-																			<th class="border-bottom-0">Действия</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td>ТМЦ</td>
-																			<td>Принтер Samsung</td>
-																			<td>W7YK170208</td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td>ТМЦ</td>
-																			<td>Принтер Samsung</td>
-																			<td>W7YK087770</td>
-																			<td>
-																				<a class="btn btn-primary btn-icon btn-sm"  href="{{url('goods/0')}}" >
-																					<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-																				</a>
-																			</td>
-																		</tr>																		
-																	</tbody>
-																</table>
-															</div>
-														</div>
+                                                        @foreach($categories as $category)
+                                                            <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="tab{{ $category->{ \App\Contracts\Goods\GoodsCategoryContract::FIELD_ID } }}">
+                                                                <div class="table-responsive">
+                                                                    <table class="table goods-table table-vcenter text-nowrap table-bordered border-bottom">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="border-bottom-0">Вид товара</th>
+                                                                            <th class="border-bottom-0">Наименование</th>
+                                                                            <th class="border-bottom-0">Серийный номер</th>
+                                                                            <th class="border-bottom-0">Действия</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @if(!empty($category->goods))
+                                                                                @foreach($category->goods as $goods)
+                                                                                    <tr>
+                                                                                        <td>{{ $goods->getTypeName() }}</td>
+                                                                                        <td>{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_NAME } }}</td>
+                                                                                        <td>{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_SERIAL_NUMBER } }}</td>
+                                                                                        <td>
+                                                                                            <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.goods.edit', ['id' => $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_ID }]) }}" >
+                                                                                                <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
 													</div>
 												</div>
 											</div>
 										</div>
+                                        @else
+                                            Нет категорий
+                                        @endif
 									</div>
-								</div>								
+								</div>
 							</div>
 						</div>
 						<!-- End Row-->
@@ -192,14 +122,15 @@
 							</button>
 						</div>
 						<div class="modal-body">
+                            <div id="errors-add"></div>
 							<div class="form-group">
 								<label class="form-label">Название</label>
-								<input type="text" class="form-control" placeholder="Название категории">
+								<input type="text" name="{{ \App\Contracts\Goods\GoodsCategoryContract::FIELD_NAME }}" class="form-control" placeholder="Название категории">
 							</div>
 						</div>
 						<div class="modal-footer">
 							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
-							<a href="#" class="btn btn-primary">Сохранить</a>
+							<button class="btn btn-primary" id="addGoodsCategory">Добавить</button>
 						</div>
 					</div>
 				</div>
@@ -209,16 +140,19 @@
 @endsection('modals')
 
 @section('scripts')
+    <script>
+        var createUrl = '{{ route('admin.goods.categories.store') }}';
+    </script>
 
 		<!-- INTERNAL Data tables -->
 		<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
-		
+
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/goods/goods.js')}}"></script>
 

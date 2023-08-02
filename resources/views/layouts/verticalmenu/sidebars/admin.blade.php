@@ -128,7 +128,7 @@
 								</ul>
 							</li> -->
 							<li class="slide">
-								<a class="side-menu__item" href="{{url('goods')}}">
+								<a class="side-menu__item" href="{{ route('admin.goods.index') }}">
 									<i class="feather feather-box sidemenu_icon"></i>
 									<span class="side-menu__label">Товары</span>
 								</a>

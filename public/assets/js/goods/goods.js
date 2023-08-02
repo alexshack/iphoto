@@ -23,7 +23,7 @@ $(function (e) {
       info: "Показано _START_ по _END_ из _TOTAL_",
       infoEmpty:      "Всего 0 по 0 из 0",
       infoFiltered:   "(всего _MAX_)",
-      
+
     }
   });
 
@@ -48,5 +48,59 @@ $(function (e) {
     autoclose: true,
     endDate: '0d'
   });
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }
+    });
+
+    function displayErrors(container, errors) {
+        var errorContainer = document.getElementById(container);
+        errorContainer.innerHTML = '';
+
+        var div = document.createElement('div');
+        div.classList.add('alert', 'alert-danger');
+        var ul = document.createElement('ul');
+
+        errors.forEach(function(error) {
+            var li = document.createElement('li');
+            li.textContent = error;
+            ul.appendChild(li);
+        });
+
+        div.appendChild(ul);
+        errorContainer.appendChild(div);
+
+    }
+
+    $('#addGoodsCategory').click(function() {
+        var name = $('#category-add input[name=\'name\']').val();
+
+        var errorContainer = document.getElementById('errors-add');
+        errorContainer.innerHTML = '';
+
+        $.ajax({
+            url: createUrl,
+            type: 'POST',
+            data: {
+                name: name,
+            },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(error) {
+                var errors = JSON.parse(error.responseText);
+                var error_list = [];
+                Object.keys(errors.errors).map(function (key) {
+                    errors.errors[key].map(function (error_message) {
+                        error_list.push(error_message)
+                    });
+                });
+                displayErrors('errors-add', error_list);
+            }
+        });
+    });
 
 });

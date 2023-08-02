@@ -132,6 +132,19 @@ Route::middleware(['web'])->group(function () {
             Route::post('salary/calc-type/add', 'App\Http\Controllers\Salary\CalcsTypeController@store')->name('admin.salary.calc_type.store');
             Route::get('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@edit')->name('admin.salary.calc_type.edit');
             Route::post('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@update')->name('admin.salary.calc_type.update');
+
+            /**
+             * Товарный учет
+             */
+            // Товары
+            Route::get('goods', 'App\Http\Controllers\Goods\GoodsController@index')->name('admin.goods.index');
+            Route::get('goods/{id}', 'App\Http\Controllers\Goods\GoodsController@edit')->name('admin.goods.edit');
+            Route::post('goods/{id}', 'App\Http\Controllers\Goods\GoodsController@update')->name('admin.goods.update');
+            Route::get('good/add', 'App\Http\Controllers\Goods\GoodsController@create')->name('admin.goods.create');
+            Route::post('good/add', 'App\Http\Controllers\Goods\GoodsController@store')->name('admin.goods.store');
+            Route::post('goods/category/add', 'App\Http\Controllers\Goods\GoodsCategoryController@store')->name('admin.goods.categories.store');
+            //Route::delete('goods/categories/{id}/delete', 'App\Http\Controllers\Goods\CityManagerController@destroy')->name('admin.structure.city_manager.destroy');
+            //Route::post('goods/categories/{id}', 'App\Http\Controllers\Goods\CityManagerController@update')->name('admin.structure.city_manager.update');
         });
 
         Route::get('/', function () {
