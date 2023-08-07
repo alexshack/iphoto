@@ -75,7 +75,7 @@
 								</a>
 								<ul class="slide-menu">
 									<li><a href="{{url('money/days')}} " class="slide-item"> Смены</a></li>
-									<li><a href="{{url('money/incomes')}} " class="slide-item"> Поступления ДС</a></li>
+									<li><a href="{{ route('admin.money.incomes.index') }} " class="slide-item"> Поступления ДС</a></li>
 									<li><a href="{{url('money/expenses')}} " class="slide-item"> Расходы ДС</a></li>
 									<li><a href="{{url('money/moves')}} " class="slide-item"> Перемещение ДС</a></li>
 								</ul>

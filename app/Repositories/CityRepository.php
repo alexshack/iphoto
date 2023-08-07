@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Structure\CityContract;
 use App\Models\City;
 use App\Repositories\Interfaces\CityRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;

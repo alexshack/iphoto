@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-interface PlaceRepositoryInterface
+interface IncomeRepositoryInterface
 {
     public function getAll();
 
-    public function getByCityId($cityId);
+    public function getByFilter($data);
 }

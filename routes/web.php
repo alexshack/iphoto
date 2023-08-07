@@ -102,6 +102,15 @@ Route::middleware(['web'])->group(function () {
             /**
              * Финансовый учет
              */
+            // Поступление ДС
+            Route::get('money/incomes', 'App\Http\Controllers\Money\IncomeController@index')->name('admin.money.incomes.index');
+            Route::get('money/incomes/{id}', 'App\Http\Controllers\Money\IncomeController@edit')->name('admin.money.incomes.edit');
+            Route::delete('money/incomes/{id}/delete', 'App\Http\Controllers\Money\IncomeController@destroy')->name('admin.money.incomes.destroy');
+            Route::get('money/income/add', 'App\Http\Controllers\Money\IncomeController@create')->name('admin.money.incomes.create');
+            // Расходы ДС
+
+            // Перемещение ДС
+
             // Виды продаж
             Route::get('money/sales-types', 'App\Http\Controllers\Money\SalesTypeController@index')->name('admin.money.sales_types.index');
             Route::post('money/sales-type/add', 'App\Http\Controllers\Money\SalesTypeController@store')->name('admin.money.sales_types.store');
