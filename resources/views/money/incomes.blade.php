@@ -29,7 +29,7 @@
 											</div>
 											<!--Фильтр для записей. Период - месяц-->
                                             <form id="filterForm" action="">
-                                                <input class="form-control" id="datepicker-month" name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : 'Июнь 2023' }}" type="text">
+                                                <input class="form-control" id="datepicker-month" name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : \App\Helpers\Helper::getMonthName(date('n')) .' ' . date('Y') }}" type="text">
                                             </form>
 										</div>
 									</div>

@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Helper
 {
-    protected $monthsList = [
+    protected static $monthsList = [
         1 => 'Январь',
         2 => 'Февраль',
         3 => 'Март',
@@ -53,5 +53,10 @@ class Helper
 
         $dateArray = explode(' ', $dateString);
         return ['month' => str_replace($months_names, $months_id, $dateArray[0]), 'year' => $dateArray[1]];
+    }
+
+    public static function getMonthName($id)
+    {
+        return self::$monthsList[$id] ?? null;
     }
 }
