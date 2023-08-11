@@ -7,7 +7,7 @@
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -30,7 +30,7 @@
 											<!--Фильтр для записей. Период - месяц-->
 											<input class="form-control" id="datepicker-month" placeholder="Выберите период" value="Июнь 2023" type="text">
 										</div>
-									</div>						
+									</div>
 									<div class="btn-list">
 										<a href="{{url('money/expenses/add')}}"  class="btn btn-primary mr-3">Добавить расход</a>
 									</div>
@@ -62,45 +62,42 @@
 													</tr>
 												</thead>
 												<tbody>
+                                                    @foreach($expenses as $expense)
 													<tr>
-														<td>2520</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td>Такси</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="750" class="text-right">750₽</td>
+                                                        <td>{{ $expense->id }}</td>
+                                                        <td data-order="<?php strtotime('24.06.2023') ?>">{{ $expense->date }}</td>
+                                                        <td>{{ $expense->expenseType ? $expense->expenseType->name : '' }}</td>
+                                                        <td data-order="{{ $expense->city ? $expense->city->name : '' }}">
+                                                            <a href="admin/structure/cities/{{ $expense->city->id }}">
+                                                                {{ $expense->city ? $expense->city->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        @if($expense->type === $types['place'])
+                                                        <td data-order="{{ $expense->place ? $expense->place->name : '' }}">
+                                                            <a href="admin/structure/places/{{ $expense->place_id }}">
+                                                                {{ $expense->place ? $expense->place->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        @elseif($expense->type === $types['manager'])
+                                                            <td data-order="{{ $expense->manager ? $expense->manager->name : '' }}">
+                                                                <a href="admin/structure/managers/{{ $expense->manager_id }}">
+                                                                    {{ $expense->manager ? $expense->manager->name : '' }}
+                                                                </a>
+                                                            </td>
+                                                        @endif
+                                                        <td data-order="{{ $expense->amount }}" class="text-right">{{ $expense->amount }}₽</td>
 														<td>
-															<!-- кнопки редактирования и удаления показываются только если дата поступления в текущем месяце -->
-														</td>
-													</tr>
-													<tr>
-														<td>2521</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td>Аренда</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/managers/0">Менеджеров Менеджер</a></td>
-														<td data-order="40000" class="text-right">40 000₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-														</td>
-													</tr>
-													<tr>
-														<td>2522</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.06.2023</td>
-														<td>Такси</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="1000" class="text-right">1 000₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/expenses/0')}}" >
+                                                            <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.money.expenses.edit', ['id' => $expense->id]) }}" >
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
 															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
 																<i class="feather feather-trash-2"></i>
-															</a>															
+															</a>
+															<!-- кнопки редактирования и удаления показываются только если дата поступления в текущем месяце -->
+															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
 														</td>
-													</tr>																										
+													</tr>
+                                                    @endforeach
 												</tbody>
 											</table>
 										</div>
@@ -124,10 +121,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
-		
+
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/money/expenses.js')}}"></script>
 

@@ -14,6 +14,8 @@ interface UserRoleContract
         self::FIELD_NAME,
     ];
 
+    public const ADMIN_SLUG = 'admin';
+
     public const MANAGER_SLUG = 'manager';
 
     public const ROLE_LIST = [
@@ -39,7 +41,7 @@ interface UserRoleContract
         ],
         [
             'slug' => 'admin',
-            'name' => 'Администратор'
+            'name' => self::ADMIN_SLUG,
         ],
     ];
 }

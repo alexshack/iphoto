@@ -9,6 +9,7 @@ use App\Contracts\UserWorkDataContract;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Auth;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository implements UserRepositoryInterface
@@ -84,5 +85,16 @@ class UserRepository implements UserRepositoryInterface
             ->whereHas('workData', function($query) {
                 $query->whereNotIn(UserWorkDataContract::FIELD_STATUS, UserWorkDataContract::INACTIVE_STATUS_LIST);
             })->get();
+    }
+
+    public function getExpenseAvailable() {
+        $user = Auth::user();
+        $users = [];
+        if ($user->role->slug === UserRoleContract::ADMIN_SLUG) {
+            $users = $this->getActiveManagers();
+        } elseif ($user->role->slug === UserRoleContract::MANAGER_SLUG) {
+            $users = [$user];
+        }
+        return $users;
     }
 }

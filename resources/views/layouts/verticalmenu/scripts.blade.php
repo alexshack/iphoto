@@ -32,3 +32,6 @@
 
 		<!-- Custom js-->
 		<script src="{{URL::asset('assets/js/custom.js')}}"></script>
+        @livewireScripts
+
+        @stack('custom-scripts')

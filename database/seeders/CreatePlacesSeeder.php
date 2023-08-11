@@ -28,7 +28,7 @@ class CreatePlacesSeeder extends Seeder
             if(!empty($cities)) {
                 foreach ($cities as $city) {
                     $data = PlaceContract::DEMO_DATA;
-                    foreach($data as $item) {
+                    foreach($data as &$item) {
                         $item[ PlaceContract::FIELD_CITY_ID ] = $city->{ CityContract::FIELD_ID };
                     }
                     Place::insert($data);

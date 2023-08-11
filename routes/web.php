@@ -233,15 +233,10 @@ Route::middleware(['web'])->group(function () {
             return view('money.incomes-types');
         });
 
-        Route::get('money/expenses', function () {
-            return view('money.expenses');
-        });
-        Route::get('money/expenses/0', function () {
-            return view('money.expense');
-        });
-        Route::get('money/expenses/add', function () {
-            return view('money.expense');
-        });
+        Route::get('money/expenses', 'App\Http\Controllers\Money\ExpensesController@index')->name('admin.money.expenses.index');
+        Route::get('money/expenses/add', 'App\Http\Controllers\Money\ExpensesController@create')->name('admin.money.expenses.create');
+        Route::get('money/expenses/{id}', 'App\Http\Controllers\Money\ExpensesController@edit')->name('admin.money.expenses.edit');
+
         Route::get('money/expenses-types', function () {
             return view('money.expenses-types');
         });
