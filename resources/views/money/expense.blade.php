@@ -23,8 +23,6 @@
 @endsection('modals')
 
 @section('scripts')
-
-
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
 		<!-- INTERNAL File-Uploads Js-->

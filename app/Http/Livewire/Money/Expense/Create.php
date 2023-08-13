@@ -72,7 +72,6 @@ class Create extends Component
             }
         }
         $this->managers = $this->userRepository->getExpenseAvailable();
-        //dump($this->rulesList);
         return view('livewire.money.expense.create');
     }
 

@@ -2,7 +2,6 @@
     <!--Page header-->
     <div class="page-header d-xl-flex d-block">
         <div class="page-leftheader">
-            {{--<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('money/expenses')}}" class="font-weight-normal text-muted ml-2">Расходы ДС</a></h4>--}}
             <h4 class="page-title">Добавить расход<a href="{{url('money/expenses')}}" class="font-weight-normal text-muted ml-2">Расходы ДС</a></h4>
         </div>
     </div>
@@ -57,17 +56,17 @@
                                 <ul class="tabs-menu nav col-md-9">
                                     <li class="">
                                         <a
-                                            wire:click="setPayerType({{ \App\Contracts\Money\ExpenseContract::TYPE_PLACE }})"
-                                            href="#tab-1"
-                                            class="@if($payerType === \App\Contracts\Money\ExpenseContract::TYPE_PLACE)active @endif"
-                                            data-toggle="tab">Точка</a>
+                                        wire:click="setPayerType({{ \App\Contracts\Money\ExpenseContract::TYPE_PLACE }})"
+                                        href="#tab-1"
+                                        class="@if($payerType === \App\Contracts\Money\ExpenseContract::TYPE_PLACE)active @endif"
+                                        data-toggle="tab">Точка</a>
                                     </li>
                                     <li>
                                         <a
-                                            wire:click="setPayerType({{ \App\Contracts\Money\ExpenseContract::TYPE_MANAGER }})"
-                                            class="@if($payerType === \App\Contracts\Money\ExpenseContract::TYPE_MANAGER)active @endif"
-                                            href="#tab-2"
-                                            data-toggle="tab" class="">Менеджер</a>
+                                        wire:click="setPayerType({{ \App\Contracts\Money\ExpenseContract::TYPE_MANAGER }})"
+                                        class="@if($payerType === \App\Contracts\Money\ExpenseContract::TYPE_MANAGER)active @endif"
+                                        href="#tab-2"
+                                        data-toggle="tab" class="">Менеджер</a>
                                     </li>
                                 </ul>
                             </div>
@@ -132,12 +131,12 @@
 
                         <!-- Алерт отображается удалением класса d-none -->
                         @if($errors->any())
-                        <div class="alert alert-danger" role="alert">
-                            <button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-                            Необходимо заполнить поля:
-                            {!! implode('', $errors->all('<div>:message</div>')) !!}
-                        </div>
+                            <div class="alert alert-danger" role="alert">
+                                <button  class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
+                                Необходимо заполнить поля:
+                                {!! implode('', $errors->all('<div>:message</div>')) !!}
+                            </div>
                         @endif
                         <button class="btn btn-lg btn-primary" type="submit">Сохранить</button>
                     </form>

@@ -241,16 +241,9 @@ Route::middleware(['web'])->group(function () {
             return view('money.expenses-types');
         });
 
-        Route::get('money/moves', function () {
-            return view('money.moves');
-        });
-        Route::get('money/moves/0', function () {
-            return view('money.move');
-        });
-        Route::get('money/moves/add', function () {
-            return view('money.move');
-        });
-
+        Route::get('money/moves', 'App\Http\Controllers\Money\MovesController@index')->name('admin.money.moves.index');
+        Route::get('money/moves/{id}', 'App\Http\Controllers\Money\MovesController@index')->name('admin.money.moves.edit');
+        Route::get('money/moves/add', 'App\Http\Controllers\Money\MovesController@create')->name('admin.money.moves.create');
 
         /* SALARY */
         Route::get('salary/employee-statuses', function () {

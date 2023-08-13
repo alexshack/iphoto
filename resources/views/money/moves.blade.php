@@ -7,7 +7,7 @@
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -28,9 +28,11 @@
 												</div>
 											</div>
 											<!--Фильтр для записей. Период - месяц-->
-											<input class="form-control" id="datepicker-month" placeholder="Выберите период" value="Июнь 2023" type="text">
+                                            <form id="filterForm" action="">
+                                                <input name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : \App\Helpers\Helper::getMonthName(date('n')) .' ' . date('Y') }}" class="form-control" id="datepicker-month" type="text">
+                                            </form>
 										</div>
-									</div>						
+									</div>
 									<div class="btn-list">
 										<a href="{{url('money/moves/add')}}"  class="btn btn-primary mr-3">Добавить перемещение</a>
 									</div>
@@ -62,45 +64,48 @@
 													</tr>
 												</thead>
 												<tbody>
+                                                    @foreach($moves as $move)
 													<tr>
-														<td>2520</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Зоопарк"><a href="/structure/places/0">Зоопарк</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если дата поступления в текущем месяце -->
-														</td>
+                                                        <td>{{ $move->id }}</td>
+                                                        <td data-order="<?php strtotime( $move->date->format('d.m.Y') ) ?>">
+                                                            {{ $move->date->format('d.m.Y') }}
+                                                        </td>
+                                                        <td data-order="{{ $move->city ? $move->city->name : '' }}">
+                                                            <a href="/structure/cities/{{ $move->city_id }}">
+                                                                {{ $move->city ? $move->city->name : '' }}
+                                                            </a>
+                                                        </td>
+
+                                                        {{--payer type--}}
+                                                        <td data-order="{{ $move->payer ? $move->payer->name : ''}}">
+                                                            <a href="{{ Helper::getEntityEditRoute($move->payer) }}">
+                                                                {{ $move->payer ? $move->payer->name : ''}}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $move->recipient ? $move->recipient->name : ''}}">
+                                                            <a href="{{ Helper::getEntityEditRoute($move->recipient) }}">
+                                                                {{ $move->recipient ? $move->recipient->name : ''}}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $move->amount }}" class="text-right">
+                                                            {{ $move->amount }}₽
+                                                        </td>
+                                                        <td>
+                                                            @if($move->is_editable)
+                                                                <div class="d-flex">
+                                                                    <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.money.moves.edit', ['id' => $move->id]) }}" >
+                                                                        <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                    </a>
+                                                                    <form action="">
+                                                                        <a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
+                                                                            <i class="feather feather-trash-2"></i>
+                                                                        </a>
+                                                                    </form>
+                                                                </div>
+                                                            @endif
+                                                        </td>
 													</tr>
-													<tr>
-														<td>2521</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Менеджеров Менеджер"><a href="/structure/managers/0">Менеджеров Менеджер</a></td>
-														<td data-order="940" class="text-right">940₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-														</td>
-													</tr>
-													<tr>
-														<td>2522</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.06.2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Зоопарк"><a href="/structure/places/0">Зоопарк</a></td>
-														<td data-order="Менеджеров Менеджер"><a href="/structure/managers/0">Менеджеров Менеджер</a></td>
-														<td data-order="10000" class="text-right">10 000₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/moves/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
-																<i class="feather feather-trash-2"></i>
-															</a>															
-														</td>
-													</tr>																										
+                                                    @endforeach
 												</tbody>
 											</table>
 										</div>
@@ -124,10 +129,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
-		
+
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/money/moves.js')}}"></script>
 

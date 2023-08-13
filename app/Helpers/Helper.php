@@ -2,6 +2,10 @@
 
 namespace App\Helpers;
 
+use App\Contracts\UserRoleContract;
+use App\Models\Structure\Place;
+use App\Models\User;
+
 class Helper
 {
     protected static $monthsList = [
@@ -18,7 +22,6 @@ class Helper
         11 => 'Ноябрь',
         12 => 'Декабрь',
     ];
-
 
     public static function dateFilterFormat($dateString)
     {
@@ -58,5 +61,23 @@ class Helper
     public static function getMonthName($id)
     {
         return self::$monthsList[$id] ?? null;
+    }
+
+    public static function getEntityEditRoute($entity) {
+        $route = '';
+        switch (get_class($entity)) {
+        case Place::class:
+            $route = route('admin.structure.places.edit', ['id' => $entity->id]);
+            break;
+        case User::class:
+            if ($entity->role->slug === UserRoleContract::MANAGER_SLUG) {
+                $route = route('admin.structure.managers.edit', ['id' => $entity->id]);
+            }
+            break;
+        default:
+            $route = get_class($entity);
+            break;
+        }
+        return $route;
     }
 }

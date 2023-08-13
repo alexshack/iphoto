@@ -25,10 +25,12 @@ use App\Repositories\Interfaces\GoodsCategoryRepositoryInterface;
 use App\Repositories\Interfaces\GoodsRepositoryInterface;
 use App\Repositories\Interfaces\IncomeRepositoryInterface;
 use App\Repositories\Interfaces\IncomesTypeRepositoryInterface;
+use App\Repositories\Interfaces\MovesRepositoryInterface;
 use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\MovesRepository;
 use App\Repositories\PlaceCalcRepository;
 use App\Repositories\PlaceRepository;
 use App\Repositories\SalesTypeRepository;
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GoodsRepositoryInterface::class, GoodsRepository ::class);
         $this->app->bind(GoodsCategoryRepositoryInterface::class, GoodsCategoryRepository ::class);
         $this->app->bind(IncomeRepositoryInterface::class, IncomeRepository ::class);
+        $this->app->bind(MovesRepositoryInterface::class, MovesRepository::class);
     }
 
     /**
