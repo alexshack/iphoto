@@ -34,7 +34,7 @@ interface CalcsContract {
     ];
 
     public const CASTS = [
-        self::FIELD_DATE => 'date'
+        self::FIELD_DATE => 'date:d.m.Y'
     ];
 
     public const RULES = [
@@ -45,7 +45,7 @@ interface CalcsContract {
         self::FIELD_AGENT_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         self::FIELD_USER_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         self::FIELD_AMOUNT => 'required|numeric',
-        self::FIELD_NOTE => 'required|string|max:255',
+        self::FIELD_NOTE => 'nullable|string|max:255',
     ];
 
     public const ATTRIBUTES = [

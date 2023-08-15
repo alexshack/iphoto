@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\City;
+use App\Repositories\CalcsRepository;
 use App\Repositories\CalcsTypeRepository;
 use App\Repositories\CityManagerRepository;
 use App\Repositories\CityRepository;
@@ -14,6 +15,7 @@ use App\Repositories\GoodsCategoryRepository;
 use App\Repositories\GoodsRepository;
 use App\Repositories\IncomeRepository;
 use App\Repositories\IncomesTypeRepository;
+use App\Repositories\Interfaces\CalcsRepositoryInterface;
 use App\Repositories\Interfaces\CalcsTypeRepositoryInterface;
 use App\Repositories\Interfaces\CityManagerRepositoryInterface;
 use App\Repositories\Interfaces\CityRepositoryInterface;
@@ -62,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GoodsCategoryRepositoryInterface::class, GoodsCategoryRepository ::class);
         $this->app->bind(IncomeRepositoryInterface::class, IncomeRepository ::class);
         $this->app->bind(MovesRepositoryInterface::class, MovesRepository::class);
+        $this->app->bind(CalcsRepositoryInterface::class, CalcsRepository::class);
     }
 
     /**

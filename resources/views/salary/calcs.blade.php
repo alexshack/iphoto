@@ -7,7 +7,7 @@
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -28,9 +28,11 @@
 												</div>
 											</div>
 											<!--Фильтр для записей. Период - месяц-->
-											<input class="form-control" id="datepicker-month" placeholder="Выберите период" value="Июнь 2023" type="text">
+                                            <form id="filterForm" action="">
+                                                <input name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : \App\Helpers\Helper::getMonthName(date('n')) .' ' . date('Y') }}" class="form-control" id="datepicker-month" type="text">
+                                            </form>
 										</div>
-									</div>						
+									</div>
 									<div class="btn-list">
 										<a href="{{url('salary/calcs/add')}}"  class="btn btn-primary mr-3">Добавить начисление</a>
 									</div>
@@ -63,66 +65,55 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>2520</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>"><a href="/money/days/0">24.06.2023</a></td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Проценты 17/13</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-														</td>
-													</tr>
-													<tr>
-														<td>2521</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>"><a href="/money/days/0">24.06.2023</a></td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Оклад</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="940" class="text-right">940₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-														</td>
-													</tr>
-													<tr>
-														<td>2522</td>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.06.2023</td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Премия</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="10000" class="text-right">10 000₽</td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
-																<i class="feather feather-trash-2"></i>
-															</a>															
-														</td>
-													</tr>
-													<tr>
-														<td>2523</td>
-														<td data-order="<?php strtotime('25.06.2023') ?>">25.06.2023</td> <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-														<td>Штраф</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="-1000" class="text-right text-danger">-1 000₽</td><!-- класс text-danger добавляется, если сумма отрицательная -->
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/calcs/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
-																<i class="feather feather-trash-2"></i>
-															</a>															
-														</td>
-													</tr>																										
+                                                    @foreach($calcs as $calc)
+                                                        <tr>
+                                                            <td>{{ $calc->id }}</td>
+                                                            <td data-order="<?php strtotime('24.06.2023') ?>">
+                                                                @if($calc->type === 1)
+                                                                    {{ $calc->date->format('d.m.Y') }}
+                                                                @else
+                                                                    <a href="/money/days/0">{{ $calc->date->format('d.m.Y') }}</a>
+                                                                @endif
+
+                                                            </td>
+                                                            <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
+                                                            <td>{{ $calc->calcType->name }}</td>
+                                                            <td data-order="{{ $calc->city ? $calc->city->name : '' }}">
+                                                                <a href="admin/structure/cities/{{ $calc->city_id }}">
+                                                                    {{ $calc->city ? $calc->city->name : '' }}
+                                                                </a>
+                                                            </td>
+                                                            <td data-order="{{ $calc->place ? $calc->place->name : '' }}">
+                                                                <a href="{{ route('admin.structure.places.edit', ['id' => $calc->city_id]) }}">
+                                                                    {{ $calc->place ? $calc->place->name : '' }}
+                                                                </a>
+                                                            </td>
+                                                            <td data-order="{{ $calc->user ? $calc->user->getFullName() : '' }}">
+                                                                <a href="{{ route('admin.structure.employees.edit', ['id' => $calc->user_id]) }}">
+                                                                    {{ $calc->user ? $calc->user->getFullName() : '' }}
+                                                                </a>
+                                                            </td>
+                                                            <td data-order="{{ $calc->amount }}" class="text-right {{ $calc->amount < 0 ? 'text-danger' : '' }}">
+                                                                {{ $calc->amount }}₽
+                                                            </td>
+                                                            <td>
+                                                                @if($calc->isEditable)
+                                                                    <div class="d-flex">
+                                                                        <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.salary.calc.edit', ['id' => $calc->id]) }}">
+                                                                            <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                        </a>
+                                                                        <form action="" method="DELETE">
+                                                                            @csrf
+                                                                            <button type="submit" class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
+                                                                                <i class="feather feather-trash-2"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                @endif
+                                                                <!-- кнопки редактирования и удаления показываются только если вид начисления вручную, не автоматический. И если еще не было закрытия месяца (выдача зп за месяц) -->
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
 												</tbody>
 											</table>
 										</div>
@@ -146,10 +137,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
-		
+
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/salary/calcs.js')}}"></script>
 

@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Models\City;
 use App\Models\Structure\Place;
 use App\Models\User;
+use Carbong\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -58,5 +59,9 @@ class Move extends Model
             $externalKey = UserContract::FIELD_ID;
         }
         return $this->belongsTo($recipientClass, $internalKey, $externalKey);
+    }
+
+    public function setDateAttribute($value) {
+        $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
     }
 }

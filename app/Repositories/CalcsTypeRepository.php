@@ -21,4 +21,9 @@ class CalcsTypeRepository implements CalcsTypeRepositoryInterface
     {
         return CalcsType::where(CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION, '=', 1)->get();
     }
+
+    public function getAllManuallyCalculation(): Collection
+    {
+        return CalcsType::where(CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION, '=', 0)->get();
+    }
 }

@@ -97,4 +97,16 @@ class UserRepository implements UserRepositoryInterface
         }
         return $users;
     }
+
+    public function getCalcsAvailable($data = []) {
+        $users = User::where(function ($query) use ($data) {
+            if (isset($data['city_id']) && $data['city_id']) {
+                $query->whereHas('workData', function ($q) use ($data) {
+                    $q->where('city_id', $data['city_id']);
+                });
+            }
+            return $query;
+        })->get();
+        return $users;
+    }
 }

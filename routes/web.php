@@ -243,7 +243,6 @@ Route::middleware(['web'])->group(function () {
 
         Route::get('money/moves', 'App\Http\Controllers\Money\MovesController@index')->name('admin.money.moves.index');
         Route::get('money/moves/add', 'App\Http\Controllers\Money\MovesController@create')->name('admin.money.moves.create');
-        Route::post('money/moves/add', 'App\Http\Controllers\Money\MovesController@store')->name('admin.money.moves.store');
         Route::get('money/moves/{id}', 'App\Http\Controllers\Money\MovesController@edit')->name('admin.money.moves.edit');
 
         /* SALARY */
@@ -264,22 +263,18 @@ Route::middleware(['web'])->group(function () {
             return view('salary.calcs-type');
         });
 
-        Route::get('salary/calcs', function () {
-            return view('salary.calcs');
-        });
-        Route::get('salary/calcs/0', function () {
-            return view('salary.calc');
-        });
-        Route::get('salary/calcs/add', function () {
-            return view('salary.calc');
-        });
+        Route::get('salary/calcs', 'App\Http\Controllers\Salary\CalcsController@index')->name('admin.salary.calc.index');
+        Route::get('salary/calcs/add', 'App\Http\Controllers\Salary\CalcsController@create')->name('admin.salary.calc.create');
+        Route::get('salary/calcs/{id}', 'App\Http\Controllers\Salary\CalcsController@edit')->name('admin.salary.calc.edit');
 
         Route::get('salary/pays', function () {
             return view('salary.pays');
         });
+
         Route::get('salary/pays/0', function () {
             return view('salary.pay');
         });
+
         Route::get('salary/pays/add', function () {
             return view('salary.pay');
         });
