@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Contracts\Salary;
 
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
@@ -10,7 +10,7 @@ interface PaysContract {
     public const TABLE = 'pays';
     public const FIELD_ID = 'id';
     public const FIELD_DATE = 'date';
-    public const FIELD_BILLING_MONTH = 'biling_month';
+    public const FIELD_BILLING_MONTH = 'billing_month';
     public const FIELD_TYPE_ID = 'calcs_type_id';
     public const FIELD_CITY_ID = 'city_id';
     public const FIELD_TYPE = 'type';

@@ -7,8 +7,9 @@
 
 @section('content')
     @isset($move)
-        @livewire('money.moves.edit', compact('move'))
+    @livewire('money.moves.edit', ['moveData' => $move])
     @else
+        {{--<x-money.move.single/>--}}
         @livewire('money.moves.create')
     @endif
 @endsection('content')

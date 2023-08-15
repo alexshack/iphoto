@@ -33,5 +33,6 @@
 		<!-- Custom js-->
 		<script src="{{URL::asset('assets/js/custom.js')}}"></script>
         @livewireScripts
+        <x:pharaonic-select2::scripts />
 
         @stack('custom-scripts')

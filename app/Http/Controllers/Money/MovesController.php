@@ -36,4 +36,15 @@ class MovesController extends Controller
         $move = $this->movesRepository->find($id);
         return view('money.move', compact('move'));
     }
+
+    public function store(Request $request) {
+        $validator = $request->validate(MovesContract::RULES);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+    }
 }

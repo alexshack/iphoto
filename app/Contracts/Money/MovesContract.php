@@ -33,7 +33,7 @@ interface MovesContract
     ];
 
     public const CASTS = [
-        self::FIELD_DATE => 'date'
+        self::FIELD_DATE => 'date:d.m.Y'
     ];
 
     public const RULES = [
@@ -44,7 +44,7 @@ interface MovesContract
         self::FIELD_RECIPIENT_TYPE => 'required',
         self::FIELD_RECIPIENT_ID => 'required',
         self::FIELD_AMOUNT => 'required|numeric',
-        self::FIELD_NOTE => 'required|string|max:255',
+        self::FIELD_NOTE => 'nullable|string|max:255',
     ];
 
     public const ATTRIBUTES = [

@@ -31,6 +31,11 @@ class Create extends Component
     protected UserRepositoryInterface $userRepository;
     protected PlaceRepositoryInterface $placeRepository;
 
+    public function changeSelect2() {
+        $this->dispatchBrowserEvent('pharaonic.select2.init');
+        $this->loadSelect2();
+    }
+
     protected function getRules() {
         $rules = [];
         foreach (ExpenseContract::RULES as $key => $rule) {
@@ -41,6 +46,19 @@ class Create extends Component
 
     public function hydrate() {
         $this->emit('select2Hydrate');
+        $this->loadSelect2();
+    }
+
+    public function loadSelect2() {
+        $ids = [
+            '[data-select-init="true"]',
+        ];
+        foreach ($ids as $id) {
+            $this->dispatchBrowserEvent('pharaonic.select2.load', [
+                'target'    => $id,
+                'component' => $this->id,
+            ]);
+        }
     }
 
     public function mount() {
@@ -88,6 +106,10 @@ class Create extends Component
             $this->expense['place_id'] = null;
         }
         Expense::create($this->expense);
+    }
+
+    public function update($name, $value) {
+        $this->changeSelect2();
     }
 
     public function updatedCheckFile() {

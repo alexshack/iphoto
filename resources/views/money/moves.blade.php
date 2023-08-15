@@ -96,7 +96,8 @@
                                                                     <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.money.moves.edit', ['id' => $move->id]) }}" >
                                                                         <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
                                                                     </a>
-                                                                    <form action="">
+                                                                    <form action="" method="DELETE">
+                                                                        @csrf
                                                                         <a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
                                                                             <i class="feather feather-trash-2"></i>
                                                                         </a>

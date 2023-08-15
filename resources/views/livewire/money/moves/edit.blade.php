@@ -2,7 +2,7 @@
 <!--Page header-->
 <div class="page-header d-xl-flex d-block">
     <div class="page-leftheader">
-        <h4 class="page-title">Добавить перемещение<a href="{{url('money/moves')}}" class="font-weight-normal text-muted ml-2">Перемещения ДС</a></h4>
+        <h4 class="page-title">#{{ $moveData->id }} от {{ $moveData->date->format('d.m.Y') }}<a href="{{url('money/moves')}}" class="font-weight-normal text-muted ml-2">Перемещения ДС</a></h4>
     </div>
 </div>
 <!--End Page header-->
@@ -208,4 +208,3 @@ span.select2.select2-container--default {
 }
 </style>
 @endpush
-

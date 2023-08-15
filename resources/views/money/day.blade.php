@@ -18,11 +18,12 @@
 		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 		<!-- INTERNAL Sumoselect css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">				
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
 
 @endsection
 
 @section('content')
+    <WorkShift/>
 
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
@@ -71,7 +72,7 @@
 														<td>
 															<div class="font-weight-semibold text-right">2 000₽</div>
 														</td>
-													</tr>																										
+													</tr>
 													<tr>
 														<td>
 															<span class="w-50">Касса, в том числе:</span></td>
@@ -90,7 +91,7 @@
 														<td>
 															<div class="font-weight-semibold text-right">2 000₽</div>
 														</td>
-													</tr>																										
+													</tr>
 													<tr>
 														<td>
 															<span class="w-50">Расходы из кассы, в том числе:</span>
@@ -98,7 +99,7 @@
 														<td>
 															<h4 class="font-weight-semibold text-right mb-0">900₽</h4>
 														</td>
-													</tr>																										
+													</tr>
 													<tr>
 														<td><span class="w-50 pl-3">Расходы</span></td>
 														<td>
@@ -110,13 +111,13 @@
 														<td>
 															<div class="font-weight-semibold text-right">300₽</div>
 														</td>
-													</tr>													
+													</tr>
 													<tr>
 														<td><span class="w-50 pl-3">Выдача авансов</span></td>
 														<td>
 															<div class="font-weight-semibold text-right">300₽</div>
 														</td>
-													</tr>												
+													</tr>
 													<tr>
 														<td class="py-5">
 															<span class="w-50 font-weight-semibold">Остаток наличных</span>
@@ -124,7 +125,7 @@
 														<td>
 															<h4 class="font-weight-semibold text-right mb-0">2 600₽</h4>
 														</td>
-													</tr>																										
+													</tr>
 													<tr>
 														<td>
 															<span class="w-50">Начисленная зарплата</span>
@@ -139,7 +140,7 @@
 										<div class="py-3">
 											<a href="#" class="btn btn-success btn-block font-weight-semibold" >ЗАКРЫТЬ СМЕНУ</a><!-- если смена открыта, видят только сотрудники и админ -->
 											<a href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
-										</div>									
+										</div>
 										<!-- Алерт отображается удалением класса d-none -->
 										<div class="alert alert-danger" role="alert">
 											<i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
@@ -147,7 +148,7 @@
 											<div>Не совпадают суммы продаж и кассы</div>
 											<div>Не заполнены суммы снятия кассы</div>
 											<div>Не заполнены данные по оборудованию</div>
-										</div>										
+										</div>
 
 
 									</div>
@@ -206,7 +207,7 @@
 																<td data-order="<?php strtotime('24.06.2023 09:30') ?>">09:30</td>
 																<td data-order="<?php strtotime('24.06.2023 12:00') ?>">12:00</td>
 																<td data-order="150">02:30</td>
-																<td>Ученик</td>														
+																<td>Ученик</td>
 																<td>Фотограф</td>
 																<td data-order="1627">1 627₽</td>
 																<td>
@@ -228,7 +229,7 @@
 																<td data-order="<?php strtotime('24.06.2023 09:30') ?>">09:30</td>
 																<td data-order="<?php strtotime('24.06.2023 12:00') ?>">12:00</td>
 																<td data-order="150">02:30</td>
-																<td>Ученик</td>														
+																<td>Ученик</td>
 																<td>Фотограф</td>
 																<td data-order="1627">1 627₽</td>
 																<td>
@@ -278,7 +279,7 @@
 														</tbody>
 													</table>
 												</div>
-											</div>										
+											</div>
 										</div>
 
 										<div class="tab-pane" id="tab2">
@@ -324,7 +325,7 @@
 																		<a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
 																	</div>
 																</td>
-															</tr>															
+															</tr>
 														</tbody>
 													</table>
 												</div>
@@ -374,11 +375,11 @@
 																		<a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
 																	</div>
 																</td>
-															</tr>															
+															</tr>
 														</tbody>
 													</table>
 												</div>
-											</div>											
+											</div>
 										</div>
 
 										<div class="tab-pane" id="tab3">
@@ -414,7 +415,7 @@
 														</tbody>
 													</table>
 												</div>
-											</div>								
+											</div>
 											<div class="card-header  border-0">
 												<h4 class="card-title">Перемещения денег</h4>
 												<div class="card-options">
@@ -480,7 +481,7 @@
 														</tbody>
 													</table>
 												</div>
-											</div>																								
+											</div>
 										</div>
 
 										<div class="tab-pane" id="tab4">
@@ -519,7 +520,7 @@
 											</div>
 										</div>
 
-										<div class="tab-pane" id="tab5">	
+										<div class="tab-pane" id="tab5">
 											<div class="card-header  border-0">
 												<h4 class="card-title">Оборудование</h4>
 											</div>
@@ -554,7 +555,7 @@
 											</div>
 										</div>
 
-										<div class="tab-pane" id="tab6">	
+										<div class="tab-pane" id="tab6">
 											<div class="card-header  border-0">
 												<h4 class="card-title">Отработка</h4>
 												<div class="card-options">
@@ -617,10 +618,10 @@
 														</tbody>
 													</table>
 												</div>
-											</div>											
-										</div>	
+											</div>
+										</div>
 
-										<div class="tab-pane" id="tab7">	
+										<div class="tab-pane" id="tab7">
 											<div class="card-header  border-0">
 												<h4 class="card-title">Начисления ЗП по смене</h4>
 											</div>
@@ -877,10 +878,10 @@
 											<option value="1">Иванов Сергей</option>
 											<option value="2">Сергеев Иван</option>
 											<option value="3">Сотрудников Сотрудник</option>
-										</select>										
+										</select>
 									</div>
 								</div>
-							</div>							
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
@@ -938,7 +939,7 @@
 										<input type="file" class="dropify" data-default-file="{{URL::asset('assets/images/photos/media1.jpg')}}" data-height="180"  />
 									</div>
 								</div>
-						
+
 								<div class="col-md-12">
 									<div class="form-group">
 										<label class="form-label">Примечания:</label>
@@ -1000,7 +1001,7 @@
 										</select>
 									</div>
 								</div>
-							</div>							
+							</div>
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
@@ -1022,7 +1023,7 @@
 						</div>
 					</div>
 				</div>
-			</div>			
+			</div>
 
 			<div class="modal fade"  id="pay">
 				<div class="modal-dialog modal-md" role="document">
@@ -1046,14 +1047,14 @@
 											<option value="2">Сотрудник 2</option>
 											<option value="3">Сотрудник 3</option>
 										</select>
-									</div>									
+									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
 										<label class="form-label">Расчетный месяц</label>
 										<input class="form-control" id="datepicker-month" placeholder="Выберите месяц" value="Июнь 2023" type="text">
 									</div>
-								</div>														
+								</div>
 								<div class="col-md-12">
 									<div class="form-group">
 										<label class="form-label">Сумма</label>
@@ -1098,7 +1099,7 @@
 											<option value="2">Терминал</option>
 											<option value="3">СБП</option>
 										</select>
-									</div>									
+									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
@@ -1138,7 +1139,7 @@
 									<div class="form-group">
 										<label class="form-label">Оборудование</label>
 										<input class="form-control" value="Принтер Samsung, W7YK170208" type="text" disabled><!-- Наименование товара, серийный номер -->
-									</div>									
+									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
@@ -1184,7 +1185,7 @@
 											<option value="2">Фото А6</option>
 											<option value="3">Фото А3</option>
 										</select>
-									</div>									
+									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
@@ -1224,7 +1225,7 @@
 											<option value="2">Фото А6</option>
 											<option value="3">Фото А3</option>
 										</select>
-									</div>									
+									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
@@ -1240,7 +1241,7 @@
 						</div>
 					</div>
 				</div>
-			</div>												
+			</div>
 
 @endsection('modals')
 
@@ -1263,12 +1264,17 @@
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
 
 		<!-- INTERNAL Bootstrap-Datepicker js-->
-		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>		
+		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 
 		<!-- INTERNAL Sumoselect js-->
-		<script src="{{URL::asset('assets/plugins/sumoselect/jquery.sumoselect.js')}}"></script>		
+		<script src="{{URL::asset('assets/plugins/sumoselect/jquery.sumoselect.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/money/day.js')}}"></script>
+
+        <script>
+            window.workshiftData = {
+            }
+        </script>
 
 @endsection

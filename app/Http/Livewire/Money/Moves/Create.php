@@ -22,6 +22,11 @@ class Create extends Component
     protected UserRepositoryInterface $userRepository;
     protected PlaceRepositoryInterface $placeRepository;
 
+    public function changeSelect2() {
+        $this->dispatchBrowserEvent('pharaonic.select2.init');
+        $this->loadSelect2();
+    }
+
     protected function getRules() {
         $rules = [];
         foreach (MovesContract::RULES as $key => $rule) {
@@ -40,6 +45,22 @@ class Create extends Component
 
     public function hydrate() {
         $this->emit('select2Hydrate');
+        $this->loadSelect2();
+    }
+
+    public function loadSelect2() {
+        $ids = [
+            '#payerPlace',
+            '#payerManager',
+            '#recipientPlace',
+            '#recipientManager',
+        ];
+        foreach ($ids as $id) {
+            $this->dispatchBrowserEvent('pharaonic.select2.load', [
+                'target'    => $id,
+                'component' => $this->id,
+            ]);
+        }
     }
 
     public function mount() {
@@ -76,11 +97,13 @@ class Create extends Component
     public function setPayerType($type){
         $this->moveData[MovesContract::FIELD_PAYER_TYPE] = $type;
         $this->moveData[MovesContract::FIELD_PAYER_ID] = null;
+        $this->changeSelect2();
     }
 
     public function setRecipientType($type) {
         $this->moveData[MovesContract::FIELD_RECIPIENT_TYPE] = $type;
         $this->moveData[MovesContract::FIELD_RECIPIENT_ID] = null;
+        $this->changeSelect2();
     }
 
     public function submit() {
@@ -93,6 +116,6 @@ class Create extends Component
     }
 
     public function updated($name, $value) {
-        \Log::info("Moves.Create updated $name => $value");
+        $this->dispatchBrowserEvent('pharaonic.select2.init');
     }
 }

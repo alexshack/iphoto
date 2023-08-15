@@ -28,4 +28,9 @@
 
         @livewireStyles
 
+        <style>
+            [data-select-init="true"] + span {
+                width: 100% !important;
+            }
+        </style>
         @yield('styles')

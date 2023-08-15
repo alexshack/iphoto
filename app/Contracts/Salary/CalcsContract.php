@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Contracts\Salary;
 
+use App\Contracts\Salary\CalcsTypeContract;
+use App\Contracts\Salary\PaysContract;
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
 use App\Contracts\UserContract;

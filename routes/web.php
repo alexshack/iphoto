@@ -242,8 +242,9 @@ Route::middleware(['web'])->group(function () {
         });
 
         Route::get('money/moves', 'App\Http\Controllers\Money\MovesController@index')->name('admin.money.moves.index');
-        Route::get('money/moves/{id}', 'App\Http\Controllers\Money\MovesController@index')->name('admin.money.moves.edit');
         Route::get('money/moves/add', 'App\Http\Controllers\Money\MovesController@create')->name('admin.money.moves.create');
+        Route::post('money/moves/add', 'App\Http\Controllers\Money\MovesController@store')->name('admin.money.moves.store');
+        Route::get('money/moves/{id}', 'App\Http\Controllers\Money\MovesController@edit')->name('admin.money.moves.edit');
 
         /* SALARY */
         Route::get('salary/employee-statuses', function () {

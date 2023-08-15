@@ -25,8 +25,8 @@
                         </div>
                         <div class="form-group row">
                             <label class="form-label col-md-3">Вид расхода</label>
-                            <div class="col-md-9">
-                                <select wire:model="expense.expense_type_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите вид расхода">
+                            <div class="col-md-9" wire:ignore.self>
+                                <select data-select-init="true"  wire:model="expense.expense_type_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите вид расхода">
                                     <option label="Выберите вид расхода"></option>
                                     <!-- expenses-types where expenses-types.status = active and user.role in expenses-types.roles -->
                                     @foreach($expenseTypes as $type)
@@ -39,8 +39,8 @@
                         </div>
                         <div class="form-group row">
                             <label class="form-label  col-md-3">Город</label>
-                            <div class="col-md-9">
-                                <select wire:model="expense.city_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите город">
+                            <div class="col-md-9" wire:ignore.self>
+                                <select data-select-init="true"  wire:model="expense.city_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите город">
                                     <option label="Выберите город"></option>
                                     <!-- Если Админ, то все города. Если Менеджер, только Менеджер.Город-->
                                     @foreach($cities as $city)
@@ -77,8 +77,8 @@
                                     <div class="form-horizontal">
                                         <div class="form-group row">
                                             <label class="form-label  col-md-3">Точка</label>
-                                            <div class="col-md-9">
-                                                <select wire:model="expense.place_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите точку">
+                                            <div class="col-md-9" wire:ignore.self>
+                                                <select data-select-init="true"  wire:model="expense.place_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите точку">
                                                     <option label="Выберите точку"></option>
                                                     <!-- Если Админ, то точки с фильтром по городу, выбранному выше. Если менеджер, то все точки с Точка.Город = Менджер.Город -->
                                                     @foreach($places as $place)
@@ -95,8 +95,8 @@
                                     <div class="form-horizontal">
                                         <div class="form-group row">
                                             <label class="form-label  col-md-3">Менеджер</label>
-                                            <div class="col-md-9">
-                                                <select wire:model="expense.manager_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите менеджера">
+                                            <div class="col-md-9" wire:ignore.self>
+                                                <select data-select-init="true"  wire:model="expense.manager_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите менеджера">
                                                     <option label="Выберите менеджера"></option>
                                                     <!-- Если Админ, то менеджер с фильтром по городу, выбранному выше. Если менеджер, то только он -->
                                                     @foreach($managers as $manager)
@@ -155,15 +155,6 @@
 @push('custom-scripts')
 <script>
 function moneyExpenseCreateInit() {
-    $('.select2-show-search2').select2({
-        minimumResultsForSearch: 5,
-        width: '100%'
-    }).on('change', function(e) {
-        var data = $(this).select2('val');
-        var model = $(this).attr('wire:model');
-        @this.set(model, data);
-    });
-
     $( ".fc-datepicker" ).datepicker({
         dateFormat: "dd.mm.yy",
         monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
