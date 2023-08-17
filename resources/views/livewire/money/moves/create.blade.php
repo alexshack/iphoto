@@ -135,7 +135,7 @@
                                     <div class="form-group row">
                                         <label class="form-label  col-md-3">Менеджер</label>
                                         <div class="col-md-9" wire:ignore.self>
-                                            <select data-pharaonic="select2" data-component-id="{{ $this->id  }}" id="recipientManager" data-placeholder="Выберите менеджера">
+                                            <select data-pharaonic="select2" data-component-id="{{ $this->id  }}" id="recipientManager"  wire:model="moveData.recipient_id" data-placeholder="Выберите менеджера">
                                                 <option label="Выберите менеджера"></option>
                                                 @foreach($managers as $manager)
                                                     <option value="{{ $manager->id }}">{{ $manager->getFullName() }}</option>
@@ -150,7 +150,7 @@
                     <div class="form-group row">
                         <label class="form-label col-md-3">Сумма</label>
                         <div class="col-md-9">
-                            <input wire:model="moveData.amount" type="number" class="form-control" placeholder="Введите сумму" value="">
+                            <input wire:model.defer="moveData.amount" type="number" class="form-control" placeholder="Введите сумму" value="">
                         </div>
                     </div>
                     <div class="form-group row">
