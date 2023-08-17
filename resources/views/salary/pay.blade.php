@@ -11,7 +11,11 @@
 @endsection
 
 @section('content')
-    @livewire('salary.pay.create')
+    @isset($pay)
+        @livewire('salary.pay.edit', compact('pay'))
+    @else
+        @livewire('salary.pay.create')
+    @endif
 @endsection('content')
 
 @section('modals')

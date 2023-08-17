@@ -43,13 +43,25 @@ class Pay extends Model
 
     public function getBillingMonthHumanAttribute() {
         $date = $this->billing_month;
-        $dateArr = explode('.', $date);
+        $dateArr = explode('-', $date);
         if (count($dateArr) < 3) {
             return $this->billing_month;
         }
 
-        $month = Helper::getMonthName($dateArr[1]);
-        return "{$month} {$dateArr[2]}";
+        $month = Helper::getMonthName((int)$dateArr[1]);
+        return "{$month} {$dateArr[0]}";
+    }
+
+    //public function getDateAttribute() {
+        //return $this->attributes[PaysContract::FIELD_DATE]->format('d.m.Y');
+    //}
+
+    public function getIsEditableAttribute() {
+        $isEditable = false;
+        if (!$this->{PaysContract::FIELD_ISSUED}) {
+            $isEditable = true;
+        }
+        return $isEditable;
     }
 
 

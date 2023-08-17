@@ -15,13 +15,13 @@ use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use Auth;
 use Livewire\Component;
 
-class Create extends Component
+class Edit extends Component
 {
     public $billingMonth;
     public $calcTypes = [];
     public $cities = [];
     public $managers = [];
-    public $pay = [];
+    public Pay $pay;
     public $places = [];
 
     protected CityRepositoryInterface $cityRepository;
@@ -68,9 +68,10 @@ class Create extends Component
     }
 
     public function mount() {
-        $this->pay = collect(PaysContract::FILLABLE_FIELDS)->flip()->map(function ($item) {
-            return '';
-        })->toArray();
+        if ($this->pay) {
+            $this->billingMonth = $this->pay->billingMonthHuman;
+        }
+        //$this->pay->{PaysContract::FIELD_DATE} = $this->pay->{PaysContract::FIELD_DATE}->format('d.m.Y');
         $this->setSourceType('place');
     }
 
@@ -99,7 +100,7 @@ class Create extends Component
         $this->managers = $this->userRepository->getCalcsAvailable([
             'city_id' => $this->pay['city_id'],
         ]);
-        return view('livewire.salary.pay.create');
+        return view('livewire.salary.pay.edit');
     }
 
     public function setBillingMonth() {
@@ -112,22 +113,19 @@ class Create extends Component
 
     public function setSourceType($type) {
         $this->pay[PaysContract::FIELD_SOURCE_TYPE] = $type;
-        $this->pay[PaysContract::FIELD_SOURCE_ID] = null;
     }
 
     public function submit() {
         $this->validate();
         $this->pay['type'] = 1;
-        $this->pay['agent_id'] = Auth::user()->id;
         $this->setBillingMonth();
-        $payData = $this->pay;
-        $payData[PaysContract::FIELD_SOURCE_TYPE] = PaysContract::SOURCE_TYPES[$payData[PaysContract::FIELD_SOURCE_TYPE]];
-        if (!$payData[PaysContract::FIELD_ISSUED]) {
-            $payData[PaysContract::FIELD_ISSUED] = false;
+        $this->pay[PaysContract::FIELD_SOURCE_TYPE] = PaysContract::SOURCE_TYPES[$this->pay[PaysContract::FIELD_SOURCE_TYPE]];
+        if (!$this->pay[PaysContract::FIELD_ISSUED]) {
+            $this->pay[PaysContract::FIELD_ISSUED] = false;
         }
-        $pay = Pay::create($payData);
-        if ($pay) {
-            session()->flash('message', 'Выплата создана');
+        $this->pay->save();
+        if ($this->pay) {
+            session()->flash('message', 'Выплата обновлена');
         }
         return redirect()->route('admin.salary.pay.index');
     }

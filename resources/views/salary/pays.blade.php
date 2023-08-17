@@ -111,6 +111,19 @@
                                                         </td>
 														<td>
 															<!-- кнопки редактирования и удаления показываются только если Выплата.Выдано = Нет -->
+                                                            @if($pay->isEditable)
+                                                                    <div class="d-flex">
+                                                                        <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.salary.pay.edit', ['id' => $pay->id]) }}">
+                                                                            <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
+                                                                        </a>
+                                                                        <form action="" method="DELETE">
+                                                                            @csrf
+                                                                            <button type="submit" class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
+                                                                                <i class="feather feather-trash-2"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                @endif
 														</td>
 													</tr>
                                                     @endforeach

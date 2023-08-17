@@ -2,8 +2,7 @@
     <!--Page header-->
     <div class="page-header d-xl-flex d-block">
         <div class="page-leftheader">
-            <h4 class="page-title">Добавить выплату<a href="{{url('salary/pays')}}" class="font-weight-normal text-muted ml-2">Выплаты</a></h4>
-            {{--<h4 class="page-title">#2520 от 24.06.2023<a href="{{url('salary/pays')}}" class="font-weight-normal text-muted ml-2">Выплаты</a></h4>--}}
+            <h4 class="page-title">#{{ $pay['id'] }} от {{ $pay->date->format('d.m.Y') }} <a href="{{url('salary/pays')}}" class="font-weight-normal text-muted ml-2">Выплаты</a></h4>
         </div>
     </div>
     <!--End Page header-->
@@ -18,6 +17,7 @@
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" wire:submit.prevent="submit">
+                        <p>{{ serialize($pay->toArray()) }}</p>
                         <div class="form-group row">
                             <label class="form-label col-md-3">Дата</label>
                             <div class="col-md-9">

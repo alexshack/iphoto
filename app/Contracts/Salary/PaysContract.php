@@ -38,7 +38,8 @@ interface PaysContract {
     ];
 
     public const CASTS = [
-        self::FIELD_DATE => 'date'
+        //self::FIELD_DATE => 'date'
+        self::FIELD_DATE => 'date:d.m.Y'
     ];
 
     public const RULES = [
