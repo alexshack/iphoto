@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Contracts\UserRoleContract;
+use App\Models\City;
 use App\Models\Structure\Place;
 use App\Models\User;
 
@@ -73,6 +74,9 @@ class Helper
             if ($entity->role->slug === UserRoleContract::MANAGER_SLUG) {
                 $route = route('admin.structure.managers.edit', ['id' => $entity->id]);
             }
+            break;
+        case City::class:
+            $route = route('admin.structure.cities.edit', ['id' => $entity->id]);
             break;
         default:
             $route = get_class($entity);

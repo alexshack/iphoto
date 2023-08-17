@@ -5,10 +5,10 @@
 		<!-- INTERNAL Data table css -->
 		<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
-		<link href="{{URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css')}}"  rel="stylesheet">		
+		<link href="{{URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css')}}"  rel="stylesheet">
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -28,12 +28,15 @@
 													<span class="feather feather-clock"></span>
 												</div>
 											</div>
-											<!--Фильтр для записей по полю Расчетный месяц. Период - месяц-->
-											<input class="form-control" id="datepicker-month" placeholder="Выберите период" value="Июнь 2023" type="text">
+                                            <!--Фильтр для записей. Период - месяц-->
+                                            <form id="filterForm" action="">
+                                                <input name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : \App\Helpers\Helper::getMonthName(date('n')) .' ' . date('Y') }}" class="form-control" id="datepicker-month" type="text">
+                                            </form>
+                                            <!--Фильтр для записей по полю Расчетный месяц. Период - месяц-->
 										</div>
-									</div>						
+									</div>
 									<div class="btn-list">
-										<a href="{{url('salary/pays/add')}}" class="btn btn-primary mr-3">Добавить выплату</a>
+										<a href="{{ route('admin.salary.pay.create') }}" class="btn btn-primary mr-3">Добавить выплату</a>
 										<!--Кнопки списков доступны только менеджеру-->
 										<a href="" data-target="#pays-list-oklad" data-toggle="modal" class="btn btn-primary mr-3">Список на оклад</a>
 										<a href="" data-target="#pays-list-zp" data-toggle="modal" class="btn btn-primary mr-3">Список на зарплату</a>
@@ -69,54 +72,48 @@
 													</tr>
 												</thead>
 												<tbody>
+                                                    @foreach($pays as $pay)
 													<tr>
-														<td>2520</td>
-														<td data-order="<?php strtotime('05.07.2023') ?>"><a href="/money/days/0">05.07.2023</a></td><!-- ссылка на смену ставится, только если Вид выплаты = Аванс и Источник = Точка  -->
-														<td>Оклад</td><!-- Всего три типа: Аванс, Оклад, Зарплата -->
-														<td data-order="<?php strtotime('01.06.2023') ?>">Июнь 2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td><!-- Источники: либо конкретная точка, либо менеджер -->
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
-														<td data-order="Да" class="text-center"><i class="feather feather-check text-success"></i></td>
+                                                        <td>{{ $pay->id }}</td>
+														<td data-order="<?php strtotime('05.07.2023') ?>">
+                                                            <a href="/money/days/0">
+                                                                05.07.2023
+                                                            </a>
+                                                        </td><!-- ссылка на смену ставится, только если Вид выплаты = Аванс и Источник = Точка  -->
+														<td>
+                                                            {{ $pay->calcType ? $pay->calcType->name : '' }}
+                                                        </td><!-- Всего три типа: Аванс, Оклад, Зарплата -->
+                                                        <td data-order="{{ $pay->billing_month }}">
+                                                            {{ $pay->billingMonthHuman }}
+                                                        </td>
+                                                        <td data-order="{{ $pay->city ? $pay->city->name : '' }}">
+                                                            <a href="{{ Helper::getEntityEditRoute($pay->city) }}">
+                                                                {{ $pay->city ? $pay->city->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $pay->source ? $pay->source->name : '' }}">
+                                                            <a href="{{ Helper::getEntityEditRoute($pay->source) }}">
+                                                                {{ $pay->source ? $pay->source->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $pay->user ? $pay->user->name : '' }}">
+                                                            <a href="{{ Helper::getEntityEditRoute($pay->user) }}">
+                                                                {{ $pay->user->name }}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $pay->amount }}" class="text-right">
+                                                            {{ $pay->amount }}₽
+                                                        </td>
+                                                        <td data-order="{{ $pay->issued ? 'Да' : 'Нет' }}" class="text-center">
+                                                            @if($pay->issued)
+                                                                <i class="feather feather-check text-success"></i>
+                                                            @endif
+                                                        </td>
 														<td>
 															<!-- кнопки редактирования и удаления показываются только если Выплата.Выдано = Нет -->
 														</td>
 													</tr>
-													<tr>
-														<td>2521</td>
-														<td data-order="<?php strtotime('05.07.2023') ?>"><a href="/money/days/0">05.07.2023</a></td><!-- ссылка на смену ставится, только если Вид выплаты = Аванс и Источник = Точка  -->
-														<td>Оклад</td><!-- Всего три типа: Аванс, Оклад, Зарплата -->
-														<td data-order="<?php strtotime('01.06.2023') ?>">Июнь 2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Менеджеров Менеджер"><a href="/structure/managers/0">Менеджеров Менеджер</a></td><!-- Источники: либо конкретная точка, либо менеджер -->
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
-														<td data-order="Нет" class="text-center"></td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если Выплата.Выдано = Нет и Источник = Менеджер -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('salary/pays/0')}}" >
-																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-															</a>
-															<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить">
-																<i class="feather feather-trash-2"></i>
-															</a>															
-														</td>
-													</tr>													
-													<tr>
-														<td>2523</td>
-														<td data-order="<?php strtotime('05.07.2023') ?>"><a href="/money/days/0">05.07.2023</a></td><!-- ссылка на смену ставится, только если Вид выплаты = Аванс и Источник = Точка  -->
-														<td>Оклад</td><!-- Всего три типа: Аванс, Оклад, Зарплата -->
-														<td data-order="<?php strtotime('01.06.2023') ?>">Июнь 2023</td>
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Менеджеров Менеджер"><a href="/structure/managers/0">Менеджеров Менеджер</a></td><!-- Источники: либо конкретная точка, либо менеджер -->
-														<td data-order="Иванов Иван"><a href="/structure/employees/0">Иванов Иван</a></td>
-														<td data-order="5750" class="text-right">5 750₽</td>
-														<td data-order="Да" class="text-center"><i class="feather feather-check text-success"></i></td>
-														<td>
-															<!-- кнопки редактирования и удаления показываются только если Выплата.Выдано = Нет -->														
-														</td>
-													</tr>																									
+                                                    @endforeach
 												</tbody>
 											</table>
 										</div>
@@ -131,8 +128,8 @@
 @section('modals')
 
 			<!--Oklad Modal -->
-			<!--Автоматически заполняются списком всех сотрудников по условиям: 
-					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца 
+			<!--Автоматически заполняются списком всех сотрудников по условиям:
+					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца
 				Сумма по сотруднику заполняется из суммы всех начислений по условиям:
 					Начисление.Сотрудник = Сотрудник и Начисление.УчаствуетВвыплатеОклада = Да и Начисление.Дата(месяц) = #datepicker-month
 			-->
@@ -166,10 +163,10 @@
 										<tr>
 											<td>Иванов Иван</td>
 											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>																				
+										</tr>
 									</tbody>
 								</table>
-							</div>						
+							</div>
 						</div>
 						<div class="modal-footer">
 							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
@@ -192,8 +189,8 @@
 
 
 			<!--ZP Modal -->
-			<!--Автоматически заполняются списком всех сотрудников по условиям: 
-					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца 
+			<!--Автоматически заполняются списком всех сотрудников по условиям:
+					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца
 				Сумма по сотруднику заполняется по формуле (c - p + b), где :
 				c = Сумма всех начислений по условиям:
 					Начисление.Сотрудник = Сотрудник и Начисление.Дата(месяц) = #datepicker-month
@@ -231,10 +228,10 @@
 										<tr>
 											<td>Иванов Иван</td>
 											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>																				
+										</tr>
 									</tbody>
 								</table>
-							</div>						
+							</div>
 						</div>
 						<div class="modal-footer">
 							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
@@ -270,10 +267,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/buttons.print.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>				
+		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/salary/pays.js')}}"></script>
 

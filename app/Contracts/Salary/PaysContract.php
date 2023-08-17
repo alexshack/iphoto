@@ -16,7 +16,6 @@ interface PaysContract {
     public const FIELD_TYPE = 'type';
     public const FIELD_SOURCE_TYPE = 'source_type';
     public const FIELD_SOURCE_ID =  'source_id';
-    public const FIELD_PLACE_ID = 'place_id';
     public const FIELD_USER_ID = 'user_id';
     public const FIELD_AGENT_ID = 'agent_id';
     public const FIELD_AMOUNT = 'amount';
@@ -31,11 +30,11 @@ interface PaysContract {
         self::FIELD_TYPE,
         self::FIELD_SOURCE_TYPE,
         self::FIELD_SOURCE_ID,
-        self::FIELD_PLACE_ID,
         self::FIELD_USER_ID,
         self::FIELD_AGENT_ID,
         self::FIELD_AMOUNT,
         self::FIELD_NOTE,
+        self::FIELD_ISSUED,
     ];
 
     public const CASTS = [
@@ -46,13 +45,12 @@ interface PaysContract {
         self::FIELD_DATE => 'required|date',
         self::FIELD_TYPE_ID => 'required|exists:' . CalcsTypeContract::TABLE . ',' .CalcsTypeContract::FIELD_ID,
         self::FIELD_CITY_ID => 'required|exists:' . CityContract::TABLE . ',' . CityContract::FIELD_ID,
-        self::FIELD_PLACE_ID => 'sometimes|nullable|exists:' . PlaceContract::TABLE . ',' . PlaceContract::FIELD_ID,
         self::FIELD_SOURCE_TYPE => 'required',
         self::FIELD_SOURCE_ID => 'required',
         self::FIELD_AGENT_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         self::FIELD_USER_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         self::FIELD_AMOUNT => 'required|numeric',
-        self::FIELD_NOTE => 'required|string|max:255',
+        self::FIELD_NOTE => 'nullable|string|max:255',
     ];
 
     public const ATTRIBUTES = [
@@ -60,7 +58,6 @@ interface PaysContract {
         self::FIELD_BILLING_MONTH => 'Расчетный месяц',
         self::FIELD_TYPE_ID => 'Вид выплаты',
         self::FIELD_CITY_ID => 'Город',
-        self::FIELD_PLACE_ID => 'Точка',
         self::FIELD_SOURCE_TYPE => 'тип источника',
         self::FIELD_SOURCE_ID => 'Источник',
         self::FIELD_USER_ID => 'Сотрудник',
@@ -68,5 +65,10 @@ interface PaysContract {
         self::FIELD_NOTE => 'Примечания',
         self::FIELD_USER_ID => 'Сотрудник',
         self::FIELD_ISSUED => 'Выдано',
+    ];
+
+    public const SOURCE_TYPES = [
+        'manager' => 1,
+        'place' => 2,
     ];
 }

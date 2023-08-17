@@ -267,17 +267,9 @@ Route::middleware(['web'])->group(function () {
         Route::get('salary/calcs/add', 'App\Http\Controllers\Salary\CalcsController@create')->name('admin.salary.calc.create');
         Route::get('salary/calcs/{id}', 'App\Http\Controllers\Salary\CalcsController@edit')->name('admin.salary.calc.edit');
 
-        Route::get('salary/pays', function () {
-            return view('salary.pays');
-        });
-
-        Route::get('salary/pays/0', function () {
-            return view('salary.pay');
-        });
-
-        Route::get('salary/pays/add', function () {
-            return view('salary.pay');
-        });
+        Route::get('salary/pays', 'App\Http\Controllers\Salary\PayController@index')->name('admin.salary.pay.index');
+        Route::get('salary/pays/add', 'App\Http\Controllers\Salary\PayController@create')->name('admin.salary.pay.create');
+        Route::get('salary/pays/{id}', 'App\Http\Controllers\Salary\PayController@edit')->name('admin.salary.pay.edit');
 
         /* GOODS */
         Route::get('goods', function () {

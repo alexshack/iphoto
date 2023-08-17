@@ -6,7 +6,7 @@ $(function (e) {
     monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
     dayNamesMin: [ "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" ]
   });
-  
+
   $.fn.bootstrapdatepicker.dates['en'] = {
       days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -19,15 +19,5 @@ $(function (e) {
       titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
       weekStart: 0
   };
-
-  $('#datepicker-month').bootstrapdatepicker({
-    language: 'ru-RU',
-    format: "MM yyyy",
-    viewMode: "months",
-    minViewMode: "months",
-    autoclose: true,
-    endDate: '0d'
-  });
-
 
 });

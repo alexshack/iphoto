@@ -7,9 +7,12 @@ use App\Contracts\Salary\CalcsTypeContract;
 use App\Contracts\Salary\PaysContract;
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
+use App\Contracts\UserContract;
+use App\Helpers\Helper;
 use App\Models\City;
 use App\Models\Structure\Place;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,9 +41,37 @@ class Pay extends Model
         return $this->belongsTo(City::class, PaysContract::FIELD_CITY_ID, CityContract::FIELD_ID);
     }
 
-    public function place()
-    {
-        return $this->belongsTo(Place::class, PaysContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
+    public function getBillingMonthHumanAttribute() {
+        $date = $this->billing_month;
+        $dateArr = explode('.', $date);
+        if (count($dateArr) < 3) {
+            return $this->billing_month;
+        }
+
+        $month = Helper::getMonthName($dateArr[1]);
+        return "{$month} {$dateArr[2]}";
+    }
+
+
+    public function setDateAttribute($value) {
+        $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
+    }
+
+    public function source() {
+        $className = null;
+        $externalID = null;
+        switch ($this->{PaysContract::FIELD_SOURCE_TYPE}) {
+        case PaysContract::SOURCE_TYPES['manager']:
+            $className = User::class;
+            $externalID = UserContract::FIELD_ID;
+            break;
+        case PaysContract::SOURCE_TYPES['place']:
+            $className = Place::class;
+            $externalID = PlaceContract::FIELD_ID;
+            break;
+        }
+
+        return $this->belongsTo($className, PaysContract::FIELD_SOURCE_ID, $externalID);
     }
 
     public function user()

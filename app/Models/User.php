@@ -112,6 +112,10 @@ class User extends Authenticatable
         return 0;
     }
 
+    public function getNameAttribute() {
+        return $this->getFullName();
+    }
+
     public function updateUser(array $data, $photo)
     {
         if($this->{ UserContract::FIELD_EMAIL } != $data['user'][UserContract::FIELD_EMAIL]) {
