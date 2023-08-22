@@ -25,6 +25,17 @@ class WorkShift extends Model
         return $this->belongsTo(City::class, WorkShiftContract::FIELD_CITY_ID, CityContract::FIELD_ID);
     }
 
+    public function employees() {
+        return $this->hasMany(WorkShiftEmployee::class);
+    }
+
+    public function getEmployeesNamesAttribute() {
+        return $this->employees->map(function ($item) {
+            $personalData = $item->user->getPersonalData();
+            return "{$personalData->last_name} {$personalData->first_name}";
+        })->implode(', ');
+    }
+
     public function getIsClosableAttribute() {
         $notClosedWorkShiftsCount = WorkShift::where(WorkShiftContract::FIELD_CITY_ID, $this->city_id)
             ->where(WorkShiftContract::FIELD_PLACE_ID, $this->place_id)
@@ -40,4 +51,5 @@ class WorkShift extends Model
     public function place() {
         return $this->belongsTo(Place::class, WorkShiftContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
     }
+
 }

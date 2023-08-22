@@ -8,7 +8,7 @@
 		<link href="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
 
 		<!-- INTERNAL Bootstrap DatePicker css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">		
+		<link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -28,10 +28,12 @@
 													<span class="feather feather-clock"></span>
 												</div>
 											</div>
-											<!--Фильтр для записей. Период - месяц-->
-											<input class="form-control" id="datepicker-month" placeholder="Выберите период" value="Июнь 2023" type="text">
+                                            <!--Фильтр для записей. Период - месяц-->
+                                            <form id="filterForm" action="">
+                                                <input name="filter" onchange="document.getElementById('filterForm').submit()" placeholder="Выберите период" value="{{ (request()->query('filter')) ? request()->query('filter') : \App\Helpers\Helper::getMonthName(date('n')) .' ' . date('Y') }}" class="form-control" id="datepicker-month" type="text">
+                                            </form>
 										</div>
-									</div>						
+									</div>
 								</div>
 							</div>
 						</div>
@@ -43,7 +45,7 @@
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
-										<h4 class="card-title">Смены за период: <span>Июнь 2023</span></h4>
+										<h4 class="card-title">Смены за период: <span>{{ $period }}</span></h4>
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
@@ -62,77 +64,52 @@
 													</tr>
 												</thead>
 												<tbody>
+                                                    @foreach($workshifts as $workshift)
 													<tr>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td data-order="1" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-															<a href="money/days/0" class="badge bg-success-transparent">Закрыта</a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
-														</td>														
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Аквапарк"><a href="/structure/places/0">Аквапарк</a></td>
-														<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
+                                                        <td data-order="{{ $workshift->date }}">{{ $workshift->date }}</td>
+                                                        <td data-order="{{ $workshift->is_closed ? 1 : 0 }}" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
+                                                            <a href="money/days/{{ $workshift->id }}" class="badge {{ $workshift->is_closed ? 'bg-success-transparent' : 'bg-primary-transparent' }}">Закрыта</a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
+														</td>
+                                                        <td data-order="{{ $workshift->city ? $workshift->city->name : '' }}">
+                                                            <a href="{{ Helper::getEntityEditRoute($workshift->city) }}">
+                                                                {{ $workshift->city ? $workshift->city->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        <td data-order="{{ $workshift->place ? $workshift->place->name : '' }}">
+                                                            <a href="{{ Helper::getEntityEditRoute($workshift->place) }}">
+                                                                {{ $workshift->place ? $workshift->place->name : '' }}
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-center" data-search="{{ $workshift->employeesNames }}"><!-- Имя фамилия всех через запятую -->
 															<div class="avatar-list avatar-list-stacked">
-																<!-- сотрудники в смене -->
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
+                                                                @foreach($workshift->employees as $employee)
+                                                                    <a href="{{url('structure/employees/' . $employee->user_id)}}" title="Сотрудник Сотрудников">
+                                                                        <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="img">
 																</a>
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																</a>
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																</a>
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
-																</a>
+                                                                @endforeach
 															</div>
-														</td>																												
-														<td data-order="12000" class="text-right">12 000₽</td>
-														<td data-order="500" class="text-right">500₽</td>
-														<td data-order="2000" class="text-right">2 000₽</td>
+														</td>
+                                                        <td data-order="{{ $workshift->total_sales }}" class="text-right">
+                                                            {{ $workshift->total_sales }}₽
+                                                        </td>
+                                                        <td data-order="{{ $workshift->expenses }}" class="text-right">
+                                                            {{ $workshift->expenses }}₽
+                                                        </td>
+                                                        <td data-order="{{ $workshift->salary }}" class="text-right">
+                                                            {{ $workshift->salary }}₽
+                                                        </td>
 														<td>
 															<!-- кнопка редактирования показывается:
 															1. У админа всегда
 															2. У сотрудников только если следующая по дате смена в этой же точке имеет статус "Открыта",
 															в остальных случаях показывается кнопка посмотреть -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/days/0')}}" >
+                                                            <a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/days/' . $workshift->id)}}" >
 																<i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
 															</a>
 														</td>
 													</tr>
-													<tr>
-														<td data-order="<?php strtotime('24.06.2023') ?>">24.05.2023</td>
-														<td data-order="0" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-															<a href="money/days/0" class="badge bg-primary-transparent">Открыта</a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
-														</td>														
-														<td data-order="Белгород"><a href="/structure/cities/0">Белгород</a></td>
-														<td data-order="Зоопарк"><a href="/structure/places/0">Зоопарк</a></td>
-														<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
-															<div class="avatar-list avatar-list-stacked">
-																<!-- сотрудники в смене -->
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																</a>
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																</a>
-																<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																	<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																</a>
-															</div>
-														</td>																												
-														<td data-order="15000" class="text-right">15 000₽</td>
-														<td data-order="400" class="text-right">400₽</td>
-														<td data-order="2500" class="text-right">2 500₽</td>
-														<td>															
-															<!-- кнопка редактирования показывается:
-															1. У админа всегда
-															2. У сотрудников только если следующая по дате смена в этой же точке имеет статус "Открыта",
-															в остальных случаях показывается кнопка посмотреть -->
-															<a class="btn btn-primary btn-icon btn-sm"  href="{{url('money/days/0')}}" >
-																<i class="feather feather-eye" data-toggle="tooltip" data-original-title="Посмотреть"></i>
-															</a>
-														</td>
-													</tr>
+                                                    @endforeach
+
 												</tbody>
 											</table>
 										</div>
@@ -156,10 +133,10 @@
 		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
 		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
-		
+
 		<!-- INTERNAL Bootstrap-Datepicker js-->
 		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
-		
+
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/money/days.js')}}"></script>
 

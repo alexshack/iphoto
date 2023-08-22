@@ -208,18 +208,14 @@ Route::middleware(['web'])->group(function () {
         Route::get('structure/places/dashboard/0', function () {
             return view('structure.place-dashboard');
         });
+
         /* MONEY */
-        Route::get('money/days', function () {
-            return view('money.days');
-        });
-        Route::get('money/days/0', function () {
-            return view('money.day');
-        });
+        Route::get('money/days', 'App\Http\Controllers\Salary\WorkShiftController@index')->name('money.days');
+        Route::get('money/days/{id}', 'App\Http\Controllers\Salary\WorkShiftController@edit')->name('money.days.edit');
 
         Route::get('money/sales-types', function () {
             return view('money.sales-types');
         });
-
         Route::get('money/incomes', function () {
             return view('money.incomes');
         });

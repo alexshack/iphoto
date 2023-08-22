@@ -23,7 +23,9 @@
 @endsection
 
 @section('content')
-    <WorkShift/>
+    <div id="workshift">
+        <WorkShift/>
+    </div>
 
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
@@ -1273,8 +1275,8 @@
 		<script src="{{URL::asset('assets/js/money/day.js')}}"></script>
 
         <script>
-            window.workshiftData = {
-            }
+            window.workshiftData = @js($workshift)
         </script>
+        @vite(['resources/js/workshift.js'])
 
 @endsection

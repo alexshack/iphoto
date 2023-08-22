@@ -33,12 +33,14 @@ use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\MovesRepository;
 use App\Repositories\PaysRepository;
 use App\Repositories\PlaceCalcRepository;
 use App\Repositories\PlaceRepository;
 use App\Repositories\SalesTypeRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\WorkShiftRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -68,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(MovesRepositoryInterface::class, MovesRepository::class);
         $this->app->bind(CalcsRepositoryInterface::class, CalcsRepository::class);
         $this->app->bind(PaysRepositoryInterface::class, PaysRepository::class);
+        $this->app->bind(WorkShiftRepositoryInterface::class, WorkShiftRepository::class);
     }
 
     /**

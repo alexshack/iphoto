@@ -13,6 +13,9 @@ interface WorkShiftContract  {
     public const FIELD_CITY_ID = 'city_id';
     public const FIELD_PLACE_ID = 'place_id';
     public const FIELD_CLOSED = 'is_closed';
+    public const FIELD_TOTAL_SALES = 'total_sales';
+    public const FIELD_EXPENSES = 'expenses';
+    public const FIELD_SALARY = 'salary';
 
     public const FILLABLE_FIELDS = [
         self::FIELD_DATE,
@@ -34,5 +37,8 @@ interface WorkShiftContract  {
         self::FIELD_DATE => 'Дата',
         self::FIELD_CITY_ID => 'Город',
         self::FIELD_PLACE_ID => 'Точка',
+        self::FIELD_TOTAL_SALES => 'Касса',
+        self::FIELD_EXPENSES => 'Расходы',
+        self::FIELD_SALARY => 'Зарплата',
     ];
 }
