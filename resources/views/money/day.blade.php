@@ -1275,7 +1275,24 @@
 		<script src="{{URL::asset('assets/js/money/day.js')}}"></script>
 
         <script>
-            window.workshiftData = @js($workshift)
+            window.agenda = @js($agenda);
+            window.workshiftData = @js($workshift);
+            window.workshiftTitle = '{{ $workshift->title }}';
+            window.workshiftUrls = {
+                update: '{{ route("money.days.update", ["id" => $workshift->id]) }}',
+                employee: {
+                    all: '{{ route("workshift.employee.index") }}',
+                    delete: '{{ route("workshift.employee.destroy", ["employee" => "%s"]) }}',
+                    positions: '{{ route("workshift.employee.position") }}',
+                    show: '{{ route("workshift.employee.show", ["employee" => "%s"]) }}',
+                    statuses: '{{ route("workshift.employee.status") }}',
+                    store: '{{ route("workshift.employee.store") }}',
+                    update: '{{ route("workshift.employee.update", ["employee" => "%s"]) }}',
+                },
+                users: {
+                    city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}'
+                },
+            };
         </script>
         @vite(['resources/js/workshift.js'])
 

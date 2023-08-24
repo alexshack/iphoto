@@ -33,6 +33,14 @@ class UserRepository implements UserRepositoryInterface
         return Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)->firstOrFail()->users->all();
     }
 
+    public function getByCity(int $cityID)
+    {
+        return User::whereHas('workData', function ($query) use ($cityID) {
+            return $query->where(UserWorkDataContract::FIELD_CITY_ID, $cityID);
+        })->with('personalData:id,user_id,last_name,first_name,middle_name')
+            ->get();
+    }
+
     /**
      * Получение количества мужчин по роли
      * @param  string  $slug

@@ -18,7 +18,7 @@ trait WorkshiftTrait {
              WorkShiftContract::FIELD_PLACE_ID => $place->{PlaceContract::FIELD_ID},
         ];
 
-        $workShift = WorkShift::create($workShiftData);
+        $workShift = WorkShift::firstOrCreate($workShiftData);
 
         $tmcGoods = Goods::where(GoodsContract::FIELD_TYPE, 3)
             ->where(GoodsContract::FIELD_ENTER_READINGS, 1)

@@ -3,15 +3,17 @@
         <!--Page header-->
         <div class="page-header d-xl-flex d-block">
             <div class="page-leftheader">
-                <h4 class="page-title">Смена 24.06.2023 - Белгород - Аквапарк  <a href="#" class="font-weight-normal text-muted ml-2">Смены</a></h4>
-                <p>{{ title }}</p>
+                <h4 class="page-title">{{ title }}  <a href="#" class="font-weight-normal text-muted ml-2">Смены</a></h4>
             </div>
         </div>
         <!--End Page header-->
 
         <div class="row">
             <div class="col-xl-3 col-md-12 col-lg-12">
-                <WorkShiftAgenda/>
+                <WorkShiftAgenda
+                 :access="access"
+                 :agenda="agenda"
+                 :errors="errors" />
             </div>
             <div class="col-xl-9 col-md-12 col-lg-12">
                 <WorkShiftTabs/>
@@ -31,8 +33,54 @@
         },
         data: () => {
             return {
+                access: {},
+                agenda: {},
+                errors: [],
+                title: '',
+                workshift: {},
             };
         },
+        methods: {
+            setupData() {
+                if (typeof window.workshiftData != 'undefined') {
+                    this.workshift = window.workshiftData;
+                }
+
+                if (typeof window.agenda != 'undefined') {
+                    this.agenda = window.agenda.agenda;
+                    this.errors = window.agenda.errors;
+                    this.access = window.agenda.access;
+                }
+
+                if (typeof window.workshiftTitle != 'undefined') {
+                    this.title = window.workshiftTitle;
+                }
+
+                document.addEventListener('workshiftUpdate', this.updateData)
+            },
+            updateData(data = {}) {
+                axios({
+                    method: 'PUT',
+                    url: window.workshiftUrls.update,
+                    data,
+                }).then((response) => {
+                    if (typeof response.data.access != 'undefined') {
+                        this.access = response.data.access;
+                    }
+
+                    if (typeof response.data.agenda != 'undefined') {
+                        this.agenda = response.data.agenda;
+                    }
+
+                    if (typeof response.data.errors != 'undefined') {
+                        this.errors = response.data.errors;
+                    }
+                });
+            }
+        },
+        mounted() {
+            this.setupData();
+        }
     }
 </script>
 

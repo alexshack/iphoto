@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->integer(Contract::FIELD_WORK_SHIFT_ID);
             $table->integer(Contract::FIELD_POSITION_ID)->nullable();
-            $table->enum(Contract::FIELD_STATUS, Contract::STATUSES);
             $table->dateTime(Contract::FIELD_START_TIME)->nullable();
             $table->dateTime(Contract::FIELD_END_TIME)->nullable();
             $table->integer(Contract::FIELD_WORK_TIME)->nullable();

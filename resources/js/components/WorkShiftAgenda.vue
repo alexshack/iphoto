@@ -100,10 +100,13 @@
                 </table>
             </div>
             <div class="py-3">
-                <a @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
+                <a v-if="access.closable"
+                    @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
                     ЗАКРЫТЬ СМЕНУ
                 </a><!-- если смена открыта, видят только сотрудники и админ -->
-                <a v-if="agenda.status === 'close'" href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
+                <a v-if="access.cancelable"
+                   @click="cancelClose()"
+                    href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
             </div>
             <!-- Алерт отображается удалением класса d-none -->
             <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
@@ -128,9 +131,12 @@
         },
         data: () => {
             return {
-                errors: [],
-
-                agenda: {
+            };
+        },
+        props: {
+            agenda: {
+                type: Object,
+                default: {
                     cashBalance: 0,
                     cashMoney: 0,
                     cashTerminal: 0,
@@ -146,7 +152,18 @@
                     status: 'open',
                     withdrawal: 0,
                 },
-            };
+            },
+            access: {
+                type: Object,
+                default: {
+                    closable: false,
+                    cancelable: false,
+                },
+            },
+            errors: {
+                type: Array,
+                default: [],
+            }
         },
         methods: {
             closeWorkshift() {},

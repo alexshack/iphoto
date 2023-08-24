@@ -5,6 +5,8 @@ namespace App\Models\WorkShift;
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
 use App\Contracts\WorkShift\WorkShiftContract;
+use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
+use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Models\City;
 use App\Models\Structure\Place;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +28,7 @@ class WorkShift extends Model
     }
 
     public function employees() {
-        return $this->hasMany(WorkShiftEmployee::class);
+        return $this->hasMany(WorkShiftEmployee::class, WorkShiftContract::FIELD_ID, WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID);
     }
 
     public function getEmployeesNamesAttribute() {
@@ -34,6 +36,11 @@ class WorkShift extends Model
             $personalData = $item->user->getPersonalData();
             return "{$personalData->last_name} {$personalData->first_name}";
         })->implode(', ');
+    }
+
+    public function getTitleAttribute() {
+        $date = $this->date->format('d.m.Y');
+        return "Смена $date - {$this->city->name} - {$this->place->name}";
     }
 
     public function getIsClosableAttribute() {
@@ -52,4 +59,8 @@ class WorkShift extends Model
         return $this->belongsTo(Place::class, WorkShiftContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
     }
 
+
+    public function withdrawals() {
+        return $this->hasMany(WorkShiftWithdrawal::class, WorkShiftContract::FIELD_ID, WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID);
+    }
 }

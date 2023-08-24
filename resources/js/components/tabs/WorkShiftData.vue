@@ -3,7 +3,9 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Сотрудники</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#employee">Добавить сотрудника</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createEmployee">
+                    Добавить сотрудника
+                </a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -27,21 +29,23 @@
                                 <div class="d-flex">
                                     <span v-if="employee.photo"
                                           class="avatar avatar brround mr-3"
-                                          :style="{'background-image': `url(${employee.photo})`}"></span>
+                                          :style="{'background-image': `url(${employee.user.photo})`}"></span>
                                     <div class="mr-3 mt-0 mt-sm-2 d-block">
-                                        <h6 class="mb-1 fs-14">{{ employee.name }}</h6>
+                                        <h6 class="mb-1 fs-14">{{ getUserName(employee.user.personal_data, 'F I') }}</h6>
                                     </div>
                                 </div>
                             </td>
-                            <td data-order="">{{ employee.job_time_start }}</td>
-                            <td data-order="">{{ employee.job_time_end }}</td>
-                            <td data-order="">{{ employee.job_time_total }}</td>
-                            <td>{{ employee.status }}</td>
-                            <td>{{ employee.role }}</td>
+                            <td data-order="">{{ employee.start_time }}</td>
+                            <td data-order="">{{ employee.end_time }}</td>
+                            <td data-order="">{{ employee.work_time }}</td>
+                            <td>{{ employee.status.name }}</td>
+                            <td>{{ employee.position.name }}</td>
                             <td :data-order="employee.salary">{{ employee.salaray }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" class="action-btns1" data-toggle="modal" data-target="#employee"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <button @click="setCurrentEmployee(employee.id)" class="action-btns1">
+                                        <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
+                                    </button>
                                     <a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
                                 </div>
                             </td>
@@ -80,21 +84,44 @@
                 </table>
             </div>
         </div>
+        <CreateEmployee/>
+        <EditEmployee :employeeID="currentEmployee"/>
     </div>
 </template>
 
 <script>
+    import * as employeeApi from '@/db/employee.js';
+    import CreateEmployee from '@/components/Modals/Employee/Create.vue';
+    import EditEmployee from '@/components/Modals/Employee/Edit.vue';
+    import {getUserName} from '@/helpers/employee.js';
+
     export default{
         name: 'WorkShiftData',
-        props: {
-            employees: {
-                type: Array,
-                default: [],
+        components: {
+            CreateEmployee,
+            EditEmployee,
+        },
+        data: () => {
+            return {
+                currentEmployee: -1,
+                employees: [],
+                withdrawals: [],
+            };
+        },
+        methods: {
+            async getEmployees() {
+                this.employees = await employeeApi.all();
             },
-            withdrawals: {
-                type: Array,
-                default: [],
+            getUserName,
+            setCurrentEmployee(ID) {
+                this.currentEmployee = ID;
             },
+            async setupData() {
+                window.addEventListener('workDataEmployeeUpdate', await this.getEmployees);
+            }
+        },
+        mounted() {
+            this.getEmployees();
         },
     }
 </script>

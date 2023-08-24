@@ -210,8 +210,20 @@ Route::middleware(['web'])->group(function () {
         });
 
         /* MONEY */
-        Route::get('money/days', 'App\Http\Controllers\Salary\WorkShiftController@index')->name('money.days');
-        Route::get('money/days/{id}', 'App\Http\Controllers\Salary\WorkShiftController@edit')->name('money.days.edit');
+        Route::get('money/days', 'App\Http\Controllers\Money\WorkShiftController@index')->name('money.days');
+        Route::get('money/days/{id}', 'App\Http\Controllers\Money\WorkShiftController@edit')->name('money.days.edit');
+        Route::put('money/days/{id}', 'App\Http\Controllers\Money\WorkShiftController@update')->name('money.days.update');
+
+        Route::group([
+            'prefix' => 'workshift',
+            'as' => 'workshift.',
+            'namespace' => "App\Http\Controllers\Money\Workshift"
+        ], function () {
+            Route::resource('employee', 'WorkshiftEmployeeController');
+            Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
+            Route::get('employee-position', 'PositionController@index')->name('employee.position');
+            Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');
+        });
 
         Route::get('money/sales-types', function () {
             return view('money.sales-types');
