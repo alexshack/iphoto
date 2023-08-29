@@ -52,7 +52,7 @@
 														</div>
 													</div>
 													<div class="col-3">
-														<div class="icon1 my-auto  float-right"> 
+														<div class="icon1 my-auto  float-right">
 															<a href="{{url('structure/places')}}">
 																<i class="feather feather-shopping-cart"></i> </div>
 															</a>
@@ -71,7 +71,7 @@
 														</div>
 													</div>
 													<div class="col-3">
-														<div class="icon1 my-auto  float-right"> 
+														<div class="icon1 my-auto  float-right">
 															<a href="{{url('structure/employees')}}">
 																<i class="feather feather-users"></i> </div>
 															</a>
@@ -79,10 +79,10 @@
 												</div>
 											</div>
 										</div>
-									</div>									
+									</div>
 									<div class="col-xl-2 col-lg-6 col-md-12">
-										<div class="card">											
-											<div class="card-body">												
+										<div class="card">
+											<div class="card-body">
 												<div class="row">
 													<div class="col-9">
 														<div class="mt-0 text-left"> <span class="fs-14 font-weight-semibold">Продажи сегодня</span>
@@ -90,18 +90,18 @@
 													</div>
 													<div class="col-3">
 														<div class="icon1 brround my-auto  float-right">
-															<a href="{{url('money/days')}}"> 
-																<i class="feather feather-dollar-sign"></i> 
+															<a href="{{url('money/days')}}">
+																<i class="feather feather-dollar-sign"></i>
 															</a>
 														</div>
 													</div>
 												</div>
-											</div>											
+											</div>
 										</div>
 									</div>
 									<div class="col-xl-2 col-lg-6 col-md-12">
-										<div class="card">											
-											<div class="card-body">												
+										<div class="card">
+											<div class="card-body">
 												<div class="row">
 													<div class="col-9">
 														<div class="mt-0 text-left"> <span class="fs-14 font-weight-semibold">Продажи вчера</span>
@@ -109,18 +109,18 @@
 													</div>
 													<div class="col-3">
 														<div class="icon1 brround my-auto  float-right">
-															<a href="{{url('money/days')}}"> 
-																<i class="feather feather-dollar-sign"></i> 
+															<a href="{{url('money/days')}}">
+																<i class="feather feather-dollar-sign"></i>
 															</a>
 														</div>
 													</div>
 												</div>
-											</div>											
+											</div>
 										</div>
 									</div>
 									<div class="col-xl-2 col-lg-6 col-md-12">
-										<div class="card">											
-											<div class="card-body">												
+										<div class="card">
+											<div class="card-body">
 												<div class="row">
 													<div class="col-9">
 														<div class="mt-0 text-left"> <span class="fs-14 font-weight-semibold">Продажи за месяц</span>
@@ -128,15 +128,15 @@
 													</div>
 													<div class="col-3">
 														<div class="icon1 brround my-auto  float-right">
-															<a href="{{url('money/days')}}"> 
-																<i class="feather feather-dollar-sign"></i> 
+															<a href="{{url('money/days')}}">
+																<i class="feather feather-dollar-sign"></i>
 															</a>
 														</div>
 													</div>
 												</div>
-											</div>											
+											</div>
 										</div>
-									</div>																		
+									</div>
 								</div>
 							</div>
 
@@ -171,69 +171,43 @@
 																<th class="border-bottom-0 text-center">Касса</th>
 																<th class="border-bottom-0 text-center">Расходы</th>
 																<th class="border-bottom-0 text-center">Зарплата</th>
-																
+
 															</tr>
 														</thead>
 														<tbody>
+                                                            @foreach($todayWorkShifts as $workshift)
 															<tr>
-																<td data-order="1" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-																	<a href="money/days/0" class="badge bg-success-transparent">Закрыта</a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
-																</td>																
-																<td data-order="Белгород">
-																	<a href="{{url('structure/cities/0')}}" class="text-dark font-weight-semibold">Белгород</a>
-																</td>
-																<td data-order="Сити Молл">
-																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Сити Молл</a>
-																</td>																
-																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
-																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
-																		</a>
-																	</div>
-																</td>
+                                                                <td data-order="{{ $workshift->is_closed ? 1 : 0 }}" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
+                                                                    <a href="money/days/{{ $workshift->id }}" class="badge {{ $workshift->is_closed ? 'bg-success-transparent' : 'bg-primary-transparent' }}">
+                                                                        {{ $workshift->is_closed ? 'Закрыта' : 'Открыта' }}
+                                                                    </a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
+                                                                </td>
+
+                                                                <td data-order="{{ $workshift->city ? $workshift->city->name : '' }}">
+                                                                    <a href="{{ Helper::getEntityEditRoute($workshift->city) }}">
+                                                                        {{ $workshift->city ? $workshift->city->name : '' }}
+                                                                    </a>
+                                                                </td>
+                                                                <td data-order="{{ $workshift->place ? $workshift->place->name : '' }}">
+                                                                    <a href="{{ Helper::getEntityEditRoute($workshift->place) }}">
+                                                                        {{ $workshift->place ? $workshift->place->name : '' }}
+                                                                    </a>
+                                                                </td>
+                                                                <td class="text-center" data-search="{{ $workshift->employeesNames }}"><!-- Имя фамилия всех через запятую -->
+                                                                    <div class="avatar-list avatar-list-stacked">
+                                                                        @foreach($workshift->employees as $employee)
+                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="Сотрудник Сотрудников">
+                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="img">
+                                                                            </a>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </td>
 																<td data-order="1303682400" class="text-center">15:00</td>
 																<td data-order="12000" class="text-right">12 000₽</td>
 																<td data-order="500" class="text-right">500₽</td>
 																<td data-order="2000" class="text-right">2 000₽</td>
 															</tr>
-															<tr>
-																<td data-order="0" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-																	<a href="money/days/0" class="badge bg-primary-transparent">Открыта</a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
-																</td>																
-																<td data-order="Белгород">
-																	<a href="{{url('structure/cities/0')}}" class="text-dark font-weight-semibold">Белгород</a>
-																</td>
-																<td data-order="Зоопарк">
-																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Зоопарк</a>
-																</td>																
-																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
-																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																		</a>
-																	</div>
-																</td>
-																<td data-order="1303682400" class="text-center">15:00</td>
-																<td data-order="12000" class="text-right">12 000₽</td>
-																<td data-order="500" class="text-right">500₽</td>
-																<td data-order="2000" class="text-right">2 000₽</td>
-															</tr>															
+                                                            @endforeach
 														</tbody>
 													</table>
 												</div>
@@ -252,78 +226,44 @@
 																<th class="border-bottom-0 text-center">Касса</th>
 																<th class="border-bottom-0 text-center">Расходы</th>
 																<th class="border-bottom-0 text-center">Зарплата</th>
-																
+
 															</tr>
 														</thead>
 														<tbody>
+															@foreach($yesterdayWorkShifts as $workshift)
 															<tr>
-																<td data-order="1" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-																	<a href="money/days/0" class="badge bg-success-transparent">Закрыта</a><!-- bg-success-transparent - если закрыта, bg-danger-transparent - если открыта -->
-																</td>																
-																<td data-order="Белгород"><!-- data-order: city->name -->
-																	<a href="{{url('structure/cities/0')}}" class="text-dark font-weight-semibold">Белгород</a>
-																</td>
-																<td data-order="Сити Молл"><!-- data-order: place->name -->
-																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Сити Молл</a>
-																</td>																
-																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
-																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые были на смене -->
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/5.jpg')}}" alt="img">
-																		</a>
-																	</div>
-																</td>
-																<td data-order="1303682400" class="text-center">15:00</td><!-- data-order: time -->
-																<td class="text-center" data-search="Сотрудник Сотрудников"><!-- Имя фамилия через запятую -->
-																	<div class="avatar-list"><!-- сотрудник, который закрыл смену -->
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																		</a>
-																	</div>
-																</td>																
-																<td data-order="12000" class="text-right">12 000₽</td><!-- data-order: int -->
-																<td data-order="500" class="text-right">500₽</td><!-- data-order: int -->
-																<td data-order="2000" class="text-right">2 000₽</td><!-- data-order: int -->
-															</tr>
-															<tr>
-																<td data-order="0" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-																	<a href="money/days/0" class="badge bg-danger-transparent">Открыта</a><!-- bg-success-transparent - если закрыта, bg-danger-transparent - если открыта -->
-																</td>																
-																<td data-order="Белгород">
-																	<a href="{{url('structure/cities/0')}}" class="text-dark font-weight-semibold">Белгород</a>
-																</td>
-																<td data-order="Зоопарк">
-																	<a href="{{url('structure/places/0')}}" class="text-dark font-weight-semibold">Зоопарк</a>
-																</td>																
-																<td class="text-center" data-search="Сотрудник Сотрудников, Сотрудник Сотрудников"><!-- Имя фамилия всех через запятую -->
-																	<div class="avatar-list avatar-list-stacked"><!-- сотрудники, которые в данные момент на смене -->
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/12.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/3.jpg')}}" alt="img">
-																		</a>
-																		<a href="{{url('structure/employees/0')}}" title="Сотрудник Сотрудников">
-																			<img class="avatar avatar-sm brround" src="{{URL::asset('assets/images/users/2.jpg')}}" alt="img">
-																		</a>
-																	</div>
-																</td>
+                                                                <td data-order="{{ $workshift->is_closed ? 1 : 0 }}" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
+                                                                    <a href="money/days/{{ $workshift->id }}" class="badge {{ $workshift->is_closed ? 'bg-success-transparent' : 'bg-primary-transparent' }}">
+                                                                        {{ $workshift->is_closed ? 'Закрыта' : 'Открыта' }}
+                                                                    </a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
+                                                                </td>
+
+                                                                <td data-order="{{ $workshift->city ? $workshift->city->name : '' }}">
+                                                                    <a href="{{ Helper::getEntityEditRoute($workshift->city) }}">
+                                                                        {{ $workshift->city ? $workshift->city->name : '' }}
+                                                                    </a>
+                                                                </td>
+                                                                <td data-order="{{ $workshift->place ? $workshift->place->name : '' }}">
+                                                                    <a href="{{ Helper::getEntityEditRoute($workshift->place) }}">
+                                                                        {{ $workshift->place ? $workshift->place->name : '' }}
+                                                                    </a>
+                                                                </td>
+                                                                <td class="text-center" data-search="{{ $workshift->employeesNames }}"><!-- Имя фамилия всех через запятую -->
+                                                                    <div class="avatar-list avatar-list-stacked">
+                                                                        @foreach($workshift->employees as $employee)
+                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="Сотрудник Сотрудников">
+                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="img">
+                                                                            </a>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </td>
 																<td data-order="1303682400" class="text-center">15:00</td>
-																<td class="text-center" data-search=""><!-- Имя фамилия через запятую -->
-																</td>
+                                                                <td></td>
 																<td data-order="12000" class="text-right">12 000₽</td>
 																<td data-order="500" class="text-right">500₽</td>
 																<td data-order="2000" class="text-right">2 000₽</td>
-															</tr>															
+															</tr>
+                                                            @endforeach
 														</tbody>
 													</table>
 												</div>

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Models\WorkShift\WorkShiftWithdrawal;
-use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
+use App\Repositories\Interfaces\WorkShiftWithdrawalRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class WorkShiftWithdrawalRepository implements WorkShiftWithdrawalRepositoryInterface
@@ -20,6 +20,11 @@ class WorkShiftWithdrawalRepository implements WorkShiftWithdrawalRepositoryInte
     public function getAll(): Collection
     {
         return WorkShiftWithdrawal::all();
+    }
+
+    public function getByWorkShift($workShiftID)
+    {
+        return WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workShiftID)->get();
     }
 
     public function getByFilter($data): Collection

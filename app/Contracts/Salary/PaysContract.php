@@ -72,4 +72,9 @@ interface PaysContract {
         'manager' => 1,
         'place' => 2,
     ];
+
+    public const TYPES = [
+        1 => 'Зарплата',
+        2 => 'Аванс',
+    ];
 }

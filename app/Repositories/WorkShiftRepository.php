@@ -43,4 +43,9 @@ class WorkShiftRepository implements WorkShiftRepositoryInterface
     {
         return WorkShift::whereDate('created_at', Carbon::today())->get();
     }
+
+    public function getYesterday(): Collection
+    {
+        return WorkShift::whereDate('created_at', Carbon::yesterday())->get();
+    }
 }

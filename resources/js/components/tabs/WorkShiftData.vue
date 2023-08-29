@@ -43,10 +43,12 @@
                             <td :data-order="employee.salary">{{ employee.salaray }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <button @click="setCurrentEmployee(employee.id)" class="action-btns1">
+                                    <a href="#" @click="setCurrentEmployee(employee.id)" class="action-btns1">
                                         <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
-                                    </button>
-                                    <a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    </a>
+                                    <a @click="deleteEmployee(employee.id)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить">
+                                        <i class="feather feather-trash-2 text-danger"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -57,6 +59,11 @@
 
         <div class="card-header  border-0">
             <h4 class="card-title">Снятие кассы</h4>
+            <div class="card-options">
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createWithdraw">
+                    Добавить снятие
+                </a>
+            </div>
         </div>
         <div class="card-body pt-1">
             <div class="table-responsive">
@@ -85,6 +92,7 @@
             </div>
         </div>
         <CreateEmployee/>
+        <CreateWithdraw/>
         <EditEmployee :employeeID="currentEmployee"/>
     </div>
 </template>
@@ -92,6 +100,7 @@
 <script>
     import * as employeeApi from '@/db/employee.js';
     import CreateEmployee from '@/components/Modals/Employee/Create.vue';
+    import CreateWithdraw from '@/components/Modals/Withdraw/Create.vue';
     import EditEmployee from '@/components/Modals/Employee/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
 
@@ -99,6 +108,7 @@
         name: 'WorkShiftData',
         components: {
             CreateEmployee,
+            CreateWithdraw,
             EditEmployee,
         },
         data: () => {
@@ -109,6 +119,14 @@
             };
         },
         methods: {
+            async deleteEmployee(ID) {
+                await employeeApi.deleteEmployee(ID);
+                window.dispatchEvent(new CustomEvent('notify', {
+                    type: 'success',
+                    msg: 'Сотрудник удален',
+                }));
+                await this.getEmployees();
+            },
             async getEmployees() {
                 this.employees = await employeeApi.all();
             },

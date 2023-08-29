@@ -16,7 +16,7 @@
                  :errors="errors" />
             </div>
             <div class="col-xl-9 col-md-12 col-lg-12">
-                <WorkShiftTabs/>
+                <WorkShiftTabs :workShift="workShift"/>
             </div>
         </div>
     </div>

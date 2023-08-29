@@ -55,9 +55,7 @@ Route::middleware(['web'])->group(function () {
 
         // Роль Админа
         Route::middleware(['role:admin'])->prefix('admin')->group(function() {
-            Route::get('/', function () {
-                return view('admin.index');
-            })->name('admin.home');
+            Route::get('/', 'App\Http\Controllers\AdminController@index')->name('admin.home');
 
             /**
              * Структура
@@ -222,7 +220,13 @@ Route::middleware(['web'])->group(function () {
             Route::resource('employee', 'WorkshiftEmployeeController');
             Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
             Route::get('employee-position', 'PositionController@index')->name('employee.position');
+            Route::resource('goods', 'SalesController');
             Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');
+            Route::resource('withdraw', 'WithdrawController');
+            Route::resource('expense', 'ExpenseController');
+            Route::resource('move', 'MovesController');
+            Route::resource('pay', 'PaysController');
+            Route::resource('fcd', 'FCDController');
         });
 
         Route::get('money/sales-types', function () {

@@ -9,6 +9,7 @@ use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Models\Goods\Goods;
 use App\Models\Structure\Place;
 use App\Models\WorkShift\WorkShift;
+use App\Models\WorkShift\WorkShiftGood;
 
 trait WorkshiftTrait {
     public function createWorkShiftForPlace(Place $place) {
@@ -28,7 +29,7 @@ trait WorkshiftTrait {
                 WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                 WorkShiftGoodsContract::FIELD_GOOD_ID => $good->{GoodsContract::FIELD_ID},
             ];
-            Goods::create($goodData);
+            WorkShiftGood::create($goodData);
         }
     }
 }

@@ -26,6 +26,9 @@
 		<!-- Select2 css -->
 		<link href="{{URL::asset('assets/plugins/select2/select2.min.css')}}" rel="stylesheet" />
 
+        <link rel="stylesheet" href="{{URL::asset('assets/plugins/sweet-alert/sweetalert.css')}}">
+        <link rel="stylesheet" href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}">
+
         @livewireStyles
 
         <style>

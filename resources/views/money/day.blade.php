@@ -1249,10 +1249,10 @@
 
 @section('scripts')
 		<!-- INTERNAL Data tables -->
-		<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
-		<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>
+		{{--<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>--}}
+		{{--<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>--}}
+		{{--<script src="{{URL::asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>--}}
+		{{--<script src="{{URL::asset('assets/plugins/datatable/responsive.bootstrap4.min.js')}}"></script>--}}
 
 
 		<!-- INTERNAL File uploads js -->
@@ -1289,8 +1289,49 @@
                     store: '{{ route("workshift.employee.store") }}',
                     update: '{{ route("workshift.employee.update", ["employee" => "%s"]) }}',
                 },
+                expenses: {
+                    all: '{{ route("workshift.expense.index") }}',
+                    delete: '{{ route("workshift.expense.destroy", ["expense" => "%s"]) }}',
+                    show: '{{ route("workshift.expense.show", ["expense" => "%s"]) }}',
+                    store: '{{ route("workshift.expense.store") }}',
+                    update: '{{ route("workshift.expense.update", ["expense" => "%s"]) }}',
+                },
+                fcds: {
+                    all: '{{ route("workshift.fcd.index") }}',
+                    delete: '{{ route("workshift.fcd.destroy", ["fcd" => "%s"]) }}',
+                    show: '{{ route("workshift.fcd.show", ["fcd" => "%s"]) }}',
+                    store: '{{ route("workshift.fcd.store") }}',
+                    update: '{{ route("workshift.fcd.update", ["fcd" => "%s"]) }}',
+                },
+                goods: {
+                    all: '{{ route("workshift.goods.index") }}',
+                    show: '{{ route("workshift.goods.show", ["good" => "%s"]) }}',
+                    strore: '{{ route("workshift.goods.store") }}',
+                    update: '{{ route("workshift.goods.update", ["good" => "%s"]) }}',
+                    delete: '{{ route("workshift.goods.destroy", ["good" => "%s"]) }}',
+                },
+                moves: {
+                    all: '{{ route("workshift.move.index") }}',
+                    delete: '{{ route("workshift.move.destroy", ["move" => "%s"]) }}',
+                    show: '{{ route("workshift.move.show", ["move" => "%s"]) }}',
+                    store: '{{ route("workshift.move.store") }}',
+                    update: '{{ route("workshift.move.update", ["move" => "%s"]) }}',
+                },
+                pays: {
+                    all: '{{ route("workshift.pay.index") }}',
+                    delete: '{{ route("workshift.pay.destroy", ["pay" => "%s"]) }}',
+                    show: '{{ route("workshift.pay.show", ["pay" => "%s"]) }}',
+                    store: '{{ route("workshift.pay.store") }}',
+                    update: '{{ route("workshift.pay.update", ["pay" => "%s"]) }}',
+                },
                 users: {
                     city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}'
+                },
+                withdraw: {
+                    all: '{{ route("workshift.withdraw.index") }}',
+                    store: '{{ route("workshift.withdraw.store") }}',
+                    update: '{{ route("workshift.withdraw.update", ["withdraw" => "%s"]) }}',
+                    delete: '{{ route("workshift.withdraw.destroy", ["withdraw" => "%s"]) }}',
                 },
             };
         </script>
