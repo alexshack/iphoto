@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\Money\Workshift;
 
 use App\Contracts\Workshift\WorkShiftWithdrawalContract;
+use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShiftWithdrawal;
+use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftWithdrawalRepositoryInterface;
+use Auth;
 use Illuminate\Http\Request;
 
 class WithdrawController extends Controller
 {
     private WorkShiftWithdrawalRepositoryInterface $withdrawRepo;
+    private WorkShiftRepositoryInterface $workShiftRepo;
 
-    public function __construct(WorkShiftWithdrawalRepositoryInterface $withdrawRepo)
+    public function __construct(WorkShiftRepositoryInterface $workShiftRepo, WorkShiftWithdrawalRepositoryInterface $withdrawRepo)
     {
         $this->withdrawRepo = $withdrawRepo;
+        $this->workShiftRepo = $workShiftRepo;
     }
 
     /**
@@ -33,6 +38,14 @@ class WithdrawController extends Controller
     public function create()
     {
         //
+    }
+
+    public function ping(Request $request) {
+        $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+        extract($stats);
+        $user = Auth::user();
+        return response()->json(compact('user',  'agenda', 'errors'));
     }
 
     /**

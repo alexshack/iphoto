@@ -1324,6 +1324,7 @@
                     store: '{{ route("workshift.pay.store") }}',
                     update: '{{ route("workshift.pay.update", ["pay" => "%s"]) }}',
                 },
+                ping: '{{ route("workshift.ping") }}',
                 users: {
                     city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}'
                 },

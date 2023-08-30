@@ -12,7 +12,7 @@
                                 <span class="w-50">Снятие кассы</span>
                             </td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.withdrawal }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.withdrawal }}₽</h4>
                             </td>
                         </tr>
                         <tr>
@@ -20,38 +20,38 @@
                                 <span class="w-50">Продажи, в том числе:</span>
                             </td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.salesTotal }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.salesTotal }}₽</h4>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Общие продажи</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.salesGeneral }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.salesGeneral }}₽</div>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Индивидуальные продажи</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.salesIndividual }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.salesIndividual }}₽</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <span class="w-50">Касса, в том числе:</span></td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.cashTotal }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.cashTotal }}₽</h4>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Наличные</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.cashMoney }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.cashMoney }}₽</div>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Терминал</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.cashTerminal }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.cashTerminal }}₽</div>
                             </td>
                         </tr>
                         <tr>
@@ -59,25 +59,25 @@
                                 <span class="w-50">Расходы из кассы, в том числе:</span>
                             </td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.expensesTotal }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.expensesTotal }}₽</h4>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Расходы</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.expenses }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.expenses }}₽</div>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Перемещения</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.moves }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.moves }}₽</div>
                             </td>
                         </tr>
                         <tr>
                             <td><span class="w-50 pl-3">Выдача авансов</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ agenda.prepayments }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ store.agenda.prepayments }}₽</div>
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +85,7 @@
                                 <span class="w-50 font-weight-semibold">Остаток наличных</span>
                             </td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.cashBalance }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.cashBalance }}₽</h4>
                             </td>
                         </tr>
                         <tr>
@@ -93,7 +93,7 @@
                                 <span class="w-50">Начисленная зарплата</span>
                             </td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ agenda.payroll }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.payroll }}₽</h4>
                             </td>
                         </tr>
                     </tbody>
@@ -118,6 +118,10 @@
     </div>
 </template>
 
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
+
 <script>
     export default{
         name: 'WorkShiftAgenda',
@@ -134,25 +138,6 @@
             };
         },
         props: {
-            agenda: {
-                type: Object,
-                default: {
-                    cashBalance: 0,
-                    cashMoney: 0,
-                    cashTerminal: 0,
-                    cashTotal: 0,
-                    expenses: 0,
-                    expensesTotal: 0,
-                    moves: 0,
-                    payroll: 0,
-                    prepayments: 0,
-                    salesGeneral: 0,
-                    salesIndividual: 0,
-                    salesTotal: 0,
-                    status: 'open',
-                    withdrawal: 0,
-                },
-            },
             access: {
                 type: Object,
                 default: {
@@ -167,7 +152,11 @@
         },
         methods: {
             closeWorkshift() {},
-            getWorkShiftAgendaData() {},
-        }
+            refreshData() {
+            },
+        },
+        mounted() {
+            document.addEventListener('refreshAgenda', () => this.refreshData());
+        },
     }
 </script>

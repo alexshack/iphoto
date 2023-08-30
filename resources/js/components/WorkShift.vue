@@ -12,7 +12,6 @@
             <div class="col-xl-3 col-md-12 col-lg-12">
                 <WorkShiftAgenda
                  :access="access"
-                 :agenda="agenda"
                  :errors="errors" />
             </div>
             <div class="col-xl-9 col-md-12 col-lg-12">
@@ -22,7 +21,12 @@
     </div>
 </template>
 
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
+
 <script>
+    import {ping} from '@/db/ping.js';
     import WorkShiftAgenda from '@/components/WorkShiftAgenda.vue';
     import WorkShiftTabs from '@/components/WorkShiftTabs.vue';
     export default{
@@ -34,22 +38,24 @@
         data: () => {
             return {
                 access: {},
-                agenda: {},
                 errors: [],
                 title: '',
                 workshift: {},
             };
         },
         methods: {
+            pingServer() {
+                ping();
+            },
             setupData() {
                 if (typeof window.workshiftData != 'undefined') {
                     this.workshift = window.workshiftData;
                 }
 
                 if (typeof window.agenda != 'undefined') {
-                    this.agenda = window.agenda.agenda;
                     this.errors = window.agenda.errors;
                     this.access = window.agenda.access;
+                    store.updateAgenda(window.agenda.agenda);
                 }
 
                 if (typeof window.workshiftTitle != 'undefined') {
@@ -57,6 +63,7 @@
                 }
 
                 document.addEventListener('workshiftUpdate', this.updateData)
+                document.addEventListener('ping', () => this.pingServer());
             },
             updateData(data = {}) {
                 axios({
@@ -83,8 +90,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
-

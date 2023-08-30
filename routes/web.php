@@ -222,6 +222,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('employee-position', 'PositionController@index')->name('employee.position');
             Route::resource('goods', 'SalesController');
             Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');
+            Route::get('ping', 'WithdrawController@ping')->name('ping');
             Route::resource('withdraw', 'WithdrawController');
             Route::resource('expense', 'ExpenseController');
             Route::resource('move', 'MovesController');
