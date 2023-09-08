@@ -115,6 +115,7 @@
             return {
                 currentEmployee: -1,
                 employees: [],
+                loading: true,
                 withdrawals: [],
             };
         },

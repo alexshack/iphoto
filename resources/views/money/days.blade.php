@@ -68,7 +68,7 @@
 													<tr>
                                                         <td data-order="{{ $workshift->date }}">{{ $workshift->date->format('d.m.Y') }}</td>
                                                         <td data-order="{{ $workshift->is_closed ? 1 : 0 }}" class="text-center"><!-- data-order: 1 - если закрыта, 0 - если открыта -->
-                                                            <a href="money/days/{{ $workshift->id }}" class="badge {{ $workshift->is_closed ? 'bg-success-transparent' : 'bg-primary-transparent' }}">
+                                                            <a href="/money/days/{{ $workshift->id }}" class="badge {{ $workshift->is_closed ? 'bg-success-transparent' : 'bg-primary-transparent' }}">
                                                                 {{ $workshift->is_closed ? 'Закрыта' : 'Открыта' }}
                                                             </a><!-- bg-success-transparent - если закрыта, bg-primary-transparent - если открыта -->
 														</td>
