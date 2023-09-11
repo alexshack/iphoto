@@ -17,7 +17,7 @@ export const all = async (workshiftID = null, type = 'general') => {
         typeID = types[type];
     }
 
-    const response = await axios.get(`${window.workshiftUrls.sale.all}?workshiftID=${workshiftID}&type=${typeID}`)
+    const response = await axios.get(`${window.workshiftUrls.goods.all}?workshiftID=${workshiftID}&type=${typeID}`)
     if (typeof response.data != 'undefined') {
         return response.data;
     }
@@ -25,7 +25,7 @@ export const all = async (workshiftID = null, type = 'general') => {
 };
 
 export const deleteSale = async (ID) => {
-    const url = window.workshiftUrls.sale.delete.replace('%s', ID);
+    const url = window.workshiftUrls.goods.delete.replace('%s', ID);
     const response = await axios.delete(url, {});
     if (typeof response.data != 'undefined') {
         return response.data;
@@ -34,7 +34,7 @@ export const deleteSale = async (ID) => {
 }
 
 export const getSale = async (ID) => {
-    const url = window.workshiftUrls.sale.show.replace('%s', ID);
+    const url = window.workshiftUrls.goods.show.replace('%s', ID);
     const response = await axios.get(url);
     if (typeof response.data != 'undefined') {
         return response.data;
@@ -43,7 +43,7 @@ export const getSale = async (ID) => {
 }
 
 export const store = async (data) => {
-    const url = window.workshiftUrls.sale.store;
+    const url = window.workshiftUrls.goods.store;
     if (typeof data.workshift_id === 'undefined' || data.workshift_id) {
         data.workshift_id = window.workshiftData.id;
     }
@@ -68,7 +68,7 @@ export const store = async (data) => {
 };
 
 export const updateSale = async (data) => {
-    const url = window.workshiftUrls.sale.update.replace('%s', data.id);
+    const url = window.workshiftUrls.goods.update.replace('%s', data.id);
     let response = {
         data: null,
         errors: [],
