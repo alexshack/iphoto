@@ -47,6 +47,14 @@ class Move extends Model
         return $this->belongsTo($payerClass, $internalKey, $externalKey);
     }
 
+    public function payerManager() {
+        return $this->belongsTo(User::class, MovesContract::FIELD_PAYER_ID, UserContract::FIELD_ID);
+    }
+
+    public function payerPlace() {
+        return $this->belongsTo(Place::class, MovesContract::FIELD_PAYER_ID, PlaceContract::FIELD_ID);
+    }
+
     public function recipient() {
         $externalKey = null;
         $internalKey = MovesContract::FIELD_RECIPIENT_ID;
@@ -61,7 +69,18 @@ class Move extends Model
         return $this->belongsTo($recipientClass, $internalKey, $externalKey);
     }
 
+    public function recipientManager() {
+        return $this->belongsTo(User::class, MovesContract::FIELD_PAYER_ID, UserContract::FIELD_ID);
+    }
+
+    public function recipientPlace() {
+        return $this->belongsTo(Place::class, MovesContract::FIELD_PAYER_ID, PlaceContract::FIELD_ID);
+    }
+
     public function setDateAttribute($value) {
-        $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
+        if (isset($this->attributes[MovesContract::FIELD_DATE]) && strpos($this->attributes[MovesContract::FIELD_DATE], '.') !== false) {
+            $value  = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
+        }
+        $this->attributes[MovesContract::FIELD_DATE] = $value;
     }
 }

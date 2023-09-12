@@ -34,9 +34,10 @@ class WorkShiftHelper {
             ->get();
         if ($individualGoods->count() > 0) {
             foreach ($individualGoods as $good) {
-                $salesIndividual += $good->sum;
+                $salesIndividual += $good->{WorkShiftGoodsContract::FIELD_PRICE} * $good->{WorkShiftGoodsContract::FIELD_QTY};
             }
         }
+
         $salesGeneral = 0;
         $generalGoods = WorkShiftGood::whereHas('good', function ($query) {
             $query->where(GoodsContract::FIELD_TYPE, 1);
@@ -45,7 +46,7 @@ class WorkShiftHelper {
             ->get();
         if ($generalGoods->count() > 0) {
             foreach ($generalGoods as $good) {
-                $salesGeneral += $good->sum;
+                $salesGeneral += $good->{WorkShiftGoodsContract::FIELD_PRICE} * $good->{WorkShiftGoodsContract::FIELD_QTY};
             }
         }
         $salesTotal = $salesIndividual + $salesGeneral;

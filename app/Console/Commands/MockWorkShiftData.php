@@ -3,13 +3,21 @@
 namespace App\Console\Commands;
 
 use App\Contracts\Goods\GoodsContract;
+use App\Contracts\Money\ExpenseContract;
+use App\Contracts\Money\MovesContract;
 use App\Contracts\Structure\PlaceContract;
 use App\Contracts\WorkShift\{WorkShiftEmployeeContract, WorkShiftContract, WorkShiftGoodsContract};
 use App\Contracts\UserContract;
 use App\Models\Goods\Goods;
+use App\Models\Money\Expense;
+use App\Models\Money\Move;
 use App\Models\Structure\Place;
 use App\Models\WorkShift\{WorkShift, WorkShiftEmployee, WorkShiftGood};
 use App\Repositories\Interfaces\{WorkShiftEmployeeRepositoryInterface, WorkShiftGoodsRepositoryInterface, UserRepositoryInterface};
+use App\Repositories\Interfaces\ExpensesRepositoryInterface;
+use App\Repositories\Interfaces\ExpensesTypeRepositoryInterface;
+use App\Repositories\Interfaces\MovesRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class MockWorkShiftData extends Command
@@ -28,15 +36,25 @@ class MockWorkShiftData extends Command
      */
     protected $description = 'Mock WorkShift Data. For testing purposes only!';
 
+    protected ExpensesRepositoryInterface $expensesRepository;
+    protected ExpensesTypeRepositoryInterface $expensesTypesRepository;
+    protected MovesRepositoryInterface $movesRepository;
     protected WorkShiftEmployeeRepositoryInterface $workShiftEmployeeRepository;
     protected WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository;
     protected UserRepositoryInterface $userRepository;
 
-    public function __construct(WorkShiftEmployeeRepositoryInterface $workShiftEmployeeRepository,
+    public function __construct(
+        ExpensesTypeRepositoryInterface $expensesTypesRepository,
+        ExpensesRepositoryInterface $expensesRepository,
+        MovesRepositoryInterface $movesRepository,
+        WorkShiftEmployeeRepositoryInterface $workShiftEmployeeRepository,
         WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository,
         UserRepositoryInterface $userRepository
     ) {
         parent::__construct();
+        $this->expensesRepository = $expensesRepository;
+        $this->expensesTypesRepository = $expensesTypesRepository;
+        $this->movesRepository = $movesRepository;
         $this->workShiftGoodsRepository = $workShiftGoodsRepository;
         $this->workShiftEmployeeRepository = $workShiftEmployeeRepository;
         $this->userRepository = $userRepository;
@@ -51,6 +69,8 @@ class MockWorkShiftData extends Command
         $workShift = WorkShift::find($workShiftID);
         $this->handleEmployees($workShift);
         $this->handleGoods($workShift);
+        $this->handleExpenses($workShift);
+        $this->handleMoves($workShift);
     }
 
     public function handleEmployees($workShift) {
@@ -66,6 +86,25 @@ class MockWorkShiftData extends Command
                     WorkShiftEmployeeContract::FIELD_START_TIME => '10:00',
                 ];
                 WorkShiftEmployee::create($data);
+            }
+        }
+    }
+
+    public function handleExpenses(WorkShift $workShift) {
+        $expenses = $this->expensesRepository->getByWorkshift($workShift);
+        $expenseTypes = $this->expensesTypesRepository->getAll();
+        if ($expenses->count() === 0) {
+            foreach ($expenseTypes as $type) {
+                $data = [
+                    ExpenseContract::FIELD_DATE => Carbon::now(),
+                    ExpenseContract::FIELD_TYPE_ID => $type->id,
+                    ExpenseContract::FIELD_CITY_ID => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+                    ExpenseContract::FIELD_PLACE_ID => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+                    ExpenseContract::FIELD_TYPE => 2,
+                    ExpenseContract::FIELD_AMOUNT => 1000,
+                    ExpenseContract::FIELD_NOTE => 'test',
+                ];
+                Expense::create($data);
             }
         }
     }
@@ -130,6 +169,23 @@ class MockWorkShiftData extends Command
                     WorkShiftGood::create($data);
                 }
             }
+        }
+    }
+
+    public function handleMoves(WorkShift $workShift) {
+        $moves = $this->movesRepository->getByWorkshift($workShift);
+        if ($moves->count() === 0) {
+            $data = [
+                MovesContract::FIELD_DATE => Carbon::now(),
+                MovesContract::FIELD_CITY_ID => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+                MovesContract::FIELD_PAYER_TYPE => 'place',
+                MovesContract::FIELD_PAYER_ID => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+                MovesContract::FIELD_RECIPIENT_TYPE => 'manager',
+                MovesContract::FIELD_RECIPIENT_ID => 1,
+                MovesContract::FIELD_AMOUNT => 1000,
+                MovesContract::FIELD_NOTE => 'Test move',
+            ];
+            Move::create($data);
         }
     }
 }

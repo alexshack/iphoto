@@ -23,6 +23,12 @@ class ExpensesRepository implements ExpensesRepositoryInterface
         $expenses = Expense::whereDate(ExpenseContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
             ->where(ExpenseContract::FIELD_PLACE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(ExpenseContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID})
+            ->with(
+                'expenseType',
+                'city',
+                'place',
+                'manager'
+            )
             ->get();
         return $expenses;
     }

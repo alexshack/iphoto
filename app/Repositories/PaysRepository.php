@@ -31,13 +31,13 @@ class PaysRepository implements PaysRepositoryInterface
 
     public function getByWorkshift(WorkShift $workShift, $type = null) {
         $pays = Pay::whereDate(PaysContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
-            ->where(PaysContract::FIELD_PLACE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
+            ->where(PaysContract::FIELD_SOURCE_TYPE, 2)
+            ->where(PaysContract::FIELD_SOURCE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(PaysContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID});
 
         if ($type) {
             $pays = $pays->where(PaysContract::FIELD_TYPE, $type);
         }
-        return $pays->get();
-
+        return $pays->with('user')->get();
     }
 }

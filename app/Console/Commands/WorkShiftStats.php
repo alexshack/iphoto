@@ -38,7 +38,7 @@ class WorkShiftStats extends Command
             $this->info("{$workshift->city->name} -> {$workshift->place->name}");
             $stats = WorkShiftHelper::recalculateStats($workshift);
             $statsTable = [];
-            foreach ($stats as $key => $value) {
+            foreach ($stats['agenda'] as $key => $value) {
                 $statsTable[] = [
                     'name' => $key,
                     'value' => $value,
