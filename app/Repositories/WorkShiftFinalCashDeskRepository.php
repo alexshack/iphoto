@@ -24,7 +24,9 @@ class WorkShiftFinalCashDeskRepository implements WorkShiftFinalCashDeskReposito
 
     public function getByWorkShift($workShiftID)
     {
-        return WorkShiftFinalCashDesk::where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workShiftID)->get();
+        return WorkShiftFinalCashDesk::where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workShiftID)
+            ->with('saleType')
+            ->get();
     }
 
     public function getByFilter($data): Collection

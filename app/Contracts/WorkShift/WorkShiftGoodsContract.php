@@ -15,12 +15,16 @@ interface WorkShiftGoodsContract  {
     public const FIELD_GOOD_ID = 'good_id';
     public const FIELD_QTY = 'qty';
     public const FIELD_PRICE = 'price';
+    public const FIELD_ON_START = 'on_start';
+    public const FIELD_ON_END = 'on_end';
 
     public const FILLABLE_FIELDS = [
         self::FIELD_WORK_SHIFT_ID,
         self::FIELD_GOOD_ID,
         self::FIELD_QTY,
         self::FIELD_PRICE,
+        self::FIELD_ON_START,
+        self::FIELD_ON_END,
     ];
 
     public const RULES = [
@@ -28,11 +32,15 @@ interface WorkShiftGoodsContract  {
         self::FIELD_GOOD_ID => 'required|exists:' . GoodsContract::TABLE . ',' . GoodsContract::FIELD_ID,
         self::FIELD_QTY => 'required|numeric|min:0',
         self::FIELD_PRICE => 'required|numeric',
+        self::FIELD_ON_END => 'nullable|numeric',
+        self::FIELD_ON_START => 'nullable|numeric',
     ];
 
     public const ATTRIBUTES = [
         self::FIELD_GOOD_ID => 'Товар',
         self::FIELD_QTY => 'КОличество',
         self::FIELD_PRICE => 'Цена',
+        self::FIELD_ON_START => 'Начало',
+        self::FIELD_ON_END => 'Конец',
     ];
 }
