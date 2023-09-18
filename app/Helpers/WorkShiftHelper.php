@@ -6,12 +6,16 @@ use App\Contracts\Goods\GoodsContract;
 use App\Contracts\Money\ExpenseContract;
 use App\Contracts\Money\IncomeContract;
 use App\Contracts\Money\MovesContract;
+use App\Contracts\Money\SaleTypeContract;
+use App\Contracts\Salary\PaysContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
 use App\Models\Money\Income;
 use App\Models\Money\Move;
+use App\Models\Money\SaleType;
+use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftWithdrawal;
@@ -19,12 +23,32 @@ use Auth;
 
 class WorkShiftHelper {
     public static function recalculateStats(WorkShift $workshift) {
+        $access = [
+            'closable' => false,
+            'cancelable' => false,
+        ];
+
         $errors = [];
+
         $withdrawal = 0;
         $lastWithdrawal = $workshift->withdrawals->last();
         if ($lastWithdrawal) {
             $withdrawal = $lastWithdrawal->sum;
         }
+
+        $withdrawals = $workshift->withdrawals;
+        foreach ($withdrawals as $withdrawalItem) {
+            if (!is_numeric($withdrawalItem->sum)) {
+                $access['is_closable'] = false;
+                $errors[] = WorkShiftContract::AGENDA_ERRORS['withdrawal_not_numeric'];
+            }
+        }
+
+        //$expectedCashBySalesTypes = [];
+        //$salesTypes = SaleType::all();
+        //foreach ($salesTypes as $saleType) {
+            //$expectedCashBySalesTypes[$saleType->{SaleTypeContract::FIELD_ID}] = 0;
+        //}
 
         $salesIndividual = 0;
         $individualGoods = WorkShiftGood::whereHas('good', function ($query) {
@@ -34,7 +58,8 @@ class WorkShiftHelper {
             ->get();
         if ($individualGoods->count() > 0) {
             foreach ($individualGoods as $good) {
-                $salesIndividual += $good->{WorkShiftGoodsContract::FIELD_PRICE} * $good->{WorkShiftGoodsContract::FIELD_QTY};
+                $amount = $good->{WorkShiftGoodsContract::FIELD_PRICE} * $good->{WorkShiftGoodsContract::FIELD_QTY};
+                $salesIndividual += $amount;
             }
         }
 
@@ -50,6 +75,21 @@ class WorkShiftHelper {
             }
         }
         $salesTotal = $salesIndividual + $salesGeneral;
+
+        $tmcGoods = WorkShiftGood::whereHas('good', function ($query) {
+            $query->where(GoodsContract::FIELD_TYPE, 3);
+        })
+            ->where(WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
+            ->get();
+        if ($tmcGoods->count() > 0) {
+            foreach ($tmcGoods as $good) {
+                if (!is_numeric($good->{WorkShiftGoodsContract::FIELD_ON_START}) || !is_numeric($good->{WorkShiftGoodsContract::FIELD_ON_END})) {
+                    $access['closable'] = false;
+                    $errors[] = WorkShiftContract::AGENDA_ERRORS['fcd_empty'];
+                    break;
+                }
+            }
+        }
 
         $cashMoney = 0;
         $incomes = Income::where(IncomeContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
@@ -88,10 +128,27 @@ class WorkShiftHelper {
         }
 
         $prepayments = 0;
-        // TODO: выяснить про пометку на выплату зп
+        $prepaymentsEntities = Pay::where(PaysContract::FIELD_TYPE, 2)
+            ->where(PaysContract::FIELD_DATE, $workshift->{WorkShiftContract::FIELD_DATE})
+            ->where(PaysContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
+            ->where(PaysContract::FIELD_SOURCE_TYPE, 2)
+            ->where(PaysContract::FIELD_SOURCE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
+            ->get();
+
+        if ($prepaymentsEntities->count() > 0) {
+            foreach ($prepaymentsEntities as $prepayment) {
+                $prepayments += $prepayment->{PaysContract::FIELD_AMOUNT};
+            }
+        }
+
         $expensesTotal = $expenses + $moves + $prepayments;
         $cashBalance = 0;
         $payroll = 0;
+
+        if ($withdrawal != $salesTotal) {
+            $access['closable'] = false;
+            $errors[] = WorkShiftContract::AGENDA_ERRORS['cash_sums_not_equal'];
+        }
 
         $agenda = compact(
             'cashBalance',
@@ -108,6 +165,16 @@ class WorkShiftHelper {
             'withdrawal'
         );
 
-        return compact('agenda', 'errors');
+        if ($workshift->{WorkShiftContract::FIELD_CLOSED}) {
+            $access['closable'] = false;
+            $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
+        }
+
+        $previousWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
+            ->where(WorkShiftContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
+            ->whereDate(WorkShiftContract::FIELD_DATE, '<', $workshift->{WorkShiftContract::FIELD_DATE})
+            ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
+            ->first();
+        return compact('agenda', 'access', 'errors');
     }
 }

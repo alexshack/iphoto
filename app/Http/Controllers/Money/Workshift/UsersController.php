@@ -15,7 +15,6 @@ class UsersController extends Controller
     }
 
     public function getByCity(Request $request, $cityID) {
-        //return response()->json(compact('cityID'));
         $users = $this->userRepository->getByCity($cityID);
         return response()->json($users);
     }

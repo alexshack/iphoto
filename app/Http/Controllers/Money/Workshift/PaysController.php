@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
@@ -47,8 +48,10 @@ class PaysController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate(PaysContract::RULES, [], PaysContract::ATTRIBUTES);
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
         $pay = Pay::store($validated);
         return response()->json([
+            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $pay,
         ]);
     }
@@ -82,7 +85,9 @@ class PaysController extends Controller
                 $pay->{$key} = $value;
             }
             $pay->save();
+            $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
             return response()->json([
+                'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $pay->id,
             ]);
         }

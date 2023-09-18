@@ -38,7 +38,7 @@ interface WorkShiftGoodsContract  {
 
     public const ATTRIBUTES = [
         self::FIELD_GOOD_ID => 'Товар',
-        self::FIELD_QTY => 'КОличество',
+        self::FIELD_QTY => 'Количество',
         self::FIELD_PRICE => 'Цена',
         self::FIELD_ON_START => 'Начало',
         self::FIELD_ON_END => 'Конец',

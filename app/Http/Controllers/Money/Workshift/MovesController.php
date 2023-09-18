@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Money\Move;
 use App\Models\WorkShift\WorkShiftGood;
@@ -47,9 +48,11 @@ class MovesController extends Controller
      */
     public function store(Request $request)
     {
+        $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
         $validated = $request->validate(MovesContract::RULES, [], MovesContract::ATTRIBUTES);
         $move = Move::store($validated);
         return response()->json([
+            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $move,
         ]);
     }
@@ -85,6 +88,7 @@ class MovesController extends Controller
             }
             $move->save();
             return response()->json([
+                'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $move->id,
             ]);
         }

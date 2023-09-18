@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Money\Workshift;
 
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
+use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShiftFinalCashDesk;
 use App\Repositories\Interfaces\WorkShiftFinalCashDeskRepositoryInterface;
@@ -46,9 +47,11 @@ class FCDController extends Controller
      */
     public function store(Request $request)
     {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
         $validated = $request->validate(WorkShiftFinalCashDeskContract::RULES, [], WorkShiftFinalCashDeskContract::ATTRIBUTES);
         $fcd = WorkShiftFinalCashDesk::create($validated);
         return response()->json([
+            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $fcd,
         ]);
     }
@@ -75,6 +78,7 @@ class FCDController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
         $validated = $request->validate(WorkShiftFinalCashDeskContract::RULES, [], WorkShiftFinalCashDeskContract::ATTRIBUTES);
         $fcd = $this->fcdRepo->find($id);
 
@@ -85,6 +89,7 @@ class FCDController extends Controller
             $fcd->save();
 
             return response()->json([
+                'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $fcd->id,
             ]);
         }

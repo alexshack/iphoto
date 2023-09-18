@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Helpers\WorkShiftHelper;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Models\WorkShift\WorkShiftGood;
+use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
+    private WorkShiftRepositoryInterface $workShiftRepo;
     private WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository;
 
-    public function __construct(WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository)
+    public function __construct(WorkShiftRepositoryInterface $workShiftRepo, WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository)
     {
         $this->workShiftGoodsRepository = $workShiftGoodsRepository;
+        $this->workShiftRepo = $workShiftRepo;
     }
     /**
      * Display a listing of the resource.
@@ -41,8 +45,10 @@ class SalesController extends Controller
         $validated = $request->validate(WorkShiftGoodsContract::RULES, [], WorkShiftGoodsContract::ATTRIBUTES);
 
         $good = WorkShiftGood::create($validated);
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
 
         return response()->json([
+            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $good,
         ]);
     }
@@ -79,7 +85,9 @@ class SalesController extends Controller
             }
             $good->save();
 
+            $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
             return response()->json([
+                'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $good->id,
             ]);
         }

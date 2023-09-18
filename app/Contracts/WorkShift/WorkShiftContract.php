@@ -41,4 +41,11 @@ interface WorkShiftContract  {
         self::FIELD_EXPENSES => 'Расходы',
         self::FIELD_SALARY => 'Зарплата',
     ];
+
+    public const AGENDA_ERRORS = [
+        'cash_sums_not_equal' => 'Не совпадают суммы продаж и кассы',
+        'fcd_empty' => 'Не заполнены данные по оборудованию',
+        'previous_workshift_not_closed' => 'Предыдущая смена не закрыта',
+        'withdrawal_not_numeric' => 'Не заполнены суммы снятия кассы',
+    ];
 }

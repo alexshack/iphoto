@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Contracts\WorkShift\WorkShiftContract;
+use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Money\Expense;
 use App\Models\WorkShift\WorkShift;
@@ -45,10 +47,19 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+        //$request->request->add([
+            //'city_id' => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+            //'place_id' => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+            //'date' => $workShift->{WorkShiftContract::FIELD_DATE},
+        //]);
         $validated = $request->validate(ExpenseContract::RULES, [], ExpenseContract::ATTRIBUTES);
         $expense = Expense::store($validated);
+        $stats = WorkShiftHelper::recalculateStats($workShift);
         return response()->json([
             'data' => $expense,
+            'agenda' => $stats['agenda'],
+            'errors' => $stats['errors'],
         ]);
     }
 
@@ -74,6 +85,7 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
         $validated = $request->validate(ExpenseContract::RULES, [], ExpenseContract::ATTRIBUTES);
         $expense = $this->expenseRepo->find($id);
         if ($expense) {
@@ -81,8 +93,11 @@ class ExpenseController extends Controller
                 $expense->{$key} = $value;
             }
             $expense->save();
+            $stats = WorkShiftHelper::recalculateStats($workShift);
             return response()->json([
                 'id' => $expense->id,
+                'agenda' => $stats['agenda'],
+                'errors' => $stats['errors'],
             ]);
         }
     }
