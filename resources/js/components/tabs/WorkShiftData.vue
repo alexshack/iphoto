@@ -99,6 +99,7 @@
 
 <script>
     import * as employeeApi from '@/db/employee.js';
+    import * as withdrawApi from '@/db/withdraw.js';
     import CreateEmployee from '@/components/Modals/Employee/Create.vue';
     import CreateWithdraw from '@/components/Modals/Withdraw/Create.vue';
     import EditEmployee from '@/components/Modals/Employee/Edit.vue';
@@ -131,16 +132,21 @@
             async getEmployees() {
                 this.employees = await employeeApi.all();
             },
+            async getWithdraw() {
+                this.withdrawals = await withdrawApi.all();
+            },
             getUserName,
             setCurrentEmployee(ID) {
                 this.currentEmployee = ID;
             },
             async setupData() {
                 window.addEventListener('workDataEmployeeUpdate', await this.getEmployees);
+                window.addEventListener('withDrawUpdate', await this.getWithdraw);
             }
         },
-        mounted() {
-            this.getEmployees();
+        async mounted() {
+            await this.getEmployees();
+            await this.getWithdraw();
         },
     }
 </script>

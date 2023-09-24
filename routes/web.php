@@ -228,6 +228,7 @@ Route::middleware(['web'])->group(function () {
             Route::resource('move', 'MovesController');
             Route::resource('pay', 'PaysController');
             Route::resource('fcd', 'FCDController');
+            Route::get('goods-list', 'GoodsController@index')->name('goods_list');
         });
 
         Route::get('money/sales-types', function () {

@@ -23,7 +23,6 @@ interface WorkShiftWithdrawalContract {
     ];
 
     public const ATTRIBUTES = [
-        self::FIELD_GOOD_ID => 'Товар',
         self::FIELD_SUM => 'Сумма',
         self::FIELD_TIME => 'Время снятия',
     ];

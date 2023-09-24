@@ -1306,10 +1306,11 @@
                 goods: {
                     all: '{{ route("workshift.goods.index") }}',
                     show: '{{ route("workshift.goods.show", ["good" => "%s"]) }}',
-                    strore: '{{ route("workshift.goods.store") }}',
+                    store: '{{ route("workshift.goods.store") }}',
                     update: '{{ route("workshift.goods.update", ["good" => "%s"]) }}',
                     delete: '{{ route("workshift.goods.destroy", ["good" => "%s"]) }}',
                 },
+                goodsList: '{{ route("workshift.goods_list") }}',
                 moves: {
                     all: '{{ route("workshift.move.index") }}',
                     delete: '{{ route("workshift.move.destroy", ["move" => "%s"]) }}',

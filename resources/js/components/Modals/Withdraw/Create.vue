@@ -13,14 +13,15 @@
                                         <span class="feather feather-clock"></span>
                                     </div>
                                 </div><!-- input-group-prepend -->
-                                <input class="form-control ui-timepicker-input" id="tpTimeTime" placeholder="Укажите время" type="text" autocomplete="off">
+                                <input v-model="formData.time"
+                                    class="form-control ui-timepicker-input" id="tpTimeTime" placeholder="Укажите время" type="text" autocomplete="off">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Сумма:</label>
-                            <input class="form-control" placeholder="Укажите сумму" type="number">
+                            <input v-model="formData.sum" class="form-control" placeholder="Укажите сумму" type="number">
                         </div>
                     </div>
                 </div>
@@ -39,6 +40,7 @@
 
 <script>
     import Modal from '@/components/Modals/Modal.vue';
+    import {store} from '@/db/withdraw.js';
 
     export default{
         name: 'Create',
@@ -56,7 +58,21 @@
             };
         },
         methods: {
-            submit() {
+            async submit() {
+                this.errors = [];
+                const response = await store(this.formData);
+                if (response.errors.legnth > 0) {
+                    this.errors = response.errors;
+                } else {
+                    window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: {
+                            msg: 'Снятие кассы добавлено',
+                            type: 'success',
+                        }
+                    }));
+                    window.dispatchEvent(new Event('withDrawUpdate'));
+                }
             }
         },
     }

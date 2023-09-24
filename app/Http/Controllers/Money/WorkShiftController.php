@@ -41,6 +41,7 @@ class WorkShiftController extends Controller
         }
         return compact('cancelable', 'closable');
     }
+
     /**
      * Display a listing of the resource.
      */

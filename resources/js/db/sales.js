@@ -1,15 +1,19 @@
-export const all = async (workshiftID = null, type = 'general') => {
-    if (!workshiftID) {
-        workshiftID = window.workshiftData.id;
-    }
-
-    const types = {
+const getTypes = () => {
+    return {
         general: 1,
         individual: 2,
         tmc: 3,
         consumables: 4,
         workingout: 5,
     };
+}
+
+export const all = async (workshiftID = null, type = 'general') => {
+    if (!workshiftID) {
+        workshiftID = window.workshiftData.id;
+    }
+
+    const types = getTypes();
 
     let typeID = 1;
 
@@ -47,20 +51,27 @@ export const store = async (data) => {
     if (typeof data.workshift_id === 'undefined' || data.workshift_id) {
         data.workshift_id = window.workshiftData.id;
     }
+    const types = getTypes();
+
+    data.type = types[data.type];
+
     let response = {
         data: null,
         errors: [],
     };
     try {
         const res = await axios.post(url, data);
-        if (res.data) {
+        if (typeof res != 'undefined' && res.data) {
             response.data = res.data;
         }
         return response;
     } catch (err) {
-        for (let p in err.response.data.errors) {
-            for (let i = 0; i < err.response.data.errors[p].length; i++) {
-                response.errors.push(err.response.data.errors[p][i]);
+        console.log({err})
+        if (typeof response.data != 'undefined') {
+            for (let p in err.response.data.errors) {
+                for (let i = 0; i < err.response.data.errors[p].length; i++) {
+                    response.errors.push(err.response.data.errors[p][i]);
+                }
             }
         }
         return response;

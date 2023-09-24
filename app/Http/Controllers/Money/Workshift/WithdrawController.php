@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
-use App\Contracts\Workshift\WorkShiftWithdrawalContract;
+use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShiftWithdrawal;
@@ -53,7 +53,7 @@ class WithdrawController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(WorkShiftWithdrawalContract::RULES, []. WorkShiftWithdrawalContract::ATTRIBUTES);
+        $validated = $request->validate(WorkShiftWithdrawalContract::RULES, [], WorkShiftWithdrawalContract::ATTRIBUTES);
 
         $withdraw = WorkShiftWithdrawal::create($validated);
 

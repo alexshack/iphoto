@@ -170,6 +170,24 @@ class WorkShiftHelper {
             $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
         }
 
+        $user = Auth::user();
+        $isEmployee = $workshift->employees->first(function ($employee) use ($user) {
+            return $employee->user_id = $user->id;
+        });
+
+        $nextWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
+            ->where(WorkShiftContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
+            ->whereDate(WorkShiftContract::FIELD_DATE, '>', $workshift->{WorkShiftContract::FIELD_DATE})
+            ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
+            ->first();
+
+        if ($workshift->{WorkShiftContract::FIELD_CLOSED} &&
+            ($user->role->{UserRoleContract::FIELD_SLUG} === UserRoleContract::ADMIN_SLUG || $isEmployee) &&
+            ($nextWorkshift && !$nextWorkshift->{WorkShiftContract::FIELD_CLOSED})
+            ) {
+            $cancelable = true;
+        }
+
         $previousWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(WorkShiftContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
             ->whereDate(WorkShiftContract::FIELD_DATE, '<', $workshift->{WorkShiftContract::FIELD_DATE})
