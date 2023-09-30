@@ -1296,6 +1296,7 @@
                     store: '{{ route("workshift.expense.store") }}',
                     update: '{{ route("workshift.expense.update", ["expense" => "%s"]) }}',
                 },
+                expenseTypes: '{{ route("workshift.expenseTypes") }}',
                 fcds: {
                     all: '{{ route("workshift.fcd.index") }}',
                     delete: '{{ route("workshift.fcd.destroy", ["fcd" => "%s"]) }}',

@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Общие продажи</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#all-good">Добавить товар</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createGeneralSale">Добавить товар</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -12,6 +12,7 @@
                     <thead>
                         <tr>
                             <th class="border-bottom-0 text-center">Товар</th>
+                            <th class="border-bottom-0">Продавец</th>
                             <th class="border-bottom-0">Цена</th>
                             <th class="border-bottom-0">Количество</th>
                             <th class="border-bottom-0">Сумма</th>
@@ -21,6 +22,9 @@
                     <tbody>
                         <tr v-for="sale in sales" :key="sale.id">
                             <td>{{ sale.good.name }}</td>
+                            <td>
+                                {{ getSellerNames(sale) }}
+                            </td>
                             <td data-order="200" class="text-right">{{ sale.price }}₽</td>
                             <td class="text-right">{{ sale.qty }}</td>
                             <td data-order="4000" class="text-right  text-bold">{{ sale.price * sale.qty }}₽</td>
@@ -35,14 +39,20 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getSales"/>
     </div>
 </template>
 
 <script>
     import * as salesApi from '@/db/sales.js';
+    import Create from '@/components/Modals/Sales/General/Create.vue';
+    import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'GeneralSales',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 sales: [],
@@ -53,6 +63,13 @@
             },
             async getSales() {
                 this.sales = await salesApi.all();
+            },
+            getSellerNames(sale) {
+                let sellerNames = [];
+                sale.employees.forEach((employee) => {
+                    sellerNames.push(getUserName(employee.user.personal_data, 'F I'));
+                });
+                return sellerNames.join(', ');
             },
         },
         async mounted() {

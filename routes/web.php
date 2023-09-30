@@ -224,6 +224,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');
             Route::get('ping', 'WithdrawController@ping')->name('ping');
             Route::resource('withdraw', 'WithdrawController');
+            Route::get('expense-types', 'ExpenseController@types')->name('expenseTypes');
             Route::resource('expense', 'ExpenseController');
             Route::resource('move', 'MovesController');
             Route::resource('pay', 'PaysController');

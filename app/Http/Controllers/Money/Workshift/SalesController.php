@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
-use App\Helpers\WorkShiftHelper;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
+use App\Contracts\WorkShift\WorkShiftGoodEmployeeContract;
+use App\Helpers\WorkShiftHelper;
 use App\Models\WorkShift\WorkShiftGood;
+use App\Models\WorkShift\WorkShiftGoodEmployee;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use App\Http\Controllers\Controller;
@@ -45,6 +47,17 @@ class SalesController extends Controller
         $validated = $request->validate(WorkShiftGoodsContract::RULES, [], WorkShiftGoodsContract::ATTRIBUTES);
 
         $good = WorkShiftGood::create($validated);
+
+        if ($request->get('employees')) {
+            foreach ($request->get('employees') as $employeeID) {
+                $data = [
+                    WorkShiftGoodEmployeeContract::FIELD_EMPLOYEE_ID => $employeeID,
+                    WorkShiftGoodEmployeeContract::FIELD_WORK_SHIFT_GOOD_ID => $good->{WorkShiftGoodsContract::FIELD_ID},
+                ];
+                WorkShiftGoodEmployee::create($data);
+            }
+        }
+
         $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
 
         return response()->json([

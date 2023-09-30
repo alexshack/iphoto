@@ -8,18 +8,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Money\Expense;
 use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\ExpensesRepositoryInterface;
+use App\Repositories\Interfaces\ExpensesTypeRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
     private ExpensesRepositoryInterface $expenseRepo;
+    private ExpensesTypeRepositoryInterface $expensesTypesRepo;
     private WorkShiftRepositoryInterface $workShiftRepo;
 
     public function __construct(ExpensesRepositoryInterface $expenseRepo,
+        ExpensesTypeRepositoryInterface $expensesTypesRepo,
         WorkShiftRepositoryInterface $workShiftRepo)
     {
         $this->expenseRepo = $expenseRepo;
+        $this->expensesTypesRepo = $expensesTypesRepo;
         $this->workShiftRepo = $workShiftRepo;
     }
 
@@ -32,6 +36,11 @@ class ExpenseController extends Controller
         $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
         $expenses = $this->expenseRepo->getByWorkshift($workShift);
         return response()->json($expenses);
+    }
+
+    public function types() {
+        $types = $this->expensesTypesRepo->getAll();
+        return response()->json($types);
     }
 
     /**

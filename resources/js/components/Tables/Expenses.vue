@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Расходы</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#expence">Добавить расход</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createExpense">Добавить расход</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -33,13 +33,19 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getExpenses()"/>
     </div>
 </template>
 
 <script>
     import * as expensesApi from '@/db/expenses.js';
+    import Create from '@/components/Modals/Expenses/Expenses/Create.vue';
+
     export default{
         name: 'Expenses',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 expenses: [],

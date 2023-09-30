@@ -9,6 +9,15 @@ export const all = async (workshiftID = null) => {
     return [];
 };
 
+export const types = async () => {
+    const url = window.workshiftUrls.expenseTypes;
+    const response = await axios.get(url);
+    if (typeof response.data != 'undefined') {
+        return response.data;
+    }
+    return null;
+}
+
 export const deleteExpense = async (ID) => {
     const url = window.workshiftUrls.expenses.delete.replace('%s', ID);
     const response = await axios.delete(url, {});

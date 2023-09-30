@@ -21,10 +21,10 @@ class WorkShiftGoodsRepository implements WorkShiftGoodsRepositoryInterface
      */
     public function getAll($workShiftID, $type = null): Collection
     {
-        $goods = WorkShiftGood::where(WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID, $workShiftID)
-            ->with([
-                'good'
-            ]);
+        $relations = [
+            'good'
+        ];
+        $goods = WorkShiftGood::where(WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID, $workShiftID);
         if ($type) {
             $goods->whereHas('good', function ($query) use ($type) {
                 if ($type) {
@@ -32,7 +32,13 @@ class WorkShiftGoodsRepository implements WorkShiftGoodsRepositoryInterface
                 }
                 return $query;
             });
+            if((int) $type === 1) {
+                $relations[] = 'employees';
+                $relations[] = 'employees.user';
+                $relations[] = 'employees.user.personalData:id,user_id,last_name,first_name,middle_name';
+            }
         }
-        return $goods->get();
+
+        return $goods->with($relations)->get();
     }
 }
