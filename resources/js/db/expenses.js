@@ -47,7 +47,13 @@ export const store = async (data) => {
     };
     try {
         const res = await axios.post(url, data);
-        if (res.data) {
+        if (res && res.status === 422) {
+            for (let p in res.data.errors) {
+                for (let i = 0; i < res.data.errors[p].length; i++) {
+                    response.errors.push(res.data.errors[p][i]);
+                }
+            }
+        } else if (res && res.data) {
             response.data = res.data;
         }
         return response;

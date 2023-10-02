@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Contracts\Salary\PaysContract;
+use App\Contracts\UserContract;
+use App\Contracts\UserPersonalDataContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
@@ -30,7 +32,7 @@ class PaysRepository implements PaysRepositoryInterface
     }
 
     public function getByWorkshift(WorkShift $workShift, $type = null) {
-        $pays = Pay::whereDate(PaysContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
+        $pays = Pay::where(PaysContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
             ->where(PaysContract::FIELD_SOURCE_TYPE, 2)
             ->where(PaysContract::FIELD_SOURCE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(PaysContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID});
@@ -38,6 +40,10 @@ class PaysRepository implements PaysRepositoryInterface
         if ($type) {
             $pays = $pays->where(PaysContract::FIELD_TYPE, $type);
         }
-        return $pays->with('user')->get();
+        $pays = $pays->with(
+            'user',
+            'user.personalData:'. UserContract::FIELD_ID . ',' . UserPersonalDataContract::FIELD_USER_ID . ',' . UserPersonalDataContract::FIELD_LAST_NAME . ',' .UserPersonalDataContract::FIELD_FIRST_NAME . ',' .UserPersonalDataContract::FIELD_MIDDLE_NAME,
+        );
+        return $pays->get();
     }
 }

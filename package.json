@@ -11,6 +11,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@vitejs/plugin-vue": "^4.3.2",
+        "@vuepic/vue-datepicker": "^7.0.0",
         "vue": "^3.3.4"
     }
 }

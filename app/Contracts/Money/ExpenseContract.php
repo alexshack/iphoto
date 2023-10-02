@@ -46,8 +46,8 @@ interface ExpenseContract
         self::FIELD_PLACE_ID => 'sometimes|nullable|exists:' . PlaceContract::TABLE . ',' . PlaceContract::FIELD_ID,
         self::FIELD_MANAGER_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         //self::FIELD_TYPE => 'required|numeric|in:1,2',
-        self::FIELD_AMOUNT => 'required|numeric',
-        self::FIELD_NOTE => 'required|string|max:255',
+        self::FIELD_AMOUNT => 'required|numeric|min:1',
+        self::FIELD_NOTE => 'string|max:255',
         self::FIELD_CHECK_FILE => 'nullable',
     ];
 
@@ -55,7 +55,6 @@ interface ExpenseContract
         self::FIELD_DATE => 'Дата',
         self::FIELD_TYPE_ID => 'Вид расхода',
         self::FIELD_CITY_ID => 'Город',
-        self::FIELD_PAYER_TYPE => 'Выберите тип плательщика',
         self::FIELD_PLACE_ID => 'Точка',
         self::FIELD_MANAGER_ID => 'Менеджер',
         self::FIELD_CHECK_FILE => 'Чек',

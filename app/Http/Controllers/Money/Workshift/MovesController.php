@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Contracts\Money\MovesContract;
+use App\Contracts\WorkShift\WorkShiftContract;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Money\Move;
@@ -48,12 +50,20 @@ class MovesController extends Controller
      */
     public function store(Request $request)
     {
-        $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+        $request->request->add([
+            'city_id' => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+            'payer_id' => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+            'date' => $workShift->{WorkShiftContract::FIELD_DATE},
+            'payer_type' => 'place',
+        ]);
         $validated = $request->validate(MovesContract::RULES, [], MovesContract::ATTRIBUTES);
-        $move = Move::store($validated);
+        $move = Move::create($validated);
+        $stats = WorkShiftHelper::recalculateStats($workShift);
         return response()->json([
-            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $move,
+            'agenda' => $stats['agenda'],
+            'errors' => $stats['errors'],
         ]);
     }
 

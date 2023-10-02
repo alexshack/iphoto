@@ -1,21 +1,25 @@
 import axios from 'axios';
-window.axios = axios;
 
 
 import { createApp, ref } from 'vue';
 import {store} from './store/workshift.js';
 import WorkShift from './components/WorkShift.vue';
 import loadingDirective from '@/directives/loading.js';
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
+import '@vuepic/vue-datepicker/dist/main.css';
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.interceptors.response.use((response) => {
+const axiosInstance = axios;
+axiosInstance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axiosInstance.interceptors.response.use((response) => {
     if (typeof response.data.agenda != 'udefined') {
         store.updateAgenda(response.data.agenda);
     }
     return response;
 }, (err) => {});
+axiosInstance.defaults.validateStatus = (status) => {
+    return (status >= 200 && status < 300) || status === 422;
+};
+
+window.axios = axiosInstance;
 
 window.addEventListener('notify', (event) => {
     notif(event.detail);
@@ -23,9 +27,7 @@ window.addEventListener('notify', (event) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    DataTable.use(DataTablesCore);
     const app = createApp(WorkShift);
-    app.use(DataTable);
     app.directive('loading', loadingDirective);
     app.mount('#workshift');
 });

@@ -92,7 +92,9 @@ class UserRepository implements UserRepositoryInterface
             ->users()
             ->whereHas('workData', function($query) {
                 $query->whereNotIn(UserWorkDataContract::FIELD_STATUS, UserWorkDataContract::INACTIVE_STATUS_LIST);
-            })->get();
+            })
+            ->with('personalData:id,user_id,last_name,first_name,middle_name')
+            ->get();
     }
 
     public function getExpenseAvailable() {

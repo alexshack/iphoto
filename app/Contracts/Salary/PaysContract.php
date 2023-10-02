@@ -44,7 +44,9 @@ interface PaysContract {
 
     public const RULES = [
         self::FIELD_DATE => 'required|date',
-        self::FIELD_TYPE_ID => 'required|exists:' . CalcsTypeContract::TABLE . ',' .CalcsTypeContract::FIELD_ID,
+        self::FIELD_BILLING_MONTH => 'sometimes|date',
+        self::FIELD_TYPE_ID => 'sometimes|exists:' . CalcsTypeContract::TABLE . ',' .CalcsTypeContract::FIELD_ID,
+        self::FIELD_TYPE => 'required|in:1,2',
         self::FIELD_CITY_ID => 'required|exists:' . CityContract::TABLE . ',' . CityContract::FIELD_ID,
         self::FIELD_SOURCE_TYPE => 'required',
         self::FIELD_SOURCE_ID => 'required',
@@ -61,7 +63,6 @@ interface PaysContract {
         self::FIELD_CITY_ID => 'Город',
         self::FIELD_SOURCE_TYPE => 'тип источника',
         self::FIELD_SOURCE_ID => 'Источник',
-        self::FIELD_USER_ID => 'Сотрудник',
         self::FIELD_AMOUNT => 'Сумма',
         self::FIELD_NOTE => 'Примечания',
         self::FIELD_USER_ID => 'Сотрудник',

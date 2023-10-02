@@ -18,7 +18,9 @@ export const store = reactive({
         withdrawal: 0,
     },
     updateAgenda(obj) {
-        console.log('Update agenda');
+        if (typeof obj === 'undefined' || !obj) {
+            return;
+        }
         for (let p in obj) {
             this.agenda[p] = obj[p];
         }

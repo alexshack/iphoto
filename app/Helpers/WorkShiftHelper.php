@@ -155,6 +155,7 @@ class WorkShiftHelper {
             'cashMoney',
             'cashTerminal',
             'cashTotal',
+            'expensesTotal',
             'expenses',
             'moves',
             'payroll',

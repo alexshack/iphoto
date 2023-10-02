@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Перемещения денег</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#move">Добавить перемещение</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createMove">Добавить перемещение</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -33,15 +33,20 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getMoves()"/>
     </div>
 </template>
 
 <script>
     import * as movesApi from '@/db/moves.js';
+    import Create from '@/components/Modals/Expenses/Moves/Create.vue';
     import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'MovesTable',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 moves: [],

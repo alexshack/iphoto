@@ -61,7 +61,7 @@
             async submit() {
                 this.errors = [];
                 const response = await store(this.formData);
-                if (response.errors.legnth > 0) {
+                if (response.errors.length > 0) {
                     this.errors = response.errors;
                 } else {
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));

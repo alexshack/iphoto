@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Выдача авансов</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#pay">Добавить аванс</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createAdvancePayment">Добавить аванс</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="payment in payments" :key="payment.id">
-                            <td>{{ getUserName(payment.user) }}</td>
+                            <td>{{ getUserName(payment.user.personal_data) }}</td>
                             <td :data-order="payment.amount" class="text-right">{{ payment.amount }}₽</td>
                             <td v-html="payment.note"></td>
                             <td>
@@ -33,15 +33,20 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getPayments()"/>
     </div>
 </template>
 
 <script>
     import {all} from '@/db/pays.js';
+    import Create from '@/components/Modals/Expenses/AdvancePayments/Create.vue';
     import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'AdvancePaymentsTable',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 payments: [],

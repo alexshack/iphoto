@@ -18,4 +18,9 @@ class UsersController extends Controller
         $users = $this->userRepository->getByCity($cityID);
         return response()->json($users);
     }
+
+    public function getActiveManagers(Request $request) {
+        $users = $this->userRepository->getActiveManagers();
+        return response()->json($users);
+    }
 }

@@ -66,7 +66,11 @@ class Pay extends Model
 
 
     public function setDateAttribute($value) {
-        $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
+        if (strpos($value, '.') !== false) {
+            $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
+        } else {
+            $this->attributes['date'] = $value;
+        }
     }
 
     public function source() {

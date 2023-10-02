@@ -1,41 +1,37 @@
 <template>
     <div>
         <Modal :modalID="modalID">
-            <tempalte v-slot:title>Расход</tempalte>
+            <template v-slot:title>Выдача авансов</template>
             <template v-slot:body>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Вид расхода</label>
-                            <select v-model="formData.expense_type_id" name=""  class="form-control custom-select select2-show-search "  data-placeholder="Выберите вид расхода">
-                                <option label="Выберите вид расхода"></option>
-                                <!-- виды расходов, с правом создания Сотрудник и статусом Активен -->
-                                <option v-for="expenseType in expenseTypes" :value="1" :key="expenseType.id">{{ expenseType.name }}</option>
+                            <label class="form-label">Сотрудник</label>
+                            <select v-model="formData.user_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите сотрудника">
+                                <option label="Выберите сотрудника"></option>
+                                <!-- Все менеджеры -->
+                                <option v-for="employee in employees" :key="employee.id" :value="employee.id">
+                                    {{ getUserName(employee.personal_data) }}
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Сумма</label>
-                            <input v-model="formData.amount" class="form-control" placeholder="Укажите сумму расхода" type="number">
+                            <label class="form-label">Расчетный месяц</label>
+                            <VueDatePicker v-model="formData.month" month-picker locale="ru"/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <div class="form-label">Чек</div>
-                            <input type="file" data-height="180"  />
+                            <label class="form-label">Сумма</label>
+                            <input v-model="formData.amount" class="form-control" placeholder="Укажите сумму аванса" type="number">
                         </div>
                     </div>
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Примечания:</label>
                             <input v-model="formData.note" class="form-control" placeholder="Укажите примечания" type="text">
-                        </div>
-                        <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
-                            <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-                            <span class="font-weight-semibold">Невозможно добавить расход:</span>
-                            <div v-for="err in errors">{{ err }}</div>
                         </div>
                     </div>
                 </div>
@@ -48,30 +44,38 @@
 </template>
 
 <script>
+    import {getByCity} from '@/db/users.js';
+    import {getUserName} from '@/helpers/employee.js';
     import Modal from '@/components/Modals/Modal.vue';
-    import {store, types} from '@/db/expenses.js';
+    import {store} from '@/db/pays.js';
+    import VueDatePicker from '@vuepic/vue-datepicker';
+
     export default{
         name: 'Create',
         components: {
             Modal,
+            VueDatePicker,
         },
         data: () => {
             return {
-                errors: [],
-                expenseTypes: [],
+                employees: [],
+                loading: false,
                 formData: {
-                    expense_type_id: null,
-                    type: null,
-                    amount: 0,
+                    month: null,
+                    user_id: null,
+                    amount: null,
                     note: null,
                 },
-                loading: false,
-                modalID: 'createExpense',
+                modalID: 'createAdvancePayment',
             };
         },
         methods: {
+            getUserName,
+            async setEmployees() {
+                this.employees = await getByCity();
+            },
             async setupData() {
-                this.expenseTypes = await types();
+                this.setEmployees();
             },
             async submit() {
                 this.loading = true;
@@ -87,16 +91,16 @@
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {
-                            msg: 'Расход добавлен',
+                            msg: 'Аванс добавлен',
                             type: 'success',
                         }
                     }));
                     this.$emit('submitted')
                 }
-            }
+            },
         },
         async mounted() {
             await this.setupData();
-        }
+        },
     }
 </script>

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Contracts\Salary\PaysContract;
+use App\Contracts\WorkShift\WorkShiftContract;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Salary\Pay;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Models\Salary\Salary;
@@ -28,6 +31,9 @@ class PaysController extends Controller
     {
         $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
         $type = $request->get('type');
+        if (!$type) {
+            $type = 2;
+        }
         $pays = [];
         if ($workShift) {
             $pays = $this->payRepo->getByWorkshift($workShift, $type);
@@ -47,9 +53,18 @@ class PaysController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(PaysContract::RULES, [], PaysContract::ATTRIBUTES);
+        $month = $request->get('month');
         $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
-        $pay = Pay::store($validated);
+        $request->request->add([
+            PaysContract::FIELD_BILLING_MONTH => "{$month['year']}-{$month['month']}-01",
+            PaysContract::FIELD_TYPE => 2,
+            PaysContract::FIELD_CITY_ID => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+            PaysContract::FIELD_SOURCE_TYPE => 2,
+            PaysContract::FIELD_SOURCE_ID => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+            PaysContract::FIELD_DATE => $workShift->{WorkShiftContract::FIELD_DATE},
+        ]);
+        $validated = $request->validate(PaysContract::RULES, [], PaysContract::ATTRIBUTES);
+        $pay = Pay::create($validated);
         return response()->json([
             'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $pay,

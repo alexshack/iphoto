@@ -1327,8 +1327,10 @@
                     update: '{{ route("workshift.pay.update", ["pay" => "%s"]) }}',
                 },
                 ping: '{{ route("workshift.ping") }}',
+                placesList: '{{ route("workshift.places_list") }}',
                 users: {
-                    city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}'
+                    activeManagers: '{{ route("workshift.users.active_managers") }}',
+                    city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}',
                 },
                 withdraw: {
                     all: '{{ route("workshift.withdraw.index") }}',

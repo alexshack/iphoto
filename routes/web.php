@@ -221,6 +221,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
             Route::get('employee-position', 'PositionController@index')->name('employee.position');
             Route::resource('goods', 'SalesController');
+            Route::get('users/active-managers', 'UsersController@getActiveManagers')->name('users.active_managers');
             Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');
             Route::get('ping', 'WithdrawController@ping')->name('ping');
             Route::resource('withdraw', 'WithdrawController');
@@ -230,6 +231,7 @@ Route::middleware(['web'])->group(function () {
             Route::resource('pay', 'PaysController');
             Route::resource('fcd', 'FCDController');
             Route::get('goods-list', 'GoodsController@index')->name('goods_list');
+            Route::get('places', 'PlacesController@getByWorkShiftCity')->name('places_list');
         });
 
         Route::get('money/sales-types', function () {
