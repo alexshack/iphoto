@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Models\WorkShift\WorkShiftFinalCashDesk;
 use App\Repositories\Interfaces\WorkShiftFinalCashDeskRepositoryInterface;
@@ -22,9 +23,9 @@ class WorkShiftFinalCashDeskRepository implements WorkShiftFinalCashDeskReposito
         return WorkShiftFinalCashDesk::all();
     }
 
-    public function getByWorkShift($workShiftID)
+    public function getByWorkShift($workShift)
     {
-        return WorkShiftFinalCashDesk::where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workShiftID)
+        return WorkShiftFinalCashDesk::where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workShift->{WorkShiftContract::FIELD_ID})
             ->with('saleType')
             ->get();
     }

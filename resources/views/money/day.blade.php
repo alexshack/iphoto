@@ -1276,7 +1276,8 @@
 
         <script>
             window.agenda = @js($agenda);
-            window.workshiftData = @js($workshift);
+            window.workshiftData = JSON.parse('{!! json_encode($workshift) !!}');
+            {{--window.workshiftData = @js($workshift);--}}
             window.workshiftTitle = '{{ $workshift->title }}';
             window.workshiftUrls = {
                 update: '{{ route("money.days.update", ["id" => $workshift->id]) }}',
@@ -1328,6 +1329,7 @@
                 },
                 ping: '{{ route("workshift.ping") }}',
                 placesList: '{{ route("workshift.places_list") }}',
+                salesTypes: '{{ route("workshift.salesTypes") }}',
                 users: {
                     activeManagers: '{{ route("workshift.users.active_managers") }}',
                     city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}',

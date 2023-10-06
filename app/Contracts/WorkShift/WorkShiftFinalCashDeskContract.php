@@ -26,7 +26,6 @@ interface WorkShiftFinalCashDeskContract {
     ];
 
     public const ATTRIBUTES = [
-        self::FIELD_GOOD_ID => 'Товар',
         self::FIELD_SUM => 'Сумма',
         self::FIELD_SALE_TYPE_ID => 'Вид продажи',
         self::FIELD_NOTE => 'Примечания',

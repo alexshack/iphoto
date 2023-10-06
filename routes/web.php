@@ -220,6 +220,7 @@ Route::middleware(['web'])->group(function () {
             Route::resource('employee', 'WorkshiftEmployeeController');
             Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
             Route::get('employee-position', 'PositionController@index')->name('employee.position');
+            Route::get('sales-types-list', 'SalesController@getSalesTypes')->name('salesTypes');
             Route::resource('goods', 'SalesController');
             Route::get('users/active-managers', 'UsersController@getActiveManagers')->name('users.active_managers');
             Route::get('users/city/{cityID}', 'UsersController@getByCity')->name('users.city');

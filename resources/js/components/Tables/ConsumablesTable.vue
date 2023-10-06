@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Расходные материалы</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#trash">Добавить расходник</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createConsumable">Добавить расходник</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -31,27 +31,30 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getMaterials"/>
     </div>
 </template>
 
 <script>
     import {all} from '@/db/sales.js';
+    import Create from '@/components/Modals/Consumbales/Create.vue';
 
     export default{
         name: 'ConsumablesTable',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 materials: [],
             };
         },
-
         methods: {
             confirmDeleteMaterial(material) {},
             async getMaterials() {
                 this.materials = await all(null, 'consumables');
             },
         },
-
         async mounted() {
             await this.getMaterials();
         }

@@ -20,10 +20,11 @@ class FCDController extends Controller
         $this->fcdRepo = $fcdRepo;
         $this->workShiftRepo = $workShiftRepo;
     }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $workShift = $this->workShiftRepo->find($request->get('workshiftID'));
         if (!$workShift) {
@@ -48,6 +49,7 @@ class FCDController extends Controller
     public function store(Request $request)
     {
         $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+        //$request->request->add
         $validated = $request->validate(WorkShiftFinalCashDeskContract::RULES, [], WorkShiftFinalCashDeskContract::ATTRIBUTES);
         $fcd = WorkShiftFinalCashDesk::create($validated);
         return response()->json([

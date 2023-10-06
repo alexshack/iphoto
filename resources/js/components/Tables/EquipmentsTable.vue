@@ -16,7 +16,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="equipment in eqipments" :key="equipment.id">
+                        <tr v-for="equipment in equipments" :key="equipment.id">
                             <td>{{ equipment.good.name }}</td>
                             <td>{{ equipment.good.serial_number }}</td>
                             <td>{{ equipment.on_start }}</td>

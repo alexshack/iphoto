@@ -17,6 +17,10 @@ class GoodsRepository implements GoodsRepositoryInterface
         return Goods::all();
     }
 
+    public function find($id) {
+        return Goods::find($id);
+    }
+
     public function getByType($type) {
         return Goods::where(GoodsContract::FIELD_TYPE, $type)->get();
     }

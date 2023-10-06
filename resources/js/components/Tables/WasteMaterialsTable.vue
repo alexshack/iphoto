@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Отработка</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#lose">Добавить отработку</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createWasteMaterials">Добавить отработку</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -31,14 +31,19 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getMaterials"/>
     </div>
 </template>
 
 <script>
     import {all} from '@/db/sales.js';
+    import Create from '@/components/Modals/WasteMaterials/Create.vue';
 
     export default{
         name: 'WasteMaterialsTable',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 materials: [],

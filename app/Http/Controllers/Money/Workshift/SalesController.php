@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Money\Workshift;
 
+use App\Contracts\Goods\GoodsContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\WorkShift\WorkShiftGoodEmployeeContract;
 use App\Helpers\WorkShiftHelper;
 use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftGoodEmployee;
+use App\Repositories\Interfaces\GoodsRepositoryInterface;
+use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use App\Http\Controllers\Controller;
@@ -14,13 +17,25 @@ use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
+    private GoodsRepositoryInterface $goodsRepository;
+    private SalesTypeRepositoryInterface $salesTypeRepository;
     private WorkShiftRepositoryInterface $workShiftRepo;
     private WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository;
 
-    public function __construct(WorkShiftRepositoryInterface $workShiftRepo, WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository)
+    public function __construct(GoodsRepositoryInterface $goodsRepository,
+        SalesTypeRepositoryInterface $salesTypeRepository,
+        WorkShiftRepositoryInterface $workShiftRepo,
+        WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository)
     {
+        $this->goodsRepository = $goodsRepository;
+        $this->salesTypeRepository = $salesTypeRepository;
         $this->workShiftGoodsRepository = $workShiftGoodsRepository;
         $this->workShiftRepo = $workShiftRepo;
+    }
+
+    public function getSalesTypes() {
+        $types = $this->salesTypeRepository->getAll();
+        return response()->json($types);
     }
     /**
      * Display a listing of the resource.
@@ -44,7 +59,12 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(WorkShiftGoodsContract::RULES, [], WorkShiftGoodsContract::ATTRIBUTES);
+        $rules = WorkShiftGoodsContract::RULES;
+        $good = $this->goodsRepository->find($request->get('good_id'));
+        if ($good && in_array($good->{GoodsContract::FIELD_TYPE}, [4, 5])) {
+            unset($rules[WorkShiftGoodsContract::FIELD_PRICE]);
+        }
+        $validated = $request->validate($rules, [], WorkShiftGoodsContract::ATTRIBUTES);
 
         $good = WorkShiftGood::create($validated);
 

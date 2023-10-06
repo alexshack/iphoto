@@ -46,6 +46,15 @@ export const getSale = async (ID) => {
     return null;
 }
 
+export const getSaleTypes = async () => {
+    const url = window.workshiftUrls.salesTypes;
+    const response = await axios.get(url);
+    if (typeof response.data != 'undefined') {
+        return response.data;
+    }
+    return null;
+}
+
 export const store = async (data) => {
     const url = window.workshiftUrls.goods.store;
     if (typeof data.workshift_id === 'undefined' || data.workshift_id) {
@@ -61,7 +70,13 @@ export const store = async (data) => {
     };
     try {
         const res = await axios.post(url, data);
-        if (typeof res != 'undefined' && res.data) {
+        if (res && res.status === 422) {
+            for (let p in res.data.errors) {
+                for (let i = 0; i < res.data.errors[p].length; i++) {
+                    response.errors.push(res.data.errors[p][i]);
+                }
+            }
+        } else if (res && res.data) {
             response.data = res.data;
         }
         return response;

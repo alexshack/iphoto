@@ -71,6 +71,8 @@ class WorkShiftController extends Controller
     public function edit(string $id)
     {
         $workshift = $this->workshiftRepository->find($id);
+        //dump($workshift);
+        //dd(json_encode($workshift));
         $agenda = WorkShiftHelper::recalculateStats($workshift);
         $title = $workshift->title;
         return view('money.day', compact('agenda', 'title', 'workshift'));

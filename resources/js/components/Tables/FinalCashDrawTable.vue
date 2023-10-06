@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Данные кассы</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#sale">Добавить кассу</a>
+                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createFCD">Добавить кассу</a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -33,14 +33,19 @@
                 </table>
             </div>
         </div>
+        <Create @submitted="getFCDs"/>
     </div>
 </template>
 
 <script>
     import {all} from '@/db/fcd.js';
+    import Create from '@/components/Modals/FCD/Create.vue';
 
     export default{
         name: 'FinalCashDrawTable',
+        components: {
+            Create,
+        },
         data: () => {
             return {
                 fcds: [],
