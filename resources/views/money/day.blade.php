@@ -1305,6 +1305,10 @@
                     store: '{{ route("workshift.fcd.store") }}',
                     update: '{{ route("workshift.fcd.update", ["fcd" => "%s"]) }}',
                 },
+                file: {
+                    upload: '{{ route("workshift.file.upload") }}',
+                    delete: '{{ route("workshift.file.destroy", ["fileName" => "."]) }}'
+                },
                 goods: {
                     all: '{{ route("workshift.goods.index") }}',
                     show: '{{ route("workshift.goods.show", ["good" => "%s"]) }}',

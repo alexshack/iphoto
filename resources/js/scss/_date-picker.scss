@@ -1,0 +1,23 @@
+.picker-icon {
+    align-items: center;
+    background-color: #dee5f7;
+    border: 1px solid #d8dbee;
+    color: #9ba5ca;
+    display: flex;
+    font-size: .9375rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 0;
+    padding: .375rem .75rem;
+    text-align: center;
+    white-space: nowrap;
+    position: absolute;
+    top: -18px;
+    height: 36px;
+}
+
+.dp__input_wrap {
+    .dp__input {
+        padding-left: 50px;
+    }
+}

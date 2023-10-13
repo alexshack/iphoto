@@ -47,7 +47,7 @@ interface ExpenseContract
         self::FIELD_MANAGER_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         //self::FIELD_TYPE => 'required|numeric|in:1,2',
         self::FIELD_AMOUNT => 'required|numeric|min:1',
-        self::FIELD_NOTE => 'string|max:255',
+        self::FIELD_NOTE => 'nullable|string|max:255',
         self::FIELD_CHECK_FILE => 'nullable',
     ];
 

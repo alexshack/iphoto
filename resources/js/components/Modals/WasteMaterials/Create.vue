@@ -7,19 +7,20 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Товар</label>
-                            <select v-model="formData.good_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите отработку">
-                                <option label="Выберите отработку"></option>
-                                <!-- Товар при Товар.Тип = Отработка -->
-                                <option v-for="good in goods" :key="good.id" :value="good.id">
-                                    {{ good.name }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.good_id" :options="goods" label="name"/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Количество</label>
                             <input v-model="formData.qty" class="form-control" placeholder="Укажите количество" type="number">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
+                            <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
+                            <span class="font-weight-semibold">Невозможно добавить продажу:</span>
+                            <div v-for="err in errors">{{ err }}</div>
                         </div>
                     </div>
                 </div>
@@ -35,6 +36,7 @@
     import Modal from '@/components/Modals/Modal.vue';
     import {all} from '@/db/goods.js';
     import {store} from '@/db/sales.js';
+    import {prepareFormData} from '@/helpers/form.js';
 
     export default{
         name: 'Create',
@@ -61,11 +63,15 @@
             async submit() {
                 this.loading = true;
                 this.errors = [];
-                const response = await store(this.formData);
+                const formData = prepareFormData(this.formData);
+                const response = await store(formData);
                 this.loading = false;
-                if (response.errors.legnth > 0) {
+                if (response.errors.length > 0) {
                     this.errors = response.errors;
                 } else {
+                    for (let p in this.formData) {
+                        this.formData[p] = null;
+                    }
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {

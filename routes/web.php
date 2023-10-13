@@ -233,6 +233,11 @@ Route::middleware(['web'])->group(function () {
             Route::resource('fcd', 'FCDController');
             Route::get('goods-list', 'GoodsController@index')->name('goods_list');
             Route::get('places', 'PlacesController@getByWorkShiftCity')->name('places_list');
+
+            Route::group(['prefix' => 'file', 'as' => 'file.'], function () {
+                Route::post('upload', 'UploadController@upload')->name('upload');
+                Route::delete('destory/{fileName}', 'UploadController@destroy')->name('destroy');
+            });
         });
 
         Route::get('money/sales-types', function () {

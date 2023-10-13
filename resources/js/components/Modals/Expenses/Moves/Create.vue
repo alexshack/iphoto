@@ -23,24 +23,14 @@
                     <div class="tab-pane active show" id="move-tab-1">
                         <div class="form-group">
                             <label class="form-label  col-md-3">Точка</label>
-                            <select v-model="formData.recipient_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите точку">
-                                <option label="Выберите точку"></option>
-                                <!--все точки с Точка.Город = Смена.Точка.Город -->
-                                <option v-for="place in places" :key="place.id" :value="place.id">{{ place.name }}</option>
-                            </select>
+                            <v-select v-model="formData.recipient_id" :options="places" label="name"/>
                         </div>
 
                     </div>
                     <div class="tab-pane show" id="move-tab-2">
                         <div class="form-group">
                             <label class="form-label">Менеджер</label>
-                            <select v-model="formData.recipient_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите менеджера">
-                                <option label="Выберите менеджера"></option>
-                                <!-- Все менеджеры -->
-                                <option v-for="manager in managers" :key="manager.id" :value="manager.id">
-                                    {{ getUserName(manager.personal_data) }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.recipient_id" :options="managers"/>
                         </div>
                     </div>
                 </div>
@@ -79,6 +69,8 @@
     import {getActiveManagers} from '@/db/users.js';
     import {getUserName} from '@/helpers/employee.js';
     import {store} from '@/db/moves.js';
+    import {prepareFormData} from '@/helpers/form.js';
+
     export default{
         name: 'Create',
         components: {
@@ -100,9 +92,14 @@
             };
         },
         methods: {
-            getUserName,
             async setManagers() {
-                this.managers = await getActiveManagers();
+                let managers = await getActiveManagers();
+                this.managers = managers.map((manager) => {
+                    return {
+                        id: manager.id,
+                        label: getUserName(manager.personal_data),
+                    };
+                });
             },
             async setPlaces() {
                 this.places = await cityPlaces();
@@ -118,7 +115,8 @@
             async submit() {
                 this.loading = true;
                 this.errors = [];
-                const response = await store(this.formData);
+                const formData = prepareFormData(this.formData);
+                const response = await store(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
                     this.errors = response.errors;

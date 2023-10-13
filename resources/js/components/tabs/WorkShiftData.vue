@@ -91,8 +91,8 @@
                 </table>
             </div>
         </div>
-        <CreateEmployee/>
-        <CreateWithdraw/>
+        <CreateEmployee @submitted="getEmployees"/>
+        <CreateWithdraw @submitted="getWithdraw"/>
         <EditEmployee :employeeID="currentEmployee"/>
     </div>
 </template>

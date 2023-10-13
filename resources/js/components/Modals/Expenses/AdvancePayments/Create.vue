@@ -7,13 +7,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Сотрудник</label>
-                            <select v-model="formData.user_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите сотрудника">
-                                <option label="Выберите сотрудника"></option>
-                                <!-- Все менеджеры -->
-                                <option v-for="employee in employees" :key="employee.id" :value="employee.id">
-                                    {{ getUserName(employee.personal_data) }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.user_id" :options="employees"/>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -47,6 +41,7 @@
     import {getByCity} from '@/db/users.js';
     import {getUserName} from '@/helpers/employee.js';
     import Modal from '@/components/Modals/Modal.vue';
+    import {prepareFormData} from '@/helpers/form.js';
     import {store} from '@/db/pays.js';
     import VueDatePicker from '@vuepic/vue-datepicker';
 
@@ -72,7 +67,13 @@
         methods: {
             getUserName,
             async setEmployees() {
-                this.employees = await getByCity();
+                let employees = await getByCity();
+                this.employees = employees.map(employee => {
+                    return {
+                        id: employee.id,
+                        label: getUserName(employee.personal_data),
+                    };
+                });
             },
             async setupData() {
                 this.setEmployees();
@@ -80,7 +81,8 @@
             async submit() {
                 this.loading = true;
                 this.errors = [];
-                const response = await store(this.formData);
+                const formData = prepareFormData(this.formData);
+                const response = await store(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
                     this.errors = response.errors;

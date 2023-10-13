@@ -7,13 +7,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Вид продажи</label>
-                            <select v-model="formData.sale_type_id" class="form-control select2-show-search custom-select" data-placeholder="Выберите вид продажи">
-                                <option label="Выберите вид продажи"></option>
-                                <!-- Виды продаж, Статус = Активен -->
-                                <option v-for="saleType in saleTypes" :key="saleType.id" :value="saleType.id">
-                                    {{ saleType.name }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.sale_type_id" :options="saleTypes" label="name"/>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -46,6 +40,7 @@
     import {getSaleTypes} from '@/db/sales.js';
     import Modal from '@/components/Modals/Modal.vue';
     import {store} from '@/db/fcd.js';
+    import {prepareFormData} from '@/helpers/form.js';
 
     export default {
         name: 'Create',
@@ -72,7 +67,8 @@
             async submit() {
                 this.loading = true;
                 this.errors = [];
-                const response = await store(this.formData);
+                const formData = prepareFormData(this.formData);
+                const response = await store(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
                     this.errors = response.errors;

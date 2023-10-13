@@ -5,7 +5,12 @@ import { createApp, ref } from 'vue';
 import {store} from './store/workshift.js';
 import WorkShift from './components/WorkShift.vue';
 import loadingDirective from '@/directives/loading.js';
+import vSelect from 'vue-select';
+
 import '@vuepic/vue-datepicker/dist/main.css';
+import 'vue-select/dist/vue-select.css';
+import './scss/workshift.scss';
+
 
 const axiosInstance = axios;
 axiosInstance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -34,5 +39,6 @@ window.addEventListener('notify', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     const app = createApp(WorkShift);
     app.directive('loading', loadingDirective);
+    app.component('v-select', vSelect);
     app.mount('#workshift');
 });

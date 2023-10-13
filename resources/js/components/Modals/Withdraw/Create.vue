@@ -7,15 +7,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Время снятия:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <span class="feather feather-clock"></span>
-                                    </div>
-                                </div><!-- input-group-prepend -->
-                                <input v-model="formData.time"
-                                    class="form-control ui-timepicker-input" id="tpTimeTime" placeholder="Укажите время" type="text" autocomplete="off">
-                            </div>
+                            <VueDatePicker v-model="formData.time" time-picker locale="ru">
+                            <template #input-icon>
+                                <div class="picker-icon">
+                                    <span class="feather feather-clock"></span>
+                                </div>
+                            </template>
+                            </VueDatePicker>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -27,12 +25,12 @@
                 </div>
                 <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
                     <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-                    <span class="font-weight-semibold">Невозможно добавить сотрудника:</span>
+                    <span class="font-weight-semibold">Невозможно добавить снятие:</span>
                     <div v-for="err in errors">{{ err }}</div>
                 </div>
             </template>
             <template v-slot:footer>
-                <button @click="submit"  class="btn btn-success">Сохранить</button>
+                <button @click="submit" v-loading="loading"  class="btn btn-success">Сохранить</button>
             </template>
         </Modal>
     </div>
@@ -40,12 +38,15 @@
 
 <script>
     import Modal from '@/components/Modals/Modal.vue';
+    import {prepareFormData} from '@/helpers/form.js';
     import {store} from '@/db/withdraw.js';
+    import VueDatePicker from '@vuepic/vue-datepicker';
 
     export default{
         name: 'Create',
         components: {
             Modal,
+            VueDatePicker,
         },
         data: () => {
             return {
@@ -54,16 +55,23 @@
                     sum: null,
                     time: null,
                 },
+                loading: false,
                 modalID: 'createWithdraw',
             };
         },
         methods: {
             async submit() {
                 this.errors = [];
-                const response = await store(this.formData);
+                this.loading = true;
+                const formData = prepareFormData(this.formData);
+                const response = await store(formData);
+                this.loading = false;
                 if (response.errors.length > 0) {
                     this.errors = response.errors;
                 } else {
+                    for (let p in this.formData) {
+                        this.formData[p] = null;
+                    }
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {
@@ -72,6 +80,7 @@
                         }
                     }));
                     window.dispatchEvent(new Event('withDrawUpdate'));
+                    this.$emit('submitted')
                 }
             }
         },
