@@ -33,4 +33,10 @@ class WorkShiftWithdrawalRepository implements WorkShiftWithdrawalRepositoryInte
             ->whereMonth(WorkShiftContract::FIELD_DATE, $data['month'])
             ->get();
     }
+
+    public function getByTime($workShiftID, $time) {
+        return WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workShiftID)
+            ->where(WorkShiftWithdrawalContract::FIELD_TIME, $time)
+            ->first();
+    }
 }

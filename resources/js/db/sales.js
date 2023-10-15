@@ -28,7 +28,7 @@ export const all = async (workshiftID = null, type = 'general') => {
     return [];
 };
 
-export const deleteSale = async (ID) => {
+export const destroy = async (ID) => {
     const url = window.workshiftUrls.goods.delete.replace('%s', ID);
     const response = await axios.delete(url, {});
     if (typeof response.data != 'undefined') {

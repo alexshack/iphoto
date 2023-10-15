@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CalcsTypeRepository implements CalcsTypeRepositoryInterface
 {
+    public function getActive() {
+        return CalcsType::where(CalcsTypeContract::FIELD_STATUS, true)->get();
+    }
     /**
      * @return Collection
      */

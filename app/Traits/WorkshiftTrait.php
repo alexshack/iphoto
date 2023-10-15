@@ -12,6 +12,9 @@ use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftGood;
 
 trait WorkshiftTrait {
+    public function closeWorkShift(Workshift $workShift) {
+    }
+
     public function createWorkShiftForPlace(Place $place) {
         $workShiftData = [
              WorkShiftContract::FIELD_DATE => date('Y-m-d'),

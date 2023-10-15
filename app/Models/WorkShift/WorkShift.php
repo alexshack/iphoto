@@ -25,7 +25,7 @@ class WorkShift extends Model
     protected $casts = WorkShiftContract::CASTS;
 
     public function goods() {
-        return $this->hasMany(WorkShiftGood::class, WorkShiftGoodContract::FIELD_WORK_SHIFT_ID, WorkShiftContract::FIELD_ID);
+        return $this->hasMany(WorkShiftGood::class, WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID, WorkShiftContract::FIELD_ID);
     }
     public function city() {
         return $this->belongsTo(City::class, WorkShiftContract::FIELD_CITY_ID, CityContract::FIELD_ID);
@@ -68,6 +68,6 @@ class WorkShift extends Model
     }
 
     public function withdrawals() {
-        return $this->hasMany(WorkShiftWithdrawal::class, WorkShiftContract::FIELD_ID, WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID);
+        return $this->hasMany(WorkShiftWithdrawal::class, WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, WorkShiftContract::FIELD_ID);
     }
 }

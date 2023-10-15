@@ -69,7 +69,14 @@ class SalesController extends Controller
         $good = WorkShiftGood::create($validated);
 
         if ($request->get('employees')) {
-            foreach ($request->get('employees') as $employeeID) {
+            foreach ($request->get('employees') as $employee) {
+                $employeeID = null;
+                if (is_array($employee)) {
+                    $employeeID = $employee['id'];
+                } elseif (is_numeric($employee)) {
+                    $employeeID = $employee;
+                }
+
                 $data = [
                     WorkShiftGoodEmployeeContract::FIELD_EMPLOYEE_ID => $employeeID,
                     WorkShiftGoodEmployeeContract::FIELD_WORK_SHIFT_GOOD_ID => $good->{WorkShiftGoodsContract::FIELD_ID},
@@ -131,7 +138,7 @@ class SalesController extends Controller
      */
     public function destroy(string $id)
     {
-        $good = $request->workShiftGoodsRepository->find($id);
+        $good = $this->workShiftGoodsRepository->find($id);
         if ($good) {
             $good->delete();
             return response()->json([]);

@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-
 import { createApp, ref } from 'vue';
-import {store} from './store/workshift.js';
-import WorkShift from './components/WorkShift.vue';
+import DestroyButton from '@/components/Form/DestroyButton.vue';
 import loadingDirective from '@/directives/loading.js';
+import {store} from './store/workshift.js';
 import vSelect from 'vue-select';
+import WorkShift from './components/WorkShift.vue';
 
 import '@vuepic/vue-datepicker/dist/main.css';
 import 'vue-select/dist/vue-select.css';
@@ -40,5 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = createApp(WorkShift);
     app.directive('loading', loadingDirective);
     app.component('v-select', vSelect);
+    app.component('DestroyButton', DestroyButton);
     app.mount('#workshift');
 });

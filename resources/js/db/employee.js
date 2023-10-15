@@ -9,7 +9,7 @@ export const all = async (workshiftID = null) => {
     return [];
 };
 
-export const deleteEmployee = async (ID) => {
+export const destroy = async (ID) => {
     const url = window.workshiftUrls.employee.delete.replace('%s', ID);
     const response = await axios.delete(url, {});
     if (typeof response.data != 'undefined') {

@@ -25,7 +25,7 @@
                             <td>
                                 <div class="d-flex">
                                     <a @click="$emit('editPayment', payment)" href="#" class="action-btns1"  data-toggle="modal" data-target="#pay"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
-                                    <a @click="confirmDeletePayment(payment)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    <DestroyButton entity="pays" :id="payment.id" @destroyed="getPayments"/>
                                 </div>
                             </td>
                         </tr>
@@ -53,8 +53,6 @@
             };
         },
         methods: {
-            confirmDeletePayment(payment) {
-            },
             async getPayments() {
                 this.payments = await all();
             },

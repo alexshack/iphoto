@@ -17,9 +17,8 @@ class WorkShiftGoodEmployee extends Model
 
     protected $fillable = WorkShiftGoodEmployeeContract::FILLABLE_FIELDS;
 
-    public function user() {
-        return $this->belongsTo(User::class, WorkShiftGoodEmployeeContract::FIELD_EMPLOYEE_ID, UserContract::FIELD_ID);
+    public function employee() {
+        return $this->belongsTo(WorkShiftEmployee::class, WorkShiftGoodEmployeeContract::FIELD_EMPLOYEE_ID, WorkShiftEmployeeContract::FIELD_ID);
     }
-
 }
 

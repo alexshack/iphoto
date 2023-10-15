@@ -31,7 +31,7 @@
                             <td>
                                 <div class="d-flex">
                                     <a @click="$emit('editGeneralSale', sale)" href="#" class="action-btns1"  data-toggle="modal" data-target="#all-good"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
-                                    <a @click="confirmDeleteSale(sale)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    <DestroyButton entity="sales" :id="sale.id" @destroyed="getSales"/>
                                 </div>
                             </td>
                         </tr>
@@ -59,15 +59,13 @@
             };
         },
         methods: {
-            confirmDeleteSale(sale) {
-            },
             async getSales() {
                 this.sales = await salesApi.all();
             },
             getSellerNames(sale) {
                 let sellerNames = [];
                 sale.employees.forEach((employee) => {
-                    sellerNames.push(getUserName(employee.user.personal_data, 'F I'));
+                    sellerNames.push(getUserName(employee.employee.user.personal_data, 'F I'));
                 });
                 return sellerNames.join(', ');
             },

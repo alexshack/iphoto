@@ -25,7 +25,7 @@
                             <td>
                                 <div class="d-flex">
                                     <a @click="$emit('editMove', move)" href="#" class="action-btns1"  data-toggle="modal" data-target="#move"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
-                                    <a @click="confirmDeleteMove(move)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    <DestroyButton entity="moves" :id="move.id" @destroyed="getMoves"/>
                                 </div>
                             </td>
                         </tr>
@@ -53,7 +53,6 @@
             }
         },
         methods: {
-            confirmDeleteMove(move) {},
             async getMoves() {
                 this.moves = await movesApi.all();
             },

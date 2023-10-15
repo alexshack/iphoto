@@ -37,7 +37,7 @@
                             </td>
                             <td data-order="">{{ employee.start_time }}</td>
                             <td data-order="">{{ employee.end_time }}</td>
-                            <td data-order="">{{ employee.work_time }}</td>
+                            <td data-order="">{{ toHoursAndMinutes(employee.work_time) }}</td>
                             <td>{{ employee.status.name }}</td>
                             <td>{{ employee.position.name }}</td>
                             <td :data-order="employee.salary">{{ employee.salaray }}₽</td>
@@ -46,9 +46,7 @@
                                     <a href="#" @click="setCurrentEmployee(employee.id)" class="action-btns1">
                                         <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
                                     </a>
-                                    <a @click="deleteEmployee(employee.id)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить">
-                                        <i class="feather feather-trash-2 text-danger"></i>
-                                    </a>
+                                    <DestroyButton entity="employee" :id="employee.id" @destroyed="getEmployees"/>
                                 </div>
                             </td>
                         </tr>
@@ -104,6 +102,7 @@
     import CreateWithdraw from '@/components/Modals/Withdraw/Create.vue';
     import EditEmployee from '@/components/Modals/Employee/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
+    import {toHoursAndMinutes} from '@/helpers/dateTime.js';
 
     export default{
         name: 'WorkShiftData',
@@ -142,7 +141,8 @@
             async setupData() {
                 window.addEventListener('workDataEmployeeUpdate', await this.getEmployees);
                 window.addEventListener('withDrawUpdate', await this.getWithdraw);
-            }
+            },
+            toHoursAndMinutes,
         },
         async mounted() {
             await this.getEmployees();

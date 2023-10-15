@@ -6,9 +6,10 @@ use App\Contracts\Goods\GoodsContract;
 use App\Contracts\Money\ExpenseContract;
 use App\Contracts\Money\IncomeContract;
 use App\Contracts\Money\MovesContract;
-use App\Contracts\Money\SaleTypeContract;
+use App\Contracts\Money\SalesTypeContract;
 use App\Contracts\Salary\PaysContract;
 use App\Contracts\WorkShift\WorkShiftContract;
+use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
@@ -17,6 +18,7 @@ use App\Models\Money\Move;
 use App\Models\Money\SaleType;
 use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
+use App\Models\WorkShift\WorkShiftFinalCashDesk;
 use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftWithdrawal;
 use Auth;
@@ -47,7 +49,7 @@ class WorkShiftHelper {
         //$expectedCashBySalesTypes = [];
         //$salesTypes = SaleType::all();
         //foreach ($salesTypes as $saleType) {
-            //$expectedCashBySalesTypes[$saleType->{SaleTypeContract::FIELD_ID}] = 0;
+            //$expectedCashBySalesTypes[$saleType->{SalesTypeContract::FIELD_ID}] = 0;
         //}
 
         $salesIndividual = 0;
@@ -102,9 +104,6 @@ class WorkShiftHelper {
             }
         }
 
-        $cashTerminal = 0;
-
-        $cashTotal = $cashMoney + $cashTerminal;
 
         $expenses = 0;
         $expensesEntries = Expense::where(ExpenseContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
@@ -142,13 +141,37 @@ class WorkShiftHelper {
         }
 
         $expensesTotal = $expenses + $moves + $prepayments;
-        $cashBalance = 0;
-        $payroll = 0;
+
+        $cashTerminal = 0;
+
+        $terminalFCDs = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) {
+            $q->where(SalesTypeContract::FIELD_RECIPIENT, 3);
+        })->get();
+        $terminalFCDsSum = 0;
+        foreach ($terminalFCDs as $fcd) {
+            $terminalFCDsSum += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
+        }
+        $cashTerminal += $terminalFCDsSum;
+
+        $placeFCDs = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) {
+            $q->where(SalesTypeContract::FIELD_RECIPIENT, 1);
+        })->get();
+        $placeFCDsSum = 0;
+        foreach ($placeFCDs as $fcd) {
+            $placeFCDsSum += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
+        }
+
+        $cashBalance = $placeFCDsSum - $expensesTotal;
+        $cashMoney += $cashBalance;
+
+        $cashTotal = $cashMoney + $cashTerminal;
 
         if ($withdrawal != $salesTotal) {
             $access['closable'] = false;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['cash_sums_not_equal'];
         }
+
+        $payroll = 0;
 
         $agenda = compact(
             'cashBalance',

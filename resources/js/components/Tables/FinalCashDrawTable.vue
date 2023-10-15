@@ -25,7 +25,7 @@
                             <td>
                                 <div class="d-flex">
                                     <a @click="$emit('editFCD', fcd)" href="#" class="action-btns1"  data-toggle="modal" data-target="#sale"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
-                                    <a @click="confirmDeleteFCD(fcd)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    <DestroyButton entity="fcd" :id="fcd.id" @destroyed="getFCDs"/>
                                 </div>
                             </td>
                         </tr>

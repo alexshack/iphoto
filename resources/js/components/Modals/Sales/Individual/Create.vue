@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Сотрудник</label>
-                            <v-select v-model="formData.employee_id" multiple :options="employees"/>
+                            <v-select v-model="formData.employee_id" :options="employees"/>
                         </div>
                     </div>
                 </div>

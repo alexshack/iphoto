@@ -18,6 +18,7 @@
                 <WorkShiftTabs :workShift="workShift"/>
             </div>
         </div>
+        <DialogsWrapper />
     </div>
 </template>
 

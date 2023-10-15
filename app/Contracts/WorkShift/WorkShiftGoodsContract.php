@@ -30,6 +30,7 @@ interface WorkShiftGoodsContract  {
     public const RULES = [
         self::FIELD_WORK_SHIFT_ID => 'required|exists:' . WorkShiftContract::TABLE . ',' . WorkShiftContract::FIELD_ID,
         self::FIELD_GOOD_ID => 'required|exists:' . GoodsContract::TABLE . ',' . GoodsContract::FIELD_ID,
+        self::FIELD_EMPLOYEE_ID => 'nullable',
         self::FIELD_QTY => 'required|numeric|min:0',
         self::FIELD_PRICE => 'required|numeric',
         self::FIELD_ON_END => 'nullable|numeric',

@@ -57,8 +57,12 @@ class WithdrawController extends Controller
 
         $withdraw = WorkShiftWithdrawal::create($validated);
 
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+        $stats = WorkShiftHelper::recalculateStats($workShift);
         return response()->json([
+            'agenda' => $stats['agenda'],
             'data' => $withdraw,
+            'errors' => $stats['errors'],
         ]);
     }
 

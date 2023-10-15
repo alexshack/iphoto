@@ -9,7 +9,7 @@ export const all = async (workshiftID = null) => {
     return [];
 };
 
-export const deleteFCD = async (ID) => {
+export const destroy = async (ID) => {
     const url = window.workshiftUrls.fcds.delete.replace('%s', ID);
     const response = await axios.delete(url, {});
     if (typeof response.data != 'undefined') {

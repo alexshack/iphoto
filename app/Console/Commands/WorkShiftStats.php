@@ -14,7 +14,7 @@ class WorkShiftStats extends Command
      *
      * @var string
      */
-    protected $signature = 'app:work-shift-stats';
+    protected $signature = 'app:work-shift-stats {--id=}';
 
     /**
      * The console command description.
@@ -33,19 +33,28 @@ class WorkShiftStats extends Command
      */
     public function handle()
     {
-        $workshifts = $this->repo->getToday();
-        foreach ($workshifts as $workshift) {
-            $this->info("{$workshift->city->name} -> {$workshift->place->name}");
-            $stats = WorkShiftHelper::recalculateStats($workshift);
-            $statsTable = [];
-            foreach ($stats['agenda'] as $key => $value) {
-                $statsTable[] = [
-                    'name' => $key,
-                    'value' => $value,
-                ];
+        if ($this->option('id')) {
+            $workshift = $this->repo->find($this->option('id'));
+            $this->showTable($workshift);
+        } else {
+            $workshifts = $this->repo->getToday();
+            foreach ($workshifts as $workshift) {
+                $this->showTable($workshift);
             }
-            $this->table(['name', 'value'], $statsTable);
-            $this->newLine();
         }
+    }
+
+    protected function showTable($workshift) {
+        $this->info("{$workshift->city->name} -> {$workshift->place->name}");
+        $stats = WorkShiftHelper::recalculateStats($workshift);
+        $statsTable = [];
+        foreach ($stats['agenda'] as $key => $value) {
+            $statsTable[] = [
+                'name' => $key,
+                'value' => $value,
+            ];
+        }
+        $this->table(['name', 'value'], $statsTable);
+        $this->newLine();
     }
 }

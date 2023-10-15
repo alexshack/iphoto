@@ -34,8 +34,8 @@ class WorkShiftGoodsRepository implements WorkShiftGoodsRepositoryInterface
             });
             if((int) $type === 1) {
                 $relations[] = 'employees';
-                $relations[] = 'employees.user';
-                $relations[] = 'employees.user.personalData:id,user_id,last_name,first_name,middle_name';
+                $relations[] = 'employees.employee.user';
+                $relations[] = 'employees.employee.user.personalData:id,user_id,last_name,first_name,middle_name';
             }
         }
 

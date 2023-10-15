@@ -25,7 +25,7 @@
                             <td>
                                 <div class="d-flex">
                                     <a @click="$emit('editExpense', expense)" href="#" class="action-btns1"  data-toggle="modal" data-target="#expence"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
-                                    <a @click="confirmDeleteExpense(expense)" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить"><i class="feather feather-trash-2 text-danger"></i></a>
+                                    <DestroyButton entity="expenses" :id="expense.id" @destroyed="getExpenses"/>
                                 </div>
                             </td>
                         </tr>
@@ -52,8 +52,6 @@
             };
         },
         methods: {
-            confirmDeleteExpense(expense) {
-            },
             expenseType(expense) {
                 if (typeof expense.expense_type != 'undefined' && expense.expense_type) {
                     return expense.expense_type.name;

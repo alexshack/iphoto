@@ -12,6 +12,17 @@ use Illuminate\Database\Eloquent\Collection;
 class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterface
 {
 
+    public function companions(WorkShiftEmployee $employee, $positions = []) {
+        $builder = WorkShiftEmployee::where(WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID, $employee->{WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID})
+            ->whereIn(WorkShiftEmployeeContract::FIELD_POSITION_ID, $positions)
+            ->where(WorkShiftEmployeeContract::FIELD_ID, '!=', $employee->{WorkShiftEmployeeContract::FIELD_ID})
+            ->where(function ($query) use ($employee) {
+                $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $employee->{WorkShiftEmployeeContract::FIELD_END_TIME})
+                    ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>', $employee->{WorkShiftEmployeeContract::FIELD_START_TIME});
+            });
+        return $builder->get();
+    }
+
     public function find($id) {
         return WorkShiftEmployee::find($id);
     }

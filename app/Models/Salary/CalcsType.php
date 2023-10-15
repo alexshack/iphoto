@@ -41,7 +41,9 @@ class CalcsType extends Model
     {
         $result = '-';
         if(in_array($this->{CalcsTypeContract::FIELD_TYPE}, [1, 4, 5], true)) {
-            $result = Position::whereIn(PositionContract::FIELD_ID, $this->getCustom()->positions)->get()->pluck(PositionContract::FIELD_NAME)->implode(', ');
+            $custom = $this->getCustom();
+            $positions = isset($custom->positions) ? $custom->positions : [];
+            $result = Position::whereIn(PositionContract::FIELD_ID, $positions)->get()->pluck(PositionContract::FIELD_NAME)->implode(', ');
         }
         if($this->{CalcsTypeContract::FIELD_TYPE} == 3) {
             $result = EmployeeStatuses::whereIn(EmployeeStatusContract::FIELD_ID, $this->getCustom()->employee_statuses)->get()->pluck(EmployeeStatusContract::FIELD_NAME)->implode(', ');
