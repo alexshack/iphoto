@@ -39,19 +39,13 @@
                             <td>
                                 <span class="w-50">Касса, в том числе:</span></td>
                             <td>
-                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.cashTotal }}₽</h4>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.cashBox.amount }}₽</h4>
                             </td>
                         </tr>
-                        <tr>
-                            <td><span class="w-50 pl-3">Наличные</span></td>
+                        <tr v-for="(cashBoxItem, cashBoxItemIndex) in store.agenda.cashBox.children">
+                            <td><span class="w-50 pl-3">{{ cashBoxItem.label }}</span></td>
                             <td>
-                                <div class="font-weight-semibold text-right">{{ store.agenda.cashMoney }}₽</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="w-50 pl-3">Терминал</span></td>
-                            <td>
-                                <div class="font-weight-semibold text-right">{{ store.agenda.cashTerminal }}₽</div>
+                                <div class="font-weight-semibold text-right">{{ cashBoxItem.amount }}₽</div>
                             </td>
                         </tr>
                         <tr>

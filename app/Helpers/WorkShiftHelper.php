@@ -15,7 +15,7 @@ use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
 use App\Models\Money\Income;
 use App\Models\Money\Move;
-use App\Models\Money\SaleType;
+use App\Models\Money\SalesType;
 use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftFinalCashDesk;
@@ -47,7 +47,7 @@ class WorkShiftHelper {
         }
 
         //$expectedCashBySalesTypes = [];
-        //$salesTypes = SaleType::all();
+        //$salesTypes = SalesType::all();
         //foreach ($salesTypes as $saleType) {
             //$expectedCashBySalesTypes[$saleType->{SalesTypeContract::FIELD_ID}] = 0;
         //}
@@ -144,9 +144,35 @@ class WorkShiftHelper {
 
         $cashTerminal = 0;
 
+        $cashBox = [
+            'amount' => 0,
+            'children' => [],
+        ];
+        $saleTypes = SalesType::where(SalesTypeContract::FIELD_STATUS, 1)->get();
+        foreach ($saleTypes as $saleType) {
+            $saleTypeData = [
+                'label' => $saleType->{SalesTypeContract::FIELD_NAME},
+                'amount' => 0,
+            ];
+
+            $fcds = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) use ($saleType) {
+                $q->where(SalesTypeContract::FIELD_RECIPIENT, $saleType->{SalesTypeContract::FIELD_RECIPIENT});
+            })->get();
+
+            foreach ($fcds as $fcd) {
+                $saleTypeData['amount'] += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
+            }
+
+            $cashBox['amount'] += $saleTypeData['amount'];
+
+            $cashBox['children'][] = $saleTypeData;
+        }
+
+
         $terminalFCDs = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) {
             $q->where(SalesTypeContract::FIELD_RECIPIENT, 3);
         })->get();
+
         $terminalFCDsSum = 0;
         foreach ($terminalFCDs as $fcd) {
             $terminalFCDsSum += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
@@ -175,6 +201,7 @@ class WorkShiftHelper {
 
         $agenda = compact(
             'cashBalance',
+            'cashBox',
             'cashMoney',
             'cashTerminal',
             'cashTotal',

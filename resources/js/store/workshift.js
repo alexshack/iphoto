@@ -3,6 +3,10 @@ import { reactive } from 'vue';
 export const store = reactive({
     agenda: {
         cashBalance: 10,
+        cashBox: {
+            amount: 0,
+            children: [],
+        },
         cashMoney: 0,
         cashTerminal: 0,
         cashTotal: 0,

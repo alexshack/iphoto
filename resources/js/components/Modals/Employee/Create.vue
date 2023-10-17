@@ -115,6 +115,7 @@
                             type: 'success',
                         }
                     }));
+                    this.$emit('submitted');
                     window.dispatchEvent(new Event('workDataEmployeeUpdate'));
                 }
             },

@@ -49,10 +49,23 @@ class WorkShiftStats extends Command
         $stats = WorkShiftHelper::recalculateStats($workshift);
         $statsTable = [];
         foreach ($stats['agenda'] as $key => $value) {
-            $statsTable[] = [
-                'name' => $key,
-                'value' => $value,
-            ];
+            if (is_array($value)) {
+                $statsTable[] = [
+                    'name' => $key,
+                    'value' => $value['amount'],
+                ];
+                foreach ($value['children'] as $valueKey => $valueItem) {
+                    $statsTable[] = [
+                        'name' => "- {$valueItem['label']}",
+                        'value' => $valueItem['amount'],
+                    ];
+                }
+            } else {
+                $statsTable[] = [
+                    'name' => $key,
+                    'value' => $value,
+                ];
+            }
         }
         $this->table(['name', 'value'], $statsTable);
         $this->newLine();
