@@ -24,7 +24,7 @@
                             <td v-html="expense.note"></td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editExpense', expense)" href="#" class="action-btns1"  data-toggle="modal" data-target="#expence"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="expense" :entity="expense" @submitted="getExpenses"/>
                                     <DestroyButton entity="expenses" :id="expense.id" @destroyed="getExpenses"/>
                                 </div>
                             </td>
@@ -40,11 +40,13 @@
 <script>
     import * as expensesApi from '@/db/expenses.js';
     import Create from '@/components/Modals/Expenses/Expenses/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'Expenses',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {

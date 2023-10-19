@@ -26,7 +26,7 @@
                             <td data-order="4000" class="text-right  text-bold">{{ sale.price * sale.qty }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editGeneralSale', sale)" href="#" class="action-btns1"  data-toggle="modal" data-target="#all-good"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="saleIndividual" :entity="sale" @submitted="getSales"/>
                                     <DestroyButton entity="sales" :id="sale.id" @destroyed="getSales"/>
                                 </div>
                             </td>
@@ -42,11 +42,13 @@
 <script>
     import * as salesApi from '@/db/sales.js';
     import Create from '@/components/Modals/Sales/Individual/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'IndividualSales',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {

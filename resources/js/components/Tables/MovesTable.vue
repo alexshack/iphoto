@@ -24,7 +24,7 @@
                             <td v-html="move.note"></td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editMove', move)" href="#" class="action-btns1"  data-toggle="modal" data-target="#move"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="move" :entity="move" @submitted="getMoves"/>
                                     <DestroyButton entity="moves" :id="move.id" @destroyed="getMoves"/>
                                 </div>
                             </td>
@@ -40,12 +40,14 @@
 <script>
     import * as movesApi from '@/db/moves.js';
     import Create from '@/components/Modals/Expenses/Moves/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'MovesTable',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {

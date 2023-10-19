@@ -97,6 +97,7 @@ class MovesController extends Controller
                 $move->{$key} = $value;
             }
             $move->save();
+            $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
             return response()->json([
                 'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $move->id,

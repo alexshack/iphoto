@@ -88,7 +88,7 @@ class WithdrawController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validated = $request->validate(WorkShiftWithdrawalContract::RULES, []. WorkShiftWithdrawalContract::ATTRIBUTES);
+        $validated = $request->validate(WorkShiftWithdrawalContract::RULES, [], WorkShiftWithdrawalContract::ATTRIBUTES);
         $withdraw = $this->withdrawRepo->find($id);
 
         if ($withdraw) {
@@ -97,7 +97,13 @@ class WithdrawController extends Controller
             }
             $withdraw->save();
 
-            return response()->json(['id' => $withdraw->id]);
+            $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+            $stats = WorkShiftHelper::recalculateStats($workShift);
+            return response()->json([
+                'agenda' => $stats['agenda'],
+                'data' => $withdraw->{WorkShiftWithdrawalContract::FIELD_ID},
+                'errors' => $stats['errors'],
+            ]);
         }
     }
 

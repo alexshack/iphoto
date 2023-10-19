@@ -40,7 +40,10 @@
             setupModal() {
                 const selector = `#${this.modalID}`;
                 window.addEventListener(`showModal.${this.modalID}`, () => $(selector).modal('show'));
-                window.addEventListener(`hideModal.${this.modalID}`, () => $(selector).modal('hide'));
+                window.addEventListener(`hideModal.${this.modalID}`, () => {
+                    $(selector).modal('hide')
+                    window.dispatchEvent(new Event('closeModal'));
+                });
             },
         },
         mounted() {

@@ -43,9 +43,7 @@
                             <td :data-order="employee.salary">{{ employee.salaray }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" @click="setCurrentEmployee(employee.id)" class="action-btns1">
-                                        <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
-                                    </a>
+                                    <EditButton entityName="employee" :entity="employee" @submitted="getEmployees"/>
                                     <DestroyButton entity="employee" :id="employee.id" @destroyed="getEmployees"/>
                                 </div>
                             </td>
@@ -79,9 +77,7 @@
                             <td :data-order="withdrawal.sum">{{ withdrawal.sum }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" class="action-btns1" data-toggle="modal" data-target="#time">
-                                        <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
-                                    </a>
+                                    <EditButton entityName="withdraw" :entity="withdrawal" @submitted="getWithdraw"/>
                                 </div>
                             </td>
                         </tr>
@@ -91,7 +87,6 @@
         </div>
         <CreateEmployee @submitted="getEmployees"/>
         <CreateWithdraw @submitted="getWithdraw"/>
-        <EditEmployee :employeeID="currentEmployee"/>
     </div>
 </template>
 
@@ -100,7 +95,7 @@
     import * as withdrawApi from '@/db/withdraw.js';
     import CreateEmployee from '@/components/Modals/Employee/Create.vue';
     import CreateWithdraw from '@/components/Modals/Withdraw/Create.vue';
-    import EditEmployee from '@/components/Modals/Employee/Edit.vue';
+    import EditButton from '@/components/Form/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
     import {toHoursAndMinutes} from '@/helpers/dateTime.js';
 
@@ -109,7 +104,7 @@
         components: {
             CreateEmployee,
             CreateWithdraw,
-            EditEmployee,
+            EditButton,
         },
         data: () => {
             return {

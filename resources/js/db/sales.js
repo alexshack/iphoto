@@ -93,7 +93,7 @@ export const store = async (data) => {
     }
 };
 
-export const updateSale = async (data) => {
+export const update = async (data) => {
     const url = window.workshiftUrls.goods.update.replace('%s', data.id);
     let response = {
         data: null,
@@ -101,7 +101,13 @@ export const updateSale = async (data) => {
     };
     try {
         const res = await axios.put(url, data);
-        if (res.data) {
+        if (res && res.status === 422) {
+            for (let p in res.data.errors) {
+                for (let i = 0; i < res.data.errors[p].length; i++) {
+                    response.errors.push(res.data.errors[p][i]);
+                }
+            }
+        } else if (res && res.data) {
             response.data = res.data;
         }
         return response;

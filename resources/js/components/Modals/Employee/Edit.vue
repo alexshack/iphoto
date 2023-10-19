@@ -1,18 +1,13 @@
 <template>
-    <div  v-if="employeeID > 0">
+    <div>
         <Modal :modalID="modalID">
-            <template v-slot:title>Редактировать сотрудника</template>
+            <template v-slot:title>Добавить сотрудника</template>
             <template v-slot:body>
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                             <label class="form-label">Сотрудник:</label>
-                            <select v-model="formData.user_id" class="form-control custom-select select2-show-search "  data-placeholder="Выберите сотрудника" disabled>
-                                <option label="Выберите сотрудника"></option>
-                                <option v-for="user in users" :key="user.id" :value="user.id">
-                                    {{ getUserName(user.personal_data) }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.user_id" :options="users"/>
                         </div>
                     </div>
                 </div>
@@ -21,23 +16,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Статус:</label>
-                            <select v-model="formData.status_id" class="form-control custom-select select2"  data-placeholder="Выберите статус">
-                                <option label="Выберите статус"></option>
-                                <option v-for="status in statuses" :key="status.id" :value="status.id">
-                                {{ status.name }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.status_id" :options="statuses" label="name"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Должность на смене:</label>
-                            <select name="" v-model="formData.position_id"  class="form-control custom-select select2" data-placeholder="Выберите должность">
-                                <option label="Выберите должность"></option>
-                                <option v-for="position in positions" :key="position.id" :value="position.id">
-                                {{ position.name }}
-                                </option>
-                            </select>
+                            <v-select v-model="formData.position_id" :options="positions" label="name"/>
                         </div>
                     </div>
                 </div>
@@ -45,27 +30,25 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Время прихода:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <span class="feather feather-clock"></span>
-                                    </div>
-                                </div><!-- input-group-prepend -->
-                                <input v-model="formData.start_time" class="form-control ui-timepicker-input" id="tpStartTime" placeholder="Укажите время" type="text" autocomplete="off">
-                            </div>
+                            <VueDatePicker v-model="formData.start_time" time-picker locale="ru">
+                            <template #input-icon>
+                                <div class="picker-icon">
+                                    <span class="feather feather-clock"></span>
+                                </div>
+                            </template>
+                            </VueDatePicker>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Время ухода:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <span class="feather feather-clock"></span>
-                                    </div>
-                                </div><!-- input-group-prepend -->
-                                <input v-model="formData.end_time" class="form-control ui-timepicker-input" id="tpEndTime" placeholder="Укажите время" type="text" autocomplete="off">
-                            </div>
+                            <VueDatePicker v-model="formData.end_time" time-picker locale="ru">
+                            <template #input-icon>
+                                <div class="picker-icon">
+                                    <span class="feather feather-clock"></span>
+                                </div>
+                            </template>
+                            </VueDatePicker>
                         </div>
                     </div>
                 </div>
@@ -76,7 +59,7 @@
                 </div>
             </template>
             <template v-slot:footer>
-                <button @click="submit"  class="btn btn-success">Сохранить</button>
+                <button @click="submit" v-loading="loading"  class="btn btn-success">Сохранить</button>
             </template>
         </Modal>
     </div>
@@ -85,59 +68,83 @@
 <script>
     import Modal from '@/components/Modals/Modal.vue';
     import { getByCity } from '@/db/users.js';
-    import { getPositions, getStatuses, updateEmployee, getEmployee } from '@/db/employee.js';
+    import { getPositions, getStatuses, update } from '@/db/employee.js';
+    import { getModalID, prepareData, prepareFormData } from '@/helpers/form.js';
+    import VueDatePicker from '@vuepic/vue-datepicker';
 
     export default{
-        name: 'Edit',
+        name: 'EditEmployee',
         components: {
             Modal,
+            VueDatePicker,
         },
         computed: {
             modalID() {
-                return `editEmployee${this.employeeID}`;
-            },
+                let modalID;
+                if (typeof this.entity != 'undefined' && typeof this.entity.id !== 'undefined') {
+                    modalID = getModalID('employee', this.entity.id);
+                }
+                return modalID;
+            }
         },
         data: () => {
             return {
                 errors: [],
                 formData: {
-                    id: null,
-                    endTime: null,
+                    end_time: null,
                     position_id: null,
                     status_id: null,
                     start_time: null,
                     user_id: null,
-                    workshift_id: null,
                 },
+                initializing: true,
+                loading: false,
                 positions: [],
                 statuses: [],
                 users: [],
             };
         },
         props: {
-            employeeID: {
+            delta: {
                 type: Number,
+                default: 1,
+            },
+            entity: {
+                type: Object,
                 required: true,
             },
         },
         methods: {
             async submit() {
-                const response = await updateEmployee(this.formData);
+                this.errors = [];
+                this.loading = true;
+                const formData = prepareFormData(this.formData);
+                const response = await update(formData);
+                this.loading = false;
                 if (response.errors.length > 0) {
                     this.errors = response.errors;
                 } else {
+                    for (let p in this.formData) {
+                        this.formData[p] = null;
+                    }
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {
-                            msg: 'Сотрудник добавлен',
+                            msg: 'Сотрудник обновлен',
                             type: 'success',
                         }
                     }));
-                    window.dispatchEvent(new Event('workDataEmployeeUpdate'));
+                    this.$emit('submitted');
                 }
             },
             async getAvailableUsers() {
-                this.users = await getByCity();
+                let users = await getByCity();
+                this.users = users.map(user => {
+                    return {
+                        id: user.id,
+                        label: this.getUserName(user.personal_data),
+                    };
+                });
             },
             async getPositions() {
                 this.positions = await getPositions();
@@ -148,23 +155,29 @@
             getUserName(personalData) {
                 return `${personalData.last_name} ${personalData.first_name} ${personalData.middle_name}`;
             },
-        },
-        mounted() {
-            this.getAvailableUsers();
-            this.getPositions();
-            this.getStatuses();
-        },
-        watch: {
-            async employeeID(newValue) {
-                let employeeData = await getEmployee(newValue);
-                console.log(employeeData);
-                for (let p in this.formData) {
-                    if (typeof employeeData[p] != 'undefined') {
-                        this.formData[p] = employeeData[p];
+            initForm() {
+                if (typeof this.entity != 'undefined' && this.entity) {
+                    const entity = prepareData(this.entity, {
+                        positions: this.positions,
+                        statuses: this.statuses,
+                        users: this.users,
+                    });
+                    for (let p in entity) {
+                        this.formData[p] = entity[p];
                     }
                 }
-                window.dispatchEvent(new Event(`showModal.${this.modalID}`));
+            },
+        },
+        async mounted() {
+            await this.getAvailableUsers();
+            await this.getPositions();
+            await this.getStatuses();
+            this.initForm();
+        },
+        updated() {
+            if (typeof this.entity === 'undefined' || typeof this.entity.id === 'undefined') {
+                this.initForm();
             }
-        }
+        },
     }
 </script>

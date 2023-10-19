@@ -30,7 +30,7 @@
                             <td data-order="4000" class="text-right  text-bold">{{ sale.price * sale.qty }}₽</td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editGeneralSale', sale)" href="#" class="action-btns1"  data-toggle="modal" data-target="#all-good"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="saleGeneral" :entity="sale" @submitted="getSales"/>
                                     <DestroyButton entity="sales" :id="sale.id" @destroyed="getSales"/>
                                 </div>
                             </td>
@@ -46,12 +46,15 @@
 <script>
     import * as salesApi from '@/db/sales.js';
     import Create from '@/components/Modals/Sales/General/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
+    import { getData } from '@/helpers/proxy.js';
 
     export default{
         name: 'GeneralSales',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {
@@ -63,10 +66,15 @@
                 this.sales = await salesApi.all();
             },
             getSellerNames(sale) {
+                sale = getData(sale);
                 let sellerNames = [];
-                sale.employees.forEach((employee) => {
-                    sellerNames.push(getUserName(employee.employee.user.personal_data, 'F I'));
-                });
+                if (typeof sale.employees !== 'undefined' && sale.employees && sale.employees.length > 0) {
+                    sale.employees.forEach((employee) => {
+                        if (employee.employee) {
+                            sellerNames.push(getUserName(employee.employee.user.personal_data, 'F I'));
+                        }
+                    });
+                }
                 return sellerNames.join(', ');
             },
         },

@@ -64,11 +64,16 @@ class SalesController extends Controller
         if ($good && in_array($good->{GoodsContract::FIELD_TYPE}, [4, 5])) {
             unset($rules[WorkShiftGoodsContract::FIELD_PRICE]);
         }
+
+        if ($good && $good->{GoodsContract::FIELD_TYPE} === 2) {
+            $rules[WorkShiftGoodsContract::FIELD_EMPLOYEE_ID] = 'required';
+        }
+
         $validated = $request->validate($rules, [], WorkShiftGoodsContract::ATTRIBUTES);
 
-        $good = WorkShiftGood::create($validated);
+        $workShiftGood = WorkShiftGood::create($validated);
 
-        if ($request->get('employees')) {
+        if ($good->{GoodsContract::FIELD_TYPE} === 1) {
             foreach ($request->get('employees') as $employee) {
                 $employeeID = null;
                 if (is_array($employee)) {
@@ -79,7 +84,7 @@ class SalesController extends Controller
 
                 $data = [
                     WorkShiftGoodEmployeeContract::FIELD_EMPLOYEE_ID => $employeeID,
-                    WorkShiftGoodEmployeeContract::FIELD_WORK_SHIFT_GOOD_ID => $good->{WorkShiftGoodsContract::FIELD_ID},
+                    WorkShiftGoodEmployeeContract::FIELD_WORK_SHIFT_GOOD_ID => $workShiftGood->{WorkShiftGoodsContract::FIELD_ID},
                 ];
                 WorkShiftGoodEmployee::create($data);
             }
@@ -117,7 +122,7 @@ class SalesController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate(WorkShiftGoodsContract::RULES, [], WorkShiftGoodsContract::ATTRIBUTES);
-        $good = $request->workShiftGoodsRepository->find($id);
+        $good = $this->workShiftGoodsRepository->find($id);
 
         if ($good) {
             foreach ($validated as $key => $value) {

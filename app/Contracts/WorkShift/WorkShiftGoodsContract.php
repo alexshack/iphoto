@@ -25,6 +25,7 @@ interface WorkShiftGoodsContract  {
         self::FIELD_PRICE,
         self::FIELD_ON_START,
         self::FIELD_ON_END,
+        self::FIELD_EMPLOYEE_ID,
     ];
 
     public const RULES = [

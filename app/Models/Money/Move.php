@@ -74,7 +74,7 @@ class Move extends Model
     }
 
     public function recipientPlace() {
-        return $this->belongsTo(Place::class, MovesContract::FIELD_PAYER_ID, PlaceContract::FIELD_ID);
+        return $this->belongsTo(Place::class, MovesContract::FIELD_RECIPIENT_ID, PlaceContract::FIELD_ID);
     }
 
     public function setDateAttribute($value) {

@@ -24,7 +24,7 @@
                             <td v-html="payment.note"></td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editPayment', payment)" href="#" class="action-btns1"  data-toggle="modal" data-target="#pay"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="advancePayment" :entity="payment" @submitted="getPayments"/>
                                     <DestroyButton entity="pays" :id="payment.id" @destroyed="getPayments"/>
                                 </div>
                             </td>
@@ -40,12 +40,14 @@
 <script>
     import {all} from '@/db/pays.js';
     import Create from '@/components/Modals/Expenses/AdvancePayments/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'AdvancePaymentsTable',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {
