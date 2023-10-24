@@ -52,9 +52,11 @@ class FCDController extends Controller
         //$request->request->add
         $validated = $request->validate(WorkShiftFinalCashDeskContract::RULES, [], WorkShiftFinalCashDeskContract::ATTRIBUTES);
         $fcd = WorkShiftFinalCashDesk::create($validated);
+        $stats = WorkShiftHelper::recalculateStats($workShift);
         return response()->json([
-            'agenda' => WorkShiftHelper::recalculateStats($workShift),
             'data' => $fcd,
+            'agenda' => $stats['agenda'],
+            'errors' => $stats['errors'],
         ]);
     }
 
@@ -90,9 +92,11 @@ class FCDController extends Controller
             }
             $fcd->save();
 
+            $stats = WorkShiftHelper::recalculateStats($workShift);
             return response()->json([
-                'agenda' => WorkShiftHelper::recalculateStats($workShift),
                 'id' => $fcd->id,
+                'agenda' => $stats['agenda'],
+                'errors' => $stats['errors'],
             ]);
         }
     }

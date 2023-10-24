@@ -7,7 +7,9 @@
             <AdvancePayment v-if="entityName === 'advancePayment'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Consumables v-if="entityName === 'consumables'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Employee v-if="entityName === 'employee'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
+            <Equipment v-if="entityName === 'equipment'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Expense v-if="entityName === 'expense'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
+            <FCD v-if="entityName === 'fcd'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Move v-if="entityName === 'move'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <SaleGeneral v-if="entityName === 'saleGeneral'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <SaleIndividual v-if="entityName === 'saleIndividual'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
@@ -21,7 +23,9 @@
     import AdvancePayment from '@/components/Modals/Expenses/AdvancePayments/Edit.vue';
     import Consumables from '@/components/Modals/Consumbales/Edit.vue';
     import Employee from '@/components/Modals/Employee/Edit.vue';
+    import Equipment from '@/components/Modals/Equipments/Edit.vue';
     import Expense from '@/components/Modals/Expenses/Expenses/Edit.vue';
+    import FCD from '@/components/Modals/FCD/Edit.vue';
     import Move from '@/components/Modals/Expenses/Moves/Edit.vue';
     import SaleGeneral from '@/components/Modals/Sales/General/Edit.vue';
     import SaleIndividual from '@/components/Modals/Sales/Individual/Edit.vue';
@@ -44,7 +48,9 @@
             AdvancePayment,
             Consumables,
             Employee,
+            Equipment,
             Expense,
+            FCD,
             Move,
             SaleGeneral,
             SaleIndividual,

@@ -122,6 +122,14 @@ export const prepareData = (originalFormData, db = {}) => {
                     year: monthDate.getFullYear(),
                 };
                 break;
+            case 'sale_type_id':
+                if (typeof db.saleTypes != 'undefined') {
+                    const f = filterForSelect(formData[p], db.saleTypes);
+                    if (f.length > 0) {
+                        formData[p] = f[0];
+                    }
+                }
+                break;
             default:
                 break;
         }

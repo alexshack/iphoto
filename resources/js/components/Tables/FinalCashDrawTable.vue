@@ -24,7 +24,7 @@
                             <td v-html="fcd.note"></td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editFCD', fcd)" href="#" class="action-btns1"  data-toggle="modal" data-target="#sale"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="fcd" :entity="fcd" @submitted="getFCDs"/>
                                     <DestroyButton entity="fcd" :id="fcd.id" @destroyed="getFCDs"/>
                                 </div>
                             </td>
@@ -40,11 +40,13 @@
 <script>
     import {all} from '@/db/fcd.js';
     import Create from '@/components/Modals/FCD/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'FinalCashDrawTable',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {

@@ -125,8 +125,12 @@ class SalesController extends Controller
         $good = $this->workShiftGoodsRepository->find($id);
         $goodBase = $this->goodsRepository->find($request->get('good_id'));
 
-        if ($goodBase && in_array($goodBase->{GoodsContract::FIELD_TYPE}, [4, 5])) {
+        if ($goodBase && in_array($goodBase->{GoodsContract::FIELD_TYPE}, [3, 4, 5])) {
             unset($rules[WorkShiftGoodsContract::FIELD_PRICE]);
+        }
+
+        if ($goodBase && $goodBase->{GoodsContract::FIELD_TYPE} === 3) {
+            unset($rules[WorkShiftGoodsContract::FIELD_QTY]);
         }
 
         if ($goodBase && $goodBase->{GoodsContract::FIELD_TYPE} === 2) {

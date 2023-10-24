@@ -23,7 +23,7 @@
                             <td>{{ equipment.on_end }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editEquipment')" href="#" class="action-btns1"  data-toggle="modal" data-target="#device"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="equipment" :entity="equipment" @submitted="getEquipments"/>
                                 </div>
                             </td>
                         </tr>
@@ -36,9 +36,13 @@
 
 <script>
     import {all} from '@/db/sales.js';
+    import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'EquipmentsTable',
+        components: {
+            EditButton,
+        },
         data: () => {
             return {
                 equipments: [],
