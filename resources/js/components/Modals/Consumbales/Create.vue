@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
                             <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-                            <span class="font-weight-semibold">Невозможно добавить продажу:</span>
+                            <span class="font-weight-semibold">Невозможно добавить расходник:</span>
                             <div v-for="err in errors">{{ err }}</div>
                         </div>
                     </div>

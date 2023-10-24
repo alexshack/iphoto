@@ -42,11 +42,6 @@ export const prepareData = (originalFormData, db = {}) => {
             case 'user_id':
                 if (typeof db.users != 'undefined') {
                     const f = filterForSelect(formData[p], db.users);
-                    console.log({
-                        users: db.users,
-                        f1: formData[p],
-                        f,
-                    });
                     if (f.length > 0) {
                         formData[p] = f[0];
                     }
@@ -119,6 +114,13 @@ export const prepareData = (originalFormData, db = {}) => {
                         formData[p] = f[0];
                     }
                 }
+                break;
+            case 'billing_month':
+                const monthDate = new Date(Date.parse(formData['billing_month']));
+                formData['month'] = {
+                    month: monthDate.getMonth(),
+                    year: monthDate.getFullYear(),
+                };
                 break;
             default:
                 break;

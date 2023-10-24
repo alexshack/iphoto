@@ -53,7 +53,11 @@ class PaysController extends Controller
      */
     public function store(Request $request)
     {
+        $monthValidate = $request->validate([
+            'month' => 'required',
+        ], [], ['month' => PaysContract::ATTRIBUTES[PaysContract::FIELD_BILLING_MONTH]]);
         $month = $request->get('month');
+        $month['month'] = $month['month'] + 1;
         $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
         $request->request->add([
             PaysContract::FIELD_BILLING_MONTH => "{$month['year']}-{$month['month']}-01",
@@ -93,12 +97,24 @@ class PaysController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $monthValidate = $request->validate([
+            'month' => 'required',
+        ], [], ['month' => PaysContract::ATTRIBUTES[PaysContract::FIELD_BILLING_MONTH]]);
+
         $pay = $this->payRepo->find($id);
-        $validated = $request->validate(PaysContract::RULES, [], PaysContract::ATTRIBUTES);
+
+        $month = $request->get('month');
+        $month['month'] = $month['month'] + 1;
+
+        $rules = PaysContract::RULES;
+        unset($rules[PaysContract::FIELD_TYPE_ID]);
+
+        $validated = $request->validate($rules, [], PaysContract::ATTRIBUTES);
         if ($pay) {
             foreach ($validated as $key => $value) {
                 $pay->{$key} = $value;
             }
+            $pay->{PaysContract::FIELD_BILLING_MONTH} = "{$month['year']}-{$month['month']}-01";
             $pay->save();
             $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
             return response()->json([

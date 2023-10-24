@@ -22,7 +22,7 @@
                             <td>{{ material.qty }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a @click="$emit('editMaterial', material)" href="#" class="action-btns1"  data-toggle="modal" data-target="#lose"><i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i></a>
+                                    <EditButton entityName="wasteMaterials" :entity="material" @submitted="getMaterials"/>
                                     <DestroyButton entity="sales" :id="material.id" @destroyed="getMaterials"/>
                                 </div>
                             </td>
@@ -38,11 +38,13 @@
 <script>
     import {all} from '@/db/sales.js';
     import Create from '@/components/Modals/WasteMaterials/Create.vue';
+    import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'WasteMaterialsTable',
         components: {
             Create,
+            EditButton,
         },
         data: () => {
             return {

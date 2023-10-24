@@ -5,11 +5,13 @@
         </a>
         <div v-if="active">
             <AdvancePayment v-if="entityName === 'advancePayment'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
+            <Consumables v-if="entityName === 'consumables'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Employee v-if="entityName === 'employee'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Expense v-if="entityName === 'expense'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Move v-if="entityName === 'move'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <SaleGeneral v-if="entityName === 'saleGeneral'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <SaleIndividual v-if="entityName === 'saleIndividual'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
+            <WasteMaterials v-if="entityName === 'wasteMaterials'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Withdraw v-if="entityName === 'withdraw'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
         </div>
     </div>
@@ -17,11 +19,13 @@
 
 <script>
     import AdvancePayment from '@/components/Modals/Expenses/AdvancePayments/Edit.vue';
+    import Consumables from '@/components/Modals/Consumbales/Edit.vue';
     import Employee from '@/components/Modals/Employee/Edit.vue';
     import Expense from '@/components/Modals/Expenses/Expenses/Edit.vue';
     import Move from '@/components/Modals/Expenses/Moves/Edit.vue';
     import SaleGeneral from '@/components/Modals/Sales/General/Edit.vue';
     import SaleIndividual from '@/components/Modals/Sales/Individual/Edit.vue';
+    import WasteMaterials from '@/components/Modals/WasteMaterials/Edit.vue';
     import Withdraw from '@/components/Modals/Withdraw/Edit.vue';
     import { getModalID } from '@/helpers/form.js';
     import { waitForSelector } from '@/helpers/html.js';
@@ -38,11 +42,13 @@
         },
         components: {
             AdvancePayment,
+            Consumables,
             Employee,
             Expense,
             Move,
             SaleGeneral,
             SaleIndividual,
+            WasteMaterials,
             Withdraw,
         },
         computed: {

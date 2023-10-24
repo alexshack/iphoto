@@ -1,37 +1,25 @@
 <template>
     <div>
         <Modal :modalID="modalID">
-            <template v-slot:title>Выдача авансов</template>
+            <template v-slot:title>Отработка</template>
             <template v-slot:body>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Сотрудник</label>
-                            <v-select v-model="formData.user_id" :options="employees"/>
+                            <label class="form-label">Товар</label>
+                            <v-select v-model="formData.good_id" :options="goods" label="name"/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Расчетный месяц</label>
-                            <VueDatePicker v-model="formData.month" month-picker locale="ru"/>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-label">Сумма</label>
-                            <input v-model="formData.amount" class="form-control" placeholder="Укажите сумму аванса" type="number">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-label">Примечания:</label>
-                            <input v-model="formData.note" class="form-control" placeholder="Укажите примечания" type="text">
+                            <label class="form-label">Количество</label>
+                            <input v-model="formData.qty" class="form-control" placeholder="Укажите количество" type="number">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
                             <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
-                            <span class="font-weight-semibold">Невозможно редактировать аванс:</span>
+                            <span class="font-weight-semibold">Невозможно изменить отработку:</span>
                             <div v-for="err in errors">{{ err }}</div>
                         </div>
                     </div>
@@ -45,39 +33,35 @@
 </template>
 
 <script>
-    import {getByCity} from '@/db/users.js';
-    import {getUserName} from '@/helpers/employee.js';
     import Modal from '@/components/Modals/Modal.vue';
+    import {all} from '@/db/goods.js';
+    import {update} from '@/db/sales.js';
     import { getModalID, prepareData, prepareFormData } from '@/helpers/form.js';
-    import {update} from '@/db/pays.js';
-    import VueDatePicker from '@vuepic/vue-datepicker';
 
     export default{
-        name: 'Edit',
+        name: 'Create',
         components: {
             Modal,
-            VueDatePicker,
         },
         computed: {
             modalID() {
                 let modalID;
                 if (typeof this.entity != 'undefined' && typeof this.entity.id !== 'undefined') {
-                    modalID = getModalID('advancePayment', this.entity.id);
+                    modalID = getModalID('wasteMaterials', this.entity.id);
                 }
                 return modalID;
             }
         },
         data: () => {
             return {
-                employees: [],
                 errors: [],
-                loading: false,
                 formData: {
-                    month: null,
-                    user_id: null,
-                    amount: null,
-                    note: null,
+                    good_id: null,
+                    qty: null,
                 },
+                goods: [],
+                goodsType: 'workingout',
+                loading: false,
             };
         },
         props: {
@@ -91,29 +75,19 @@
             },
         },
         methods: {
-            getUserName,
+            async getGoods() {
+                this.goods = await all(this.goodsType);
+            },
             async initForm() {
                 if (typeof this.entity != 'undefined' && this.entity) {
                     const db = {
-                        users: this.employees,
+                        goods: this.goods,
                     };
                     const entity = prepareData(this.entity, db);
                     for (let p in entity) {
                         this.formData[p] = entity[p];
                     }
                 }
-            },
-            async setEmployees() {
-                let employees = await getByCity();
-                this.employees = employees.map(employee => {
-                    return {
-                        id: employee.id,
-                        label: getUserName(employee.personal_data),
-                    };
-                });
-            },
-            async setupData() {
-                await this.setEmployees();
             },
             async submit() {
                 this.loading = true;
@@ -124,10 +98,13 @@
                 if (response.errors.length > 0) {
                     this.errors = response.errors;
                 } else {
+                    for (let p in this.formData) {
+                        this.formData[p] = null;
+                    }
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {
-                            msg: 'Аванс обновлен',
+                            msg: 'Отработка обновлена',
                             type: 'success',
                         }
                     }));
@@ -136,13 +113,13 @@
             },
         },
         async mounted() {
-            await this.setupData();
+            await this.getGoods();
             await this.initForm();
-        },
-        async updated() {
-            if (typeof this.entity === 'undefined' || typeof this.entity.id === 'undefined') {
-                await this.initForm();
-            }
         },
     }
 </script>
+
+<style scoped>
+
+</style>
+

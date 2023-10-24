@@ -121,8 +121,19 @@ class SalesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validated = $request->validate(WorkShiftGoodsContract::RULES, [], WorkShiftGoodsContract::ATTRIBUTES);
+        $rules = WorkShiftGoodsContract::RULES;
         $good = $this->workShiftGoodsRepository->find($id);
+        $goodBase = $this->goodsRepository->find($request->get('good_id'));
+
+        if ($goodBase && in_array($goodBase->{GoodsContract::FIELD_TYPE}, [4, 5])) {
+            unset($rules[WorkShiftGoodsContract::FIELD_PRICE]);
+        }
+
+        if ($goodBase && $goodBase->{GoodsContract::FIELD_TYPE} === 2) {
+            $rules[WorkShiftGoodsContract::FIELD_EMPLOYEE_ID] = 'required';
+        }
+
+        $validated = $request->validate($rules, [], WorkShiftGoodsContract::ATTRIBUTES);
 
         if ($good) {
             foreach ($validated as $key => $value) {
