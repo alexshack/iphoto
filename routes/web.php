@@ -154,9 +154,7 @@ Route::middleware(['web'])->group(function () {
             //Route::post('goods/categories/{id}', 'App\Http\Controllers\Goods\CityManagerController@update')->name('admin.structure.city_manager.update');
         });
 
-        Route::get('/', function () {
-            return view('admin.index');
-        })->name('home');
+        Route::get('/', 'App\Http\Controllers\AdminController@index')->name('home');
 
         Route::get('test', function () {
             return view('structure.employee');

@@ -46,7 +46,7 @@ class WorkShiftController extends Controller
         $stats = WorkShiftHelper::recalculateStats($workShift);
 
         if ($stats['access']['closable']) {
-            $workShift->{WorkShiftContract::FIELD_CLOSED} = true;
+            $workShift->{WorkShiftContract::FIELD_CLOSED_AT} = Carbon::now();
             $workShift->save();
         }
 

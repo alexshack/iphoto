@@ -12,10 +12,11 @@ interface WorkShiftContract  {
     public const FIELD_DATE = 'date';
     public const FIELD_CITY_ID = 'city_id';
     public const FIELD_PLACE_ID = 'place_id';
-    public const FIELD_CLOSED = 'is_closed';
     public const FIELD_TOTAL_SALES = 'total_sales';
     public const FIELD_EXPENSES = 'expenses';
     public const FIELD_SALARY = 'salary';
+    public const FIELD_CLOSED_AT = 'closed_at';
+    public const FIELD_CLOSED_BY = 'closed_by';
 
     public const FILLABLE_FIELDS = [
         self::FIELD_DATE,

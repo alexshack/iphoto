@@ -196,16 +196,22 @@
                                                                 <td class="text-center" data-search="{{ $workshift->employeesNames }}"><!-- Имя фамилия всех через запятую -->
                                                                     <div class="avatar-list avatar-list-stacked">
                                                                         @foreach($workshift->employees as $employee)
-                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="Сотрудник Сотрудников">
-                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="img">
+                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="{{ $employee->user->name }}">
+                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="{{ $employee->user->personalData->firstLetter }}">
                                                                             </a>
                                                                         @endforeach
                                                                     </div>
                                                                 </td>
-																<td data-order="1303682400" class="text-center">15:00</td>
-																<td data-order="12000" class="text-right">12 000₽</td>
-																<td data-order="500" class="text-right">500₽</td>
-																<td data-order="2000" class="text-right">2 000₽</td>
+                                                                <td data-order="{{ $workshift->lastWithdraw }}" class="text-center">{{ $workshift->lastWithdraw }}</td>
+                                                                <td data-order="{{ @$workshift->stats['cashBox']['amount'] }}" class="text-right">
+                                                                    {{ @$workshift->stats['cashBox']['amount'] }}₽
+                                                                </td>
+                                                                <td data-order="{{ $workshift->stats['expenses'] }}" class="text-right">
+                                                                    {{ $workshift->stats['expenses'] }}₽
+                                                                </td>
+                                                                <td data-order="{{ $workshift->stats['payroll'] }}" class="text-right">
+                                                                    {{ $workshift->stats['payroll'] }}₽
+                                                                </td>
 															</tr>
                                                             @endforeach
 														</tbody>
@@ -248,20 +254,31 @@
                                                                         {{ $workshift->place ? $workshift->place->name : '' }}
                                                                     </a>
                                                                 </td>
-                                                                <td class="text-center" data-search="{{ $workshift->employeesNames }}"><!-- Имя фамилия всех через запятую -->
+                                                                <td class="text-center" data-search="{{ $workshift->employeesNames }}">
                                                                     <div class="avatar-list avatar-list-stacked">
                                                                         @foreach($workshift->employees as $employee)
-                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="Сотрудник Сотрудников">
-                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="img">
+                                                                            <a href="{{url('structure/employees/' . $employee->user_id)}}" title="{{ $employee->user->name }}">
+                                                                                <img class="avatar avatar-sm brround" src="{{URL::asset($employee->user->photo)}}" alt="{{ $employee->user->personalData->firstLetter }}">
                                                                             </a>
                                                                         @endforeach
                                                                     </div>
                                                                 </td>
-																<td data-order="1303682400" class="text-center">15:00</td>
-                                                                <td></td>
-																<td data-order="12000" class="text-right">12 000₽</td>
-																<td data-order="500" class="text-right">500₽</td>
-																<td data-order="2000" class="text-right">2 000₽</td>
+
+                                                                <td>
+                                                                    {{ $workshift->{App\Contracts\WorkShift\WorkShiftContract::FIELD_CLOSED_AT} }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $workshift->closedBy ? $workshift->closedBy->name : '' }}
+                                                                </td>
+                                                                <td data-order="{{ @$workshift->stats['cashBox']['amount'] }}" class="text-right">
+                                                                    {{ @$workshift->stats['cashBox']['amount'] }}₽
+                                                                </td>
+                                                                <td data-order="{{ $workshift->stats['expenses'] }}" class="text-right">
+                                                                    {{ $workshift->stats['expenses'] }}₽
+                                                                </td>
+                                                                <td data-order="{{ $workshift->stats['payroll'] }}" class="text-right">
+                                                                    {{ $workshift->stats['payroll'] }}₽
+                                                                </td>
 															</tr>
                                                             @endforeach
 														</tbody>

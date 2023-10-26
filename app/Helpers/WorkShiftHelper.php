@@ -46,12 +46,6 @@ class WorkShiftHelper {
             }
         }
 
-        //$expectedCashBySalesTypes = [];
-        //$salesTypes = SalesType::all();
-        //foreach ($salesTypes as $saleType) {
-            //$expectedCashBySalesTypes[$saleType->{SalesTypeContract::FIELD_ID}] = 0;
-        //}
-
         $salesIndividual = 0;
         $individualGoods = WorkShiftGood::whereHas('good', function ($query) {
             $query->where(GoodsContract::FIELD_TYPE, 2);
@@ -157,7 +151,9 @@ class WorkShiftHelper {
 
             $fcds = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) use ($saleType) {
                 $q->where(SalesTypeContract::FIELD_RECIPIENT, $saleType->{SalesTypeContract::FIELD_RECIPIENT});
-            })->get();
+            })
+                ->where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
+                ->get();
 
             foreach ($fcds as $fcd) {
                 $saleTypeData['amount'] += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
@@ -168,30 +164,6 @@ class WorkShiftHelper {
             $cashBox['children'][] = $saleTypeData;
         }
 
-
-        $terminalFCDs = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) {
-            $q->where(SalesTypeContract::FIELD_RECIPIENT, 3);
-        })->get();
-
-        $terminalFCDsSum = 0;
-        foreach ($terminalFCDs as $fcd) {
-            $terminalFCDsSum += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
-        }
-        $cashTerminal += $terminalFCDsSum;
-
-        $placeFCDs = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) {
-            $q->where(SalesTypeContract::FIELD_RECIPIENT, 1);
-        })->get();
-        $placeFCDsSum = 0;
-        foreach ($placeFCDs as $fcd) {
-            $placeFCDsSum += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
-        }
-
-        $cashBalance = $placeFCDsSum - $expensesTotal;
-        $cashMoney += $cashBalance;
-
-        $cashTotal = $cashMoney + $cashTerminal;
-
         if ($withdrawal != $salesTotal) {
             $access['closable'] = false;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['cash_sums_not_equal'];
@@ -200,11 +172,7 @@ class WorkShiftHelper {
         $payroll = 0;
 
         $agenda = compact(
-            'cashBalance',
             'cashBox',
-            'cashMoney',
-            'cashTerminal',
-            'cashTotal',
             'expensesTotal',
             'expenses',
             'moves',
@@ -216,7 +184,7 @@ class WorkShiftHelper {
             'withdrawal'
         );
 
-        if ($workshift->{WorkShiftContract::FIELD_CLOSED}) {
+        if ($workshift->isClosed) {
             $access['closable'] = false;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
         }
@@ -232,9 +200,9 @@ class WorkShiftHelper {
             ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
             ->first();
 
-        if ($workshift->{WorkShiftContract::FIELD_CLOSED} &&
+        if ($workshift->isClosed &&
             ($user->role->{UserRoleContract::FIELD_SLUG} === UserRoleContract::ADMIN_SLUG || $isEmployee) &&
-            ($nextWorkshift && !$nextWorkshift->{WorkShiftContract::FIELD_CLOSED})
+            ($nextWorkshift && !$nextWorkshift->isClosed)
             ) {
             $cancelable = true;
         }
