@@ -33,6 +33,12 @@ class UserRepository implements UserRepositoryInterface
         return Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)->firstOrFail()->users->all();
     }
 
+    public function getCountByRoleSlug(string $slug)
+    {
+        $role = Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)->firstOrFail();
+        return count($role->users);
+    }
+
     public function getByCity(int $cityID)
     {
         return User::whereHas('workData', function ($query) use ($cityID) {

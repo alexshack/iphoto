@@ -34,4 +34,8 @@ class CityRepository implements CityRepositoryInterface
         });
         return $cities->get();
     }
+
+    public function getCount() {
+        return City::count();
+    }
 }

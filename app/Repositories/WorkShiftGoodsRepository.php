@@ -5,7 +5,9 @@ namespace App\Repositories;
 use App\Contracts\UserContract;
 use App\Contracts\UserPersonalDataContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
+use App\Contracts\WorkShift\WorkShiftContract;
 use App\Models\WorkShift\WorkShiftGood;
+use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -40,5 +42,20 @@ class WorkShiftGoodsRepository implements WorkShiftGoodsRepositoryInterface
         }
 
         return $goods->with($relations)->get();
+    }
+
+    public function getSalesToDateSum($date) {
+        return WorkShiftGood::whereHas('good', function ($query) {
+            $query->whereIn('type', [1, 2]);
+        })->whereIn(WorkShiftGoodsContract::FIELD_WORK_SHIFT_ID, WorkShift::whereDate(WorkShiftContract::FIELD_DATE, $date)->get(WorkShiftContract::FIELD_ID))
+            ->sum(WorkShiftGoodsContract::FIELD_PRICE);
+    }
+
+    public function getSalesToMonth($month) {
+        return WorkShiftGood::whereHas('good', function ($query) {
+            $query->whereIn('type', [1, 2]);
+        })
+            ->whereMonth('created_at', '=', $month)
+            ->sum(WorkShiftGoodsContract::FIELD_PRICE);
     }
 }

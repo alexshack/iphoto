@@ -17,6 +17,11 @@ class PlaceRepository implements PlaceRepositoryInterface
         return Place::all();
     }
 
+    public function getCount()
+    {
+        return Place::count();
+    }
+
     public function getOpen(): Collection
     {
         return Place::where(PlaceContract::FIELD_STATUS, 1)->get();
