@@ -41,7 +41,7 @@ class WorkShiftHelper {
         $withdrawals = $workshift->withdrawals;
         foreach ($withdrawals as $withdrawalItem) {
             if (!is_numeric($withdrawalItem->sum)) {
-                $access['is_closable'] = false;
+                $access['closable'] = false;
                 $errors[] = WorkShiftContract::AGENDA_ERRORS['withdrawal_not_numeric'];
             }
         }
@@ -97,7 +97,6 @@ class WorkShiftHelper {
                 $cashMoney += $income->amount;
             }
         }
-
 
         $expenses = 0;
         $expensesEntries = Expense::where(ExpenseContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
@@ -184,11 +183,6 @@ class WorkShiftHelper {
             'withdrawal'
         );
 
-        if ($workshift->isClosed) {
-            $access['closable'] = false;
-            $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
-        }
-
         $user = Auth::user();
         $isEmployee = $workshift->employees->first(function ($employee) use ($user) {
             return $employee->user_id = $user->id;
@@ -212,6 +206,12 @@ class WorkShiftHelper {
             ->whereDate(WorkShiftContract::FIELD_DATE, '<', $workshift->{WorkShiftContract::FIELD_DATE})
             ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
             ->first();
+
+        if ($previousWorkShift->isClosed) {
+            $access['closable'] = false;
+            $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
+        }
+
         return compact('agenda', 'access', 'errors');
     }
 }
