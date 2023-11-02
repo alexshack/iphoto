@@ -14,13 +14,14 @@ class UploadController extends Controller
         $this->folder = 'public/check-files';
     }
     public function upload(Request $request) {
-        $path = $request->fileName->store($this->folder);
-        $url = asset(str_replace('public', 'storage', $path));
-        return response()->json([
-            'url' => $url,
-            'size' => Storage::size($path),
-            'path' => $path,
-        ]);
+        $folder = $this->folder;
+        if ($request->get('workshiftID')) {
+            $workshiftID = $request->get('workshiftID');
+            $folder .= "/$workshiftID";
+        }
+        $path = $request->image->store($folder);
+        $name = asset(str_replace('public', 'storage', $path));
+        return response()->json(compact('name'));
 
     }
 

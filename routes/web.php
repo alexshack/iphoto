@@ -215,6 +215,7 @@ Route::middleware(['web'])->group(function () {
             'as' => 'workshift.',
             'namespace' => "App\Http\Controllers\Money\Workshift"
         ], function () {
+            Route::resource('calc', 'CalcsController');
             Route::resource('employee', 'WorkshiftEmployeeController');
             Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
             Route::get('employee-position', 'PositionController@index')->name('employee.position');

@@ -19,7 +19,12 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-label">Чек</div>
-                            <Upload @fileUploaded="setFile"/>
+                            <Uploader :max="1"
+                                 ref="uploaderComponent"
+                                 :server="uploadURL"
+                                 @add="addAttachment"
+                                 @remove="removeAttachment"
+                                 :media="media"/>
                         </div>
                     </div>
 
@@ -50,16 +55,18 @@
     import Modal from '@/components/Modals/Modal.vue';
     import {store, types} from '@/db/expenses.js';
     import {prepareFormData} from '@/helpers/form.js';
-    import Upload from '@/components/Form/Upload.vue';
+    import { toRaw } from 'vue';
+    import Uploader from '@/components/Form/Uploader/Uploader.vue';
 
     export default{
         name: 'Create',
         components: {
             Modal,
-            Upload,
+            Uploader,
         },
         data: () => {
             return {
+                attachments: [],
                 errors: [],
                 expenseTypes: [],
                 formData: {
@@ -70,12 +77,21 @@
                     note: null,
                 },
                 loading: false,
+                media: [],
                 modalID: 'createExpense',
+                uploadURL: '',
             };
         },
         methods: {
+            addAttachment(attachment) {
+                this.attachments.push(toRaw(attachment));
+            },
+            removeAttachment(attachment) {
+                this.attachments = this.attachments.filter(item => item.name !== attachment.name);
+            },
             async setupData() {
                 this.expenseTypes = await types();
+                this.uploadURL = `${window.workshiftUrls.file.upload}?workshiftID=${window.workshiftData.id}`;
             },
             setFile(data) {
                 if (typeof data.path != 'undefined' && data.path) {
@@ -86,6 +102,9 @@
                 this.loading = true;
                 this.errors = [];
                 const formData = prepareFormData(this.formData);
+                if (!formData.check_file && this.attachments.length > 0) {
+                    formData.check_file = this.attachments[0].name;
+                }
                 const response = await store(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
@@ -94,6 +113,9 @@
                     for (let p in this.formData) {
                         this.formData[p] = null;
                     }
+                    this.attachments = [];
+                    this.media = [];
+                    this.$refs.uploaderComponent.removeAllMedia();
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {

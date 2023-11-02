@@ -185,7 +185,9 @@ class WorkShiftHelper {
 
         $user = Auth::user();
         $isEmployee = $workshift->employees->first(function ($employee) use ($user) {
-            return $employee->user_id = $user->id;
+            if ($user) {
+                return $employee->user_id = $user->id;
+            }
         });
 
         $nextWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})

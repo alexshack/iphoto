@@ -24,7 +24,9 @@ class WorkShiftWithdrawalRepository implements WorkShiftWithdrawalRepositoryInte
 
     public function getByWorkShift($workShiftID)
     {
-        return WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workShiftID)->get();
+        return WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workShiftID)
+            ->orderBy(WorkShiftWithdrawalContract::FIELD_TIME, 'asc')
+            ->get();
     }
 
     public function getByFilter($data): Collection

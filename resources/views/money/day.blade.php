@@ -1280,6 +1280,9 @@
             {{--window.workshiftData = @js($workshift);--}}
             window.workshiftTitle = '{{ $workshift->title }}';
             window.workshiftUrls = {
+                calcs: {
+                    all: '{{ route("workshift.calc.index") }}',
+                },
                 update: '{{ route("money.days.update", ["id" => $workshift->id]) }}',
                 employee: {
                     all: '{{ route("workshift.employee.index") }}',
@@ -1346,6 +1349,7 @@
                 },
             };
         </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.min.js"></script>
         @vite(['resources/js/workshift.js'])
 
 @endsection

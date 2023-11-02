@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="edit-button">
         <a href="#" @click="setCurrentEditable" class="action-btns1" v-loading="loading">
             <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
         </a>
@@ -104,7 +104,10 @@
     }
 </script>
 
-<style scoped>
+<style>
+.edit-button {
+    white-space: normal !important;
+}
 
 </style>
 

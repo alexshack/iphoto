@@ -46,7 +46,8 @@ class CalcsType extends Model
             $result = Position::whereIn(PositionContract::FIELD_ID, $positions)->get()->pluck(PositionContract::FIELD_NAME)->implode(', ');
         }
         if($this->{CalcsTypeContract::FIELD_TYPE} == 3) {
-            $result = EmployeeStatuses::whereIn(EmployeeStatusContract::FIELD_ID, $this->getCustom()->employee_statuses)->get()->pluck(EmployeeStatusContract::FIELD_NAME)->implode(', ');
+            $employeeStatuses = isset($this->getCustom()->employee_statuses) ? $this->getCustom()->employee_statuses : [];
+            $result = EmployeeStatuses::whereIn(EmployeeStatusContract::FIELD_ID, $employeeStatuses)->get()->pluck(EmployeeStatusContract::FIELD_NAME)->implode(', ');
         }
 
         return $result;

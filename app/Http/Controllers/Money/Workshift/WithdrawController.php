@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShiftWithdrawal;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftWithdrawalRepositoryInterface;
+use App\Rules\WithdrawalValue;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -88,7 +89,11 @@ class WithdrawController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validated = $request->validate(WorkShiftWithdrawalContract::RULES, [], WorkShiftWithdrawalContract::ATTRIBUTES);
+        $rules = WorkShiftWithdrawalContract::RULES;
+        $sumRule = explode('|', $rules[WorkShiftWithdrawalContract::FIELD_SUM]);
+        $sumRule[] = new WithdrawalValue($request->all());
+        $rules[WorkShiftWithdrawalContract::FIELD_SUM] = $sumRule;
+        $validated = $request->validate($rules, [], WorkShiftWithdrawalContract::ATTRIBUTES);
         $withdraw = $this->withdrawRepo->find($id);
 
         if ($withdraw) {

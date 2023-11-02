@@ -3,7 +3,11 @@
 namespace App\Repositories;
 
 use App\Contracts\Salary\CalcsContract;
+use App\Contracts\UserContract;
+use App\Contracts\UserPersonalDataContract;
+use App\Contracts\WorkShift\WorkShiftContract;
 use App\Models\Salary\Calc;
+use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\CalcsRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -15,6 +19,20 @@ class CalcsRepository implements CalcsRepositoryInterface
     public function getAll(): Collection
     {
         return Calc::all();
+    }
+
+    public function getByWorkshift(WorkShift $workShift) {
+        $calcs = Calc::where(CalcsContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
+            ->where(CalcsContract::FIELD_PLACE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
+            ->where(CalcsContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID});
+
+        $calcs = $calcs->with(
+            'calcType',
+            'user',
+            'user.personalData:'. UserContract::FIELD_ID . ',' . UserPersonalDataContract::FIELD_USER_ID . ',' . UserPersonalDataContract::FIELD_LAST_NAME . ',' .UserPersonalDataContract::FIELD_FIRST_NAME . ',' .UserPersonalDataContract::FIELD_MIDDLE_NAME,
+        );
+
+        return $calcs->get();
     }
 
     public function find($id) {

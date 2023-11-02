@@ -64,6 +64,7 @@ class ExpenseController extends Controller
             'date' => $workShift->{WorkShiftContract::FIELD_DATE},
         ]);
         $validated = $request->validate(ExpenseContract::RULES, [], ExpenseContract::ATTRIBUTES);
+        $validated[ExpenseContract::FIELD_CHECK_FILE] = str_replace(url('/'), '', $validated[ExpenseContract::FIELD_CHECK_FILE]);
         $expense = Expense::create($validated);
         $stats = WorkShiftHelper::recalculateStats($workShift);
         return response()->json([
@@ -100,6 +101,9 @@ class ExpenseController extends Controller
         $expense = $this->expenseRepo->find($id);
         if ($expense) {
             foreach ($validated as $key => $value) {
+                if ($key === ExpenseContract::FIELD_CHECK_FILE) {
+                    $value = str_replace(url('/'), '', $value);
+                }
                 $expense->{$key} = $value;
             }
             $expense->save();

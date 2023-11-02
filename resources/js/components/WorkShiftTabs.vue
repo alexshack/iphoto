@@ -74,8 +74,8 @@
                     },
                 };
                 if (this.workShift && this.workShift.is_closed) {
+                //if (this.workShift) {
                     tabs.pays = {
-                        //<!-- Отображается только если статус смены Закрыт -->
                         label: 'Начисления ЗП',
                     };
                 }
@@ -103,8 +103,4 @@
         },
     }
 </script>
-
-<style scoped>
-
-</style>
 

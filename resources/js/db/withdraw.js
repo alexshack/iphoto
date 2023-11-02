@@ -59,6 +59,9 @@ export const store = async (data) => {
 };
 
 export const update = async (data) => {
+    if (typeof data.workshift_id === 'undefined' || !data.workshift_id) {
+        data.workshift_id = window.workshiftData.id;
+    }
     const url = window.workshiftUrls.withdraw.update.replace('%s', data.id);
     let response = {
         data: null,

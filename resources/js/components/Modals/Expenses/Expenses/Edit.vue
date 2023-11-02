@@ -19,7 +19,12 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-label">Чек</div>
-                            <Upload @fileUploaded="setFile"/>
+                            <Uploader :max="1"
+                                 ref="uploaderComponent"
+                                 :server="uploadURL"
+                                 @add="addAttachment"
+                                 @remove="removeAttachment"
+                                 :media="media"/>
                         </div>
                     </div>
 
@@ -46,14 +51,16 @@
 <script>
     import Modal from '@/components/Modals/Modal.vue';
     import {update, types} from '@/db/expenses.js';
+    import mime from 'mime';
     import { getModalID, prepareData, prepareFormData } from '@/helpers/form.js';
-    import Upload from '@/components/Form/Upload.vue';
+    import { toRaw } from 'vue';
+    import Uploader from '@/components/Form/Uploader/Uploader.vue';
 
     export default{
-        name: 'Create',
+        name: 'Edit',
         components: {
             Modal,
-            Upload,
+            Uploader,
         },
         computed: {
             modalID() {
@@ -66,6 +73,7 @@
         },
         data: () => {
             return {
+                attachments: [],
                 errors: [],
                 expenseTypes: [],
                 formData: {
@@ -76,6 +84,8 @@
                     note: null,
                 },
                 loading: false,
+                media: [],
+                uploadURL: '',
             };
         },
         props: {
@@ -89,7 +99,16 @@
             },
         },
         methods: {
+            addAttachment(attachment) {
+                //console.log('addAttachment', attachment);
+                this.attachments.push(toRaw(attachment));
+            },
+            removeAttachment(attachment) {
+                this.attachments = this.attachments.filter(item => item.name !== attachment.name);
+                this.media = {...this.attachments};
+            },
             async initForm() {
+                this.uploadURL = `${window.workshiftUrls.file.upload}?workshiftID=${window.workshiftData.id}`;
                 if (typeof this.entity != 'undefined' && this.entity) {
                     const db = {
                         expenseTypes: this.expenseTypes,
@@ -97,6 +116,12 @@
                     const entity = prepareData(this.entity, db);
                     for (let p in entity) {
                         this.formData[p] = entity[p];
+                    }
+                    if (entity.check_file) {
+                        this.media.push({
+                            name: entity.check_file,
+                            type: mime.getType(entity.check_file),
+                        });
                     }
                 }
             },
@@ -112,6 +137,15 @@
                 this.loading = true;
                 this.errors = [];
                 const formData = prepareFormData(this.formData);
+                console.log({
+                    attachments: this.attachments,
+                    media: this.media,
+                });
+                if (this.attachments.length > 0) {
+                    formData.check_file = this.attachments[0].name;
+                } else if (this.attachments.length === 0 && this.media.length === 0) {
+                    formData.check_file = null;
+                }
                 const response = await update(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {

@@ -38,7 +38,7 @@ export const getExpense = async (ID) => {
 
 export const store = async (data) => {
     const url = window.workshiftUrls.expenses.store;
-    if (typeof data.workshift_id === 'undefined' || data.workshift_id) {
+    if (typeof data.workshift_id === 'undefined' || !data.workshift_id) {
         data.workshift_id = window.workshiftData.id;
     }
     let response = {
@@ -68,6 +68,9 @@ export const store = async (data) => {
 };
 
 export const update = async (data) => {
+    if (typeof data.workshift_id === 'undefined' || !data.workshift_id) {
+        data.workshift_id = window.workshiftData.id;
+    }
     const url = window.workshiftUrls.expenses.update.replace('%s', data.id);
     let response = {
         data: null,
