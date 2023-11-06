@@ -9,7 +9,11 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="icon1 my-auto  float-right"> <a href="{{url('structure/cities')}}"><i class="feather feather-map-pin"></i></a> </div>
+                        <div class="icon1 my-auto float-right">
+                            <a href="{{url('admin/structure/cities')}}">
+                                <i class="feather feather-map-pin"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,7 +30,7 @@
                     </div>
                     <div class="col-3">
                         <div class="icon1 my-auto  float-right">
-                            <a href="{{url('structure/places')}}">
+                            <a href="{{url('admin/structure/place')}}">
                                 <i class="feather feather-shopping-cart"></i> </div>
                             </a>
                     </div>
@@ -45,7 +49,7 @@
                     </div>
                     <div class="col-3">
                         <div class="icon1 my-auto  float-right">
-                            <a href="{{url('structure/employees')}}">
+                            <a href="{{url('admin/structure/employees')}}">
                                 <i class="feather feather-users"></i> </div>
                             </a>
                     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Money\Workshift;
 
 use App\Contracts\Goods\GoodsContract;
 use App\Contracts\Salary\CalcsTypeContract;
+use App\Contracts\Structure\PlaceCalcContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftPayroll;
 use App\Repositories\Interfaces\CalcsTypeRepositoryInterface;
+use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftEmployeeRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftPayrollRepositoryInterface;
@@ -25,6 +27,7 @@ use Illuminate\Http\Request;
 class WorkShiftController extends Controller
 {
     private CalcsTypeRepositoryInterface $calcsTypeRepository;
+    private PlaceCalcRepositoryInterface $placeCalcsRepository;
     private WorkShiftEmployeeRepositoryInterface $workShiftEmployeeRepository;
     private WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository;
     private WorkShiftPayrollRepositoryInterface $workShiftPayrollRepository;
@@ -32,12 +35,14 @@ class WorkShiftController extends Controller
     private WorkShiftWithdrawalRepositoryInterface $workShiftWithdrawalRepository;
 
     public function __construct(CalcsTypeRepositoryInterface $calcsTypeRepository,
+        PlaceCalcRepositoryInterface $placeCalcsRepository,
         WorkShiftRepositoryInterface $workShiftRepo,
         WorkShiftEmployeeRepositoryInterface $workShiftEmployeeRepository,
         WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository,
         WorkShiftPayrollRepositoryInterface $workShiftPayrollRepository,
         WorkShiftWithdrawalRepositoryInterface $workShiftWithdrawalRepository) {
         $this->calcsTypeRepository = $calcsTypeRepository;
+        $this->placeCalcsRepository = $placeCalcsRepository;
         $this->workShiftGoodsRepository = $workShiftGoodsRepository;
         $this->workShiftRepo = $workShiftRepo;
         $this->workShiftEmloyeeRepository = $workShiftEmployeeRepository;
@@ -70,9 +75,10 @@ class WorkShiftController extends Controller
 
         $payRolls = [];
 
-        $calcsTypes = $this->calcsTypeRepository->getActive();
+        $placeCalcs = $this->placeCalcsRepository->getActiveByPlaceId($workShift->{WorkShiftContract::FIELD_PLACE_ID});
         $employees = $this->workShiftEmloyeeRepository->getAll($workShift->{WorkShiftContract::FIELD_ID});
-        foreach ($calcsTypes as $calcType) {
+        foreach ($placeCalcs as $placeCalc) {
+            $calcType = $placeCalc->calcsType;
             switch ($calcType->{CalcsTypeContract::FIELD_TYPE}) {
             case 1:
                 $this->handlePercentCalcType($workShift, $calcType, $payRolls, $employees);
@@ -97,7 +103,7 @@ class WorkShiftController extends Controller
         }
 
         foreach ($payRolls as $payRoll) {
-            WorkShiftPayroll::create($payRoll);
+            //WorkShiftPayroll::create($payRoll);
         }
 
         dump($payRolls);

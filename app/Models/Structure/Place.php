@@ -3,6 +3,7 @@
 namespace App\Models\Structure;
 
 use App\Contracts\Structure\CityContract;
+use App\Contracts\Structure\PlaceCalcContract;
 use App\Contracts\Structure\PlaceContract;
 use App\Models\City;
 use App\Models\User;
@@ -25,5 +26,9 @@ class Place extends Model
     public function city()
     {
         return $this->belongsTo(City::class, PlaceContract::FIELD_CITY_ID, CityContract::FIELD_ID);
+    }
+
+    public function placeCalcs() {
+        return $this->hasMany(PlaceCalc::class, PlaceCalcContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
     }
 }

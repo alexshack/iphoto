@@ -335,45 +335,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <h4 class="mb-5 mt-7 font-weight-bold">Заработная плата</h4>
-                                                        <a href="" data-target="#salary-edit" data-toggle="modal" class="btn btn-primary btn-sm ml-auto">Добавить расчет</a>
-                                                    </div>
-                                                    <table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="salary-list">
-                                                        <thead>
-                                                        <tr>
-                                                            <th class="border-bottom-0 w-10">Дата</th>
-                                                            <th class="border-bottom-0">Процент</th>
-                                                            <th class="border-bottom-0">Расходы</th>
-                                                            <th class="border-bottom-0">Действия</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>05.05.2017</td>
-                                                            <td>10</td>
-                                                            <td>Аренда, такси</td>
-                                                            <td>
-                                                                <a class="btn btn-primary btn-icon btn-sm" href="" data-target="#salary-edit" data-toggle="modal">
-                                                                    <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-                                                                </a>
-                                                                <a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>05.05.2020</td>
-                                                            <td>11</td>
-                                                            <td>Аренда, такси</td>
-                                                            <td>
-                                                                <a class="btn btn-primary btn-icon btn-sm" href="" data-target="#salary-edit" data-toggle="modal">
-                                                                    <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
-                                                                </a>
-                                                                <a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" data-original-title="Удалить"><i class="feather feather-trash-2"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
 
+                                                    @livewire('user.salary-data.index', compact('user'))
                                                 </div>
                                             </div>
 

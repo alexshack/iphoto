@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
- use App\Contracts\Structure\CityContract;
- use App\Contracts\UserPersonalDataContract;
- use App\Contracts\UserWorkDataContract;
+use App\Contracts\Structure\CityContract;
+use App\Contracts\UserPersonalDataContract;
+use App\Contracts\UserSalaryDataContract;
+use App\Contracts\UserWorkDataContract;
 use App\Contracts\UserContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
- use Illuminate\Support\Facades\Storage;
- use Illuminate\Support\Str;
- use Laravel\Sanctum\HasApiTokens;
- use \Illuminate\Auth\Passwords\CanResetPassword;
- use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use \Illuminate\Auth\Passwords\CanResetPassword;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,11 @@ class User extends Authenticatable
     public function getPersonalData(): UserPersonalData
     {
         return $this->personalData()->first();
+    }
+
+
+    public function salaryData() {
+        return $this->hasMany(UserSalaryData::class, UserSalaryDataContract::FIELD_USER_ID, UserContract::FIELD_ID);
     }
 
     public function workData()

@@ -3,6 +3,7 @@
 namespace App\Contracts\Salary;
 
 use App\Contracts\PositionContract;
+use App\Contracts\UserSalaryDataContract;
 
 interface CalcsTypeContract
 {
@@ -50,7 +51,20 @@ interface CalcsTypeContract
                     'validation_field' => 'custom_data.percent_for_multiple',
                     'rules' => 'required|numeric|max:100'
                 ]
-            ]
+            ],
+            'userSalary' => [
+                'columns' => [
+                    UserSalaryDataContract::FIELD_START_DATE => [
+                        'attribute' => UserSalaryDataContract::ATTRIBUTES[UserSalaryDataContract::FIELD_START_DATE],
+                    ],
+                    UserSalaryDataContract::FIELD_AMOUNT => [
+                        'attribute' => 'Процент',
+                    ],
+                    UserSalaryDataContract::FIELD_CUSTOM_DATA => [
+                        'attribute' => 'Расходы',
+                    ],
+                ],
+            ],
         ],
         2 => [
             'name' => 'Продажа товара',
@@ -71,7 +85,17 @@ interface CalcsTypeContract
                     'validation_field' => 'custom_data.salary_percent',
                     'rules' => 'required|numeric|max:100',
                 ]
-            ]
+            ],
+            'userSalary' => [
+                'columns' => [
+                    UserSalaryDataContract::FIELD_START_DATE => [
+                        'attribute' => UserSalaryDataContract::ATTRIBUTES[UserSalaryDataContract::FIELD_START_DATE],
+                    ],
+                    UserSalaryDataContract::FIELD_AMOUNT => [
+                        'attribute' => 'Оклад',
+                    ],
+                ],
+            ],
         ],
         4 => [
             'name' => 'Фиксированная смена',
@@ -87,8 +111,18 @@ interface CalcsTypeContract
                     'name' => 'hours_count',
                     'validation_field' => 'custom_data.hours_count',
                     'rules' => 'required|numeric|max:24',
-                ]
-            ]
+                ],
+            ],
+            'userSalary' => [
+                'columns' => [
+                    UserSalaryDataContract::FIELD_START_DATE => [
+                        'attribute' => UserSalaryDataContract::ATTRIBUTES[UserSalaryDataContract::FIELD_START_DATE],
+                    ],
+                    UserSalaryDataContract::FIELD_AMOUNT => [
+                        'attribute' => 'Оклад',
+                    ],
+                ],
+            ],
         ],
         5 => [
             'name' => 'Ввод вручную',
