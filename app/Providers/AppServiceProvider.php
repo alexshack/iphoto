@@ -33,6 +33,7 @@ use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\UserSalaryDataRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftEmployeeRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftFinalCashDeskRepositoryInterface;
@@ -45,6 +46,7 @@ use App\Repositories\PlaceCalcRepository;
 use App\Repositories\PlaceRepository;
 use App\Repositories\SalesTypeRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\UserSalaryDataRepository;
 use App\Repositories\WorkShiftRepository;
 use App\Repositories\WorkShiftEmployeeRepository;
 use App\Repositories\WorkShiftGoodsRepository;
@@ -86,6 +88,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(WorkShiftWithdrawalRepositoryInterface::class, WorkShiftWithdrawalRepository::class);
         $this->app->bind(WorkShiftGoodsRepositoryInterface::class, WorkShiftGoodsRepository::class);
         $this->app->bind(WorkShiftPayrollRepositoryInterface::class, WorkShiftPayrollRepository::class);
+        $this->app->bind(UserSalaryDataRepositoryInterface::class, UserSalaryDataRepository::class);
     }
 
     /**

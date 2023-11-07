@@ -71,7 +71,9 @@ class Create extends Component
 
     public function submit() {
         $validated = $this->validate();
-        $validated['salaryData'][UserSalaryDataContract::FIELD_CUSTOM_DATA] = json_encode($validated['salaryData'][UserSalaryDataContract::FIELD_CUSTOM_DATA]);
+        if (isset($validated['salaryData']) && isset($validated['salaryData'][UserSalaryDataContract::FIELD_CUSTOM_DATA])) {
+            $validated['salaryData'][UserSalaryDataContract::FIELD_CUSTOM_DATA] = json_encode($validated['salaryData'][UserSalaryDataContract::FIELD_CUSTOM_DATA]);
+        }
         $salaryData = UserSalaryData::create($validated['salaryData']);
         $this->emitUp('submitted');
         $this->modalShow = false;
