@@ -14,6 +14,7 @@ use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\WorkShift\WorkShift;
+use App\Models\WorkShift\WorkShiftEmployee;
 use App\Models\WorkShift\WorkShiftPayroll;
 use App\Repositories\Interfaces\CalcsTypeRepositoryInterface;
 use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
@@ -133,7 +134,7 @@ class WorkShiftController extends Controller
             $salaryData = $this->userSalaryDataRepository
                 ->getActualSalaryData($userID, $calcTypeID);
             if (!$salaryData) {
-                \Log::info('No salary data');
+                \Log::info('No salary data => ' . $userID);
                 continue;
             }
 
@@ -239,5 +240,58 @@ class WorkShiftController extends Controller
 
             $payRolls[] = $data;
         }
+    }
+
+    public function validateEmployeeSalaryData(WorkShiftEmployee $employee)
+    {
+        $emptySalaryData = [];
+        $placeCalcs = $this->placeCalcsRepository->getActiveByPlaceId($employee->workShift->{WorkShiftContract::FIELD_PLACE_ID});
+        foreach ($placeCalcs as $placeCalc) {
+            $calcType = $placeCalc->calcsType;
+            $custom = $calcType->getCustom();
+            $userID = $employee->{WorkShiftEmployeeContract::FIELD_USER_ID};
+            $calcTypeID = $calcType->{CalcsTypeContract::FIELD_TYPE};
+
+
+            switch ((int) $calcType->{CalcsTypeContract::FIELD_TYPE}) {
+            case 3:
+                $employeeStatuses = [];
+                if (isset($custom->employee_statuses)) {
+                    $employeeStatuses = $custom->employee_statuses;
+                }
+
+                if (!in_array($employee->{WorkShiftEmployeeContract::FIELD_STATUS}, $employeeStatuses)) {
+                    break;
+                }
+
+                $salaryData = $this->userSalaryDataRepository
+                    ->getActualSalaryData($userID, $calcTypeID);
+                if (!$salaryData) {
+                    $emptySalaryData[$calcType->{CalcsTypeContract::FIELD_ID}] = $calcType->{CalcsTypeContract::FIELD_NAME};
+                }
+
+                break;
+            case 4:
+                $employeePositions = [];
+                if (isset($custom->positions)) {
+                    $employeePositions = $custom->positions;
+                }
+
+                if (!in_array($employee->{WorkShiftEmployeeContract::FIELD_POSITION_ID}, $employeePositions)) {
+                    break;
+                }
+
+                $salaryData = $this->userSalaryDataRepository
+                    ->getActualSalaryData($userID, $calcTypeID);
+
+                if (!$salaryData) {
+                    $emptySalaryData[$calcType->{CalcsTypeContract::FIELD_ID}] = $calcType->{CalcsTypeContract::FIELD_NAME};
+                }
+
+                break;
+            }
+        }
+
+        return $emptySalaryData;
     }
 }

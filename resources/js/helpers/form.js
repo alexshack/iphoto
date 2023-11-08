@@ -130,6 +130,12 @@ export const prepareData = (originalFormData, db = {}) => {
                     }
                 }
                 break;
+            case 'check_file':
+                let replacement = import.meta.env.VITE_UPLOADS_PATH;
+                if (replacement) {
+                    formData[p] = formData[p].replace('storage', replacement);
+                }
+                break;
             default:
                 break;
         }

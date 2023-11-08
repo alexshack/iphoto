@@ -42,7 +42,10 @@ class WorkShiftHelper {
         foreach ($withdrawals as $withdrawalItem) {
             if (!is_numeric($withdrawalItem->sum)) {
                 $access['closable'] = false;
-                $errors[] = WorkShiftContract::AGENDA_ERRORS['withdrawal_not_numeric'];
+                if (!in_array(WorkShiftContract::AGENDA_ERRORS['withdrawal_not_numeric'], $errors)) {
+                    $errors[] = WorkShiftContract::AGENDA_ERRORS['withdrawal_not_numeric'];
+                }
+                continue;
             }
         }
 
@@ -82,7 +85,7 @@ class WorkShiftHelper {
                 if (!is_numeric($good->{WorkShiftGoodsContract::FIELD_ON_START}) || !is_numeric($good->{WorkShiftGoodsContract::FIELD_ON_END})) {
                     $access['closable'] = false;
                     $errors[] = WorkShiftContract::AGENDA_ERRORS['fcd_empty'];
-                    break;
+                    continue;
                 }
             }
         }
@@ -141,6 +144,8 @@ class WorkShiftHelper {
             'amount' => 0,
             'children' => [],
         ];
+
+        $cashFCDs = [];
         $saleTypes = SalesType::where(SalesTypeContract::FIELD_STATUS, 1)->get();
         foreach ($saleTypes as $saleType) {
             $saleTypeData = [
@@ -148,19 +153,24 @@ class WorkShiftHelper {
                 'amount' => 0,
             ];
 
-            $fcds = WorkShiftFinalCashDesk::whereHas('saleType', function ($q) use ($saleType) {
-                $q->where(SalesTypeContract::FIELD_RECIPIENT, $saleType->{SalesTypeContract::FIELD_RECIPIENT});
-            })
+            $fcds = WorkShiftFinalCashDesk::where(WorkShiftFinalCashDeskContract::FIELD_SALE_TYPE_ID, $saleType->{SalesTypeContract::FIELD_ID})
                 ->where(WorkShiftFinalCashDeskContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
                 ->get();
 
             foreach ($fcds as $fcd) {
                 $saleTypeData['amount'] += (float) $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
+                if ($fcd->saleType->{SalesTypeContract::FIELD_RECIPIENT} === 1) {
+                    $cashFCDs[] = $fcd;
+                }
             }
 
             $cashBox['amount'] += $saleTypeData['amount'];
 
-            $cashBox['children'][] = $saleTypeData;
+            if (!isset($cashBox['children'][$saleType->{SalesTypeContract::FIELD_ID}])) {
+                $cashBox['children'][$saleType->{SalesTypeContract::FIELD_ID}] = $saleTypeData;
+            } else {
+                $cashBox['children'][$saleType->{SalesTypeContract::FIELD_ID}]['amount'] += $saleTypeData['amount'];
+            }
         }
 
         if ($withdrawal != $salesTotal) {
@@ -170,8 +180,16 @@ class WorkShiftHelper {
 
         $payroll = 0;
 
+        $placeRecipientFcdAmount = 0;
+        foreach ($cashFCDs as $fcd) {
+            $placeRecipientFcdAmount += $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
+        }
+        $cashBalance = $placeRecipientFcdAmount - $expensesTotal;
+        \Log::info(serialize(compact('placeRecipientFcdAmount')));
+
         $agenda = compact(
             'cashBox',
+            'cashBalance',
             'expensesTotal',
             'expenses',
             'moves',
@@ -189,6 +207,20 @@ class WorkShiftHelper {
                 return $employee->user_id = $user->id;
             }
         });
+
+        foreach ($workshift->employees as $employee) {
+            $emptySalaryData = $employee->salaryDataCompleted;
+            if (!empty($emptySalaryData)) {
+                foreach ($emptySalaryData as $calcTypeID => $calcTypeName) {
+                    $errors[] = __('validation.empty_salary_data', [
+                        'name' => $calcTypeName,
+                        'fio' => $employee->user->name,
+                    ]);
+                    $access['closable'] = false;
+                }
+            }
+        }
+
 
         $nextWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(WorkShiftContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
