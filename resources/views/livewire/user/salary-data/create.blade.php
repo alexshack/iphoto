@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="form-label" for="calct_type">
+                        <label class="form-label" for="calc_type">
                             Тип расчета
                         </label>
                         <select id="calc_type" class="form-control" name="calc_type" wire:model="salaryData.{{ UserSalaryDataContract::FIELD_CALCS_TYPES_TYPE }}">
@@ -67,9 +67,34 @@
     <script>
         document.addEventListener('showCreateModal', () => {
             $('#salary-create').modal('show');
+            formCreateInit();
         });
         document.addEventListener('hideCreateModal', () => {
             $('#salary-create').modal('hide');
+        });
+        function formCreateInit() {
+            window.scrollTo({
+                top: 0
+            });
+            $('#salary-create ').find( ".fc-datepicker" ).each(function (index, item) {
+                $(item).datepicker({
+                    dateFormat: "dd.mm.yy",
+                    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+                    dayNamesMin: [ "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" ]
+                }).on('change', function (e) {
+                    var data = $(this).val();
+                    var model = $(this).attr('wire:model.defer');
+                    @this.set(model, data);
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            window.Livewire.hook('component.initialized', (component) => {
+                formCreateInit();
+            });
+            window.Livewire.on('inputHydrate', () => {
+                formCreateInit();
+            })
         });
     </script>
 </div>

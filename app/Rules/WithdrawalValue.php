@@ -30,16 +30,10 @@ class WithdrawalValue implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $previous = $this->getPreviousWithdrawal();
-        \Log::info(serialize([
-            'prev' => $previous->{WorkShiftWithdrawalContract::FIELD_SUM},
-            'prevID' => $previous->{WorkShiftWithdrawalContract::FIELD_ID},
-            'value' => $value,
-        ]));
-        if ($previous && $previous->{WorkShiftWithdrawalContract::FIELD_SUM} > $value) {
+        if ($previous && (int) $previous->{WorkShiftWithdrawalContract::FIELD_SUM} > $value) {
             $fail(__('validation.withdrawal_sum_incorrect', [
                 'time' => $previous->{WorkShiftWithdrawalContract::FIELD_TIME},
             ]));
         }
-
     }
 }

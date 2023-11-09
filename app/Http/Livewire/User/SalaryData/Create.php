@@ -63,6 +63,14 @@ class Create extends Component
         return $rules;
     }
 
+    public function hydrate() {
+        $this->loadFormInputs();
+    }
+
+    public function loadFormInputs() {
+        $this->emit('inputHydrate');
+    }
+
     public function modalOpen() {
         $this->modalShow = true;
         $this->emit('$refresh');
@@ -80,4 +88,9 @@ class Create extends Component
         $this->dispatchBrowserEvent('hideCreateModal');
         $this->emit('$refresh');
     }
+
+    public function update($key, $value) {
+        $this->loadFormInputs();
+    }
+
 }

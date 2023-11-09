@@ -185,7 +185,6 @@ class WorkShiftHelper {
             $placeRecipientFcdAmount += $fcd->{WorkShiftFinalCashDeskContract::FIELD_SUM};
         }
         $cashBalance = $placeRecipientFcdAmount - $expensesTotal;
-        \Log::info(serialize(compact('placeRecipientFcdAmount')));
 
         $agenda = compact(
             'cashBox',
