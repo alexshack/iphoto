@@ -67,6 +67,7 @@ class WorkShiftController extends Controller
         $stats = WorkShiftHelper::recalculateStats($workShift);
 
         // close action
+        $this->closeAction($workShift);
 
         $stats = WorkShiftHelper::recalculateStats($workShift);
 
@@ -276,6 +277,23 @@ class WorkShiftController extends Controller
             $payRolls[] = $data;
         }
     }
+
+    public function reopen(Request $request)
+    {
+        $workShift = $this->workShiftRepo->find($request->get('id'));
+        if ($workShift->closed_at) {
+            $workShift->closed_at = null;
+            $workShift->save();
+            $workShift->fresh();
+        }
+
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+        return response()->json([
+            'data' => $workShift->id,
+            'agenda' => $stats['agenda'],
+        ]);
+    }
+
 
     public function validateEmployeeSalaryData(WorkShiftEmployee $employee)
     {

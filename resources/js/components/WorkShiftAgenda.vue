@@ -1,7 +1,7 @@
 <template>
     <div class="offer" :class="offerClass"><!--offer-danger если закрыта, offer-success если открыта-->
         <div class="card-header  border-0">
-            <div class="card-title text" :class="titleClass">Смена открыта</div><!--text-danger если закрыта, text-success если открыта-->
+            <div class="card-title text" :class="titleClass" v-html="titleText"></div>
         </div>
         <div class="card-body pt-2 pl-3 pr-3">
             <div class="table-responsive">
@@ -95,11 +95,13 @@
             </div>
             <div class="py-3">
                 <a v-if="access.closable"
+                   v-loading="loading"
                     @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
                     ЗАКРЫТЬ СМЕНУ
                 </a><!-- если смена открыта, видят только сотрудники и админ -->
                 <a v-if="access.cancelable"
-                   @click="cancelClose()"
+                   v-loading="loading"
+                   @click="reopen()"
                     href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
             </div>
             <!-- Алерт отображается удалением класса d-none -->
@@ -117,18 +119,30 @@
 </script>
 
 <script>
-    export default{
+    import { close, reopen } from '@/db/workshift.js';
+
+    export default {
         name: 'WorkShiftAgenda',
         computed: {
             offerClass() {
-                return {'offer-success': true};
+                return {
+                    'offer-success': store.agenda.status === 'open',
+                    'offer-danger': store.agenda.status === 'closed',
+                };
             },
             titleClass() {
-                return {'text-success': true};
-            }
+                return {
+                    'text-success': store.agenda.status === 'open',
+                    'text-danger': store.agenda.status === 'closed',
+                };
+            },
+            titleText() {
+                return store.agenda.status === 'open' ? 'Смена открыта' : 'Смена закрыта';
+            },
         },
         data: () => {
             return {
+                loading: false,
             };
         },
         props: {
@@ -145,9 +159,26 @@
             }
         },
         methods: {
-            closeWorkshift() {},
+            async closeWorkshift() {
+                if (this.loading) {
+                    return;
+                }
+                this.loading = true;
+                const response = await close();
+                console.log({response})
+                this.loading = false;
+            },
             refreshData() {
             },
+            async reopen() {
+                if (this.loading) {
+                    return;
+                }
+                this.loading = true;
+                const response = await reopen();
+                console.log({response})
+                this.loading = false;
+            }
         },
         mounted() {
             document.addEventListener('refreshAgenda', () => this.refreshData());

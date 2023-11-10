@@ -59,6 +59,10 @@
             {{--window.workshiftData = @js($workshift);--}}
             window.workshiftTitle = '{{ $workshift->title }}';
             window.workshiftUrls = {
+                actions: {
+                    close: '{{ route("workshift.close") }}',
+                    reopen: '{{ route("workshift.reopen") }}',
+                },
                 calcs: {
                     all: '{{ route("workshift.calc.index") }}',
                 },
