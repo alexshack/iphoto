@@ -19,6 +19,10 @@
     </div>
 </template>
 
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
+
 <script>
     import AdvancePayment from '@/components/Modals/Expenses/AdvancePayments/Edit.vue';
     import Consumables from '@/components/Modals/Consumbales/Edit.vue';
@@ -66,9 +70,8 @@
                 return modalID;
             },
             available() {
-                return false;
-                //return;
-            }
+                return store.agenda.status === 'open';
+            },
         },
         props: {
             entityName: {

@@ -1,5 +1,5 @@
 <template>
-    <span v-if="store.agenda.status === 'open'">
+    <span v-if="available">
         <a v-loading="loading" @click="confirmDelete" href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Удалить">
             <i class="feather feather-trash-2 text-danger"></i>
         </a>
@@ -22,8 +22,8 @@
         },
         computed: {
             available() {
-                return !window.agenda.access.closed;
-            }
+                return store.agenda.status === 'open';
+            },
         },
         props: {
             entity: {

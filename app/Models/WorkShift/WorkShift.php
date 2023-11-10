@@ -5,10 +5,11 @@ namespace App\Models\WorkShift;
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
 use App\Contracts\WorkShift\WorkShiftContract;
+use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
+use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
-use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\COntracts\UserContract;
 use App\Helpers\WorkShiftHelper;
 use App\Models\City;
@@ -91,6 +92,10 @@ class WorkShift extends Model
         }
 
         return true;
+    }
+
+    public function payrolls() {
+        return $this->hasMany(WorkShiftPayroll::class, WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID, WorkShiftContract::FIELD_ID);
     }
 
     public function place() {

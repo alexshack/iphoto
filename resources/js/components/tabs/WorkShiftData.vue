@@ -40,7 +40,7 @@
                             <td data-order="">{{ toHoursAndMinutes(employee.work_time) }}</td>
                             <td>{{ employee.status.name }}</td>
                             <td>{{ employee.position.name }}</td>
-                            <td :data-order="employee.salary">{{ employee.salaray }}₽</td>
+                            <td :data-order="employee.salary">{{ employee.salary }}₽</td>
                             <td>
                                 <div class="d-flex">
                                     <EditButton entityName="employee" :entity="employee" @submitted="getEmployees"/>

@@ -11,6 +11,7 @@ use App\Contracts\Salary\PaysContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
+use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
 use App\Models\Money\Income;
@@ -191,6 +192,7 @@ class WorkShiftHelper {
         $isClosed = $workshift->isClosed;
         if ($isClosed) {
             $status = 'closed';
+            $payroll = $workshift->payrolls->sum(WorkShiftPayrollContract::FIELD_AMOUNT);
         }
 
         $agenda = compact(

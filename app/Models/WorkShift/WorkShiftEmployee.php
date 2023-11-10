@@ -8,6 +8,7 @@ use App\Contracts\Structure\PlaceCalcContract;
 use App\Contracts\UserContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
+use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Http\Controllers\Money\Workshift\WorkShiftController;
 use App\Models\Salary\EmployeeStatuses;
 use App\Models\Salary\Position;
@@ -21,6 +22,10 @@ class WorkShiftEmployee extends Model
 {
     use HasFactory;
 
+    protected $appends = [
+        'salary',
+    ];
+
     protected $table = WorkShiftEmployeeContract::TABLE;
 
     protected $fillable = WorkShiftEmployeeContract::FILLABLE_FIELDS;
@@ -31,8 +36,18 @@ class WorkShiftEmployee extends Model
         return app(WorkShiftController::class)->validateEmployeeSalaryData($this);
     }
 
+    public function payrolls() {
+        return $this->hasMany(WorkShiftPayroll::class, WorkShiftPayrollContract::FIELD_EMPLOYEE_ID, WorkShiftEmployeeContract::FIELD_ID);
+    }
+
     public function position() {
         return $this->belongsTo(Position::class, WorkShiftEmployeeContract::FIELD_POSITION_ID, PositionContract::FIELD_ID);
+    }
+
+    public function getSalaryAttribute() {
+        $sum = 0;
+        $sum = $this->payrolls->sum(WorkShiftPayrollContract::FIELD_AMOUNT);
+        return $sum;
     }
 
     public function status() {
