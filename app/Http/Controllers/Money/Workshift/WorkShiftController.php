@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Money\Workshift;
 
 use App\Contracts\Goods\GoodsContract;
+use App\Contracts\Salary\CalcsContract;
 use App\Contracts\Salary\CalcsTypeContract;
 use App\Contracts\Structure\PlaceCalcContract;
+use App\Contracts\UserContract;
 use App\Contracts\UserSalaryDataContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
@@ -13,6 +15,8 @@ use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Salary\Calc;
+use App\Models\User;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftEmployee;
 use App\Models\WorkShift\WorkShiftPayroll;
@@ -24,6 +28,7 @@ use App\Repositories\Interfaces\WorkShiftGoodsRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftPayrollRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use App\Repositories\Interfaces\WorkShiftWithdrawalRepositoryInterface;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -61,10 +66,7 @@ class WorkShiftController extends Controller
 
         $stats = WorkShiftHelper::recalculateStats($workShift);
 
-        if ($stats['access']['closable']) {
-            $workShift->{WorkShiftContract::FIELD_CLOSED_AT} = Carbon::now();
-            $workShift->save();
-        }
+        // close action
 
         $stats = WorkShiftHelper::recalculateStats($workShift);
 
@@ -114,6 +116,36 @@ class WorkShiftController extends Controller
         foreach ($payRolls as $payRoll) {
             WorkShiftPayroll::create($payRoll);
         }
+
+        $calcs = [];
+        $workShiftPayrolls = $this->workShiftPayrollRepository->getByWorkShiftID($workShift->{WorkShiftContract::FIELD_ID});
+        $user = Auth::user();
+        if (!$user) {
+            $user = User::find(1);
+        }
+        $userID = $user->{UserContract::FIELD_ID};
+        foreach ($workShiftPayrolls as $payRoll) {
+            $employee = $payRoll->employee;
+            if (!$employee) {
+                continue;
+            }
+            $data = [
+                CalcsContract::FIELD_DATE => $workShift->{WorkShiftContract::FIELD_DATE}->format('d.m.Y'),
+                CalcsContract::FIELD_TYPE_ID => $payRoll->{WorkShiftPayrollContract::FIELD_CALC_TYPE_ID},
+                CalcsContract::FIELD_CITY_ID => $workShift->{WorkShiftContract::FIELD_CITY_ID},
+                CalcsContract::FIELD_PLACE_ID => $workShift->{WorkShiftContract::FIELD_PLACE_ID},
+                CalcsContract::FIELD_TYPE => 1,
+                CalcsContract::FIELD_USER_ID => $payRoll->employee->{WorkShiftEmployeeContract::FIELD_USER_ID},
+                CalcsContract::FIELD_AGENT_ID => $userID,
+                CalcsContract::FIELD_AMOUNT => $payRoll->{WorkShiftPayrollContract::FIELD_AMOUNT}
+            ];
+            Calc::create($data);
+        }
+
+        $workShift->{WorkShiftContract::FIELD_CLOSED_AT} = Carbon::now();
+        $workShift->save();
+        if ($stats['access']['closable']) {
+        }
     }
 
     protected function handleFixSalaryCalcType(WorkShift $workShift, $calcType, &$payRolls, $employees)
@@ -143,7 +175,8 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $salaryAmount,
-                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 4,
+                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 4,
             ];
             $payRolls[] = $data;
         }
@@ -178,7 +211,8 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $amount,
-                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 3,
+                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 3,
             ];
             $payRolls[] = $data;
         }
@@ -191,7 +225,7 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $sale->{WorkShiftGoodsContract::FIELD_EMPLOYEE_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $sale->{WorkShiftGoodsContract::FIELD_PRICE},
-                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 2,
+                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
             ];
             $payRolls[] = $data;
         }
@@ -235,7 +269,8 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
-                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
+                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
+                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
             ];
 
             $payRolls[] = $data;

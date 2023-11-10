@@ -25,8 +25,10 @@ use Auth;
 
 class WorkShiftHelper {
     public static function recalculateStats(WorkShift $workshift) {
+        $status = 'open';
         $access = [
-            'closable' => false,
+            'closed' => false,
+            'closable' => true,
             'cancelable' => false,
         ];
 
@@ -186,6 +188,11 @@ class WorkShiftHelper {
         }
         $cashBalance = $placeRecipientFcdAmount - $expensesTotal;
 
+        $isClosed = $workshift->isClosed;
+        if ($isClosed) {
+            $status = 'closed';
+        }
+
         $agenda = compact(
             'cashBox',
             'cashBalance',
@@ -197,6 +204,7 @@ class WorkShiftHelper {
             'salesGeneral',
             'salesIndividual',
             'salesTotal',
+            'status',
             'withdrawal'
         );
 
@@ -220,18 +228,18 @@ class WorkShiftHelper {
             }
         }
 
-
         $nextWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(WorkShiftContract::FIELD_CITY_ID, $workshift->{WorkShiftContract::FIELD_CITY_ID})
             ->whereDate(WorkShiftContract::FIELD_DATE, '>', $workshift->{WorkShiftContract::FIELD_DATE})
             ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
             ->first();
 
-        if ($workshift->isClosed &&
+        if ($isClosed &&
             ($user->role->{UserRoleContract::FIELD_SLUG} === UserRoleContract::ADMIN_SLUG || $isEmployee) &&
-            ($nextWorkshift && !$nextWorkshift->isClosed)
+            ($nextWorkShift && !$nextWorkShift->isClosed)
             ) {
-            $cancelable = true;
+            $access['cancelable'] = true;
+            $errors = [];
         }
 
         $previousWorkShift = WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID})
@@ -242,6 +250,7 @@ class WorkShiftHelper {
 
         if ($previousWorkShift->isClosed) {
             $access['closable'] = false;
+            $access['cancelable'] = true;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
         }
 

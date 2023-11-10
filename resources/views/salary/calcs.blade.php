@@ -77,7 +77,7 @@
 
                                                             </td>
                                                             <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-                                                            <td>{{ $calc->calcType->name }}</td>
+                                                            <td>{{ $calc->calcType ? $calc->calcType->name : '' }}</td>
                                                             <td data-order="{{ $calc->city ? $calc->city->name : '' }}">
                                                                 <a href="admin/structure/cities/{{ $calc->city_id }}">
                                                                     {{ $calc->city ? $calc->city->name : '' }}

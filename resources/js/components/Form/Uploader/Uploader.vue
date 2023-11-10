@@ -32,7 +32,7 @@
                 <!--IMAGES PREVIEW-->
 
                 <div v-for="(image, index) in savedMedia" :key="index" class="mu-image-container">
-                    <img :src="image.name" alt=""  class="mu-images-preview" v-if="image.type.indexOf('image/') != -1">
+                    <img :src="image.name" alt=""  class="mu-images-preview" v-if="image.type.indexOf('image/') != -1" @click="lightBoxShow(image)">
                     <img class="mu-images-preview mu-pdf-preview" src="/assets/images/icons/pdf.png" alt="" v-if="image.type === 'application/pdf'">
                     <button @click="removeSavedMedia(index)" class="mu-close-btn" type="button">
                         <svg
@@ -53,7 +53,7 @@
                     </button>
                 </div>
                 <div v-for="(image, index) in addedMedia" :key="index" class="mu-image-container">
-                    <img :src="image.url" alt=""  class="mu-images-preview" v-if="image.type.indexOf('image/') != -1">
+                    <img :src="image.url" alt=""  class="mu-images-preview" @click="lightBoxShow(image)" v-if="image.type.indexOf('image/') != -1">
                     <img class="mu-images-preview mu-pdf-preview" src="/assets/images/icons/pdf.png" alt="" v-if="image.type === 'application/pdf'">
                     <button @click="removeAddedMedia(index)" class="mu-close-btn" type="button">
                         <svg
@@ -92,12 +92,23 @@
             </div>
             <canvas id="pdfCanvas"></canvas>
         </div>
+        <VueEasyLightbox :visible="lightBoxVisible"
+            :imgs="lightBoxMedia"
+            :index="lightBoxIndex"
+            @hide="lightBoxHide">
+          <!--<template v-slot:close-btn="{ close  }">
+              <button @click="lightBoxHide" class="btn__close" role="button" aria-label="close image preview button">
+                  <span class="feather feather-x"></span>
+              </button>
+          </template>-->
+        </VueEasyLightbox>
     </div>
 </template>
 
 <script>
     import Loader from './loader/index.vue';
     import axios from 'axios'
+    import VueEasyLightbox from 'vue-easy-lightbox'
 
     export default {
 
@@ -144,7 +155,11 @@
 
                 pdfDoc: null,
                 pdfPreview: null,
-            }
+
+                lightBoxVisible: false,
+                lightBoxMedia: [],
+                lightBoxIndex: 0,
+            };
         },
         methods:{
             init(){
@@ -195,6 +210,24 @@
                 }
                 event.target.value = null
                 this.isLoading = false
+            },
+
+            lightBoxShow(media) {
+                let image = '';
+                if (typeof media.url != 'undefined') {
+                    image = media.url;
+                }
+                if (typeof media.name != 'undefined') {
+                    image = media.name;
+                }
+                this.lightBoxMedia.push(image);
+                this.lightBoxVisible = true;
+            },
+
+            lightBoxHide() {
+                console.log('closeModal')
+                this.lightBoxMedia = [];
+                this.lightBoxVisible = false;
             },
 
             previewPDF(attachment) {
@@ -260,7 +293,8 @@
             'maxFilesize'
         ],
         components:{
-            Loader
+            Loader,
+            VueEasyLightbox,
         }
     }
 

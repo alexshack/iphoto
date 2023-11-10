@@ -5,10 +5,12 @@ import DestroyButton from '@/components/Form/DestroyButton.vue';
 import loadingDirective from '@/directives/loading.js';
 import {store} from './store/workshift.js';
 import vSelect from 'vue-select';
+import VueEasyLightBox from 'vue-easy-lightbox';
 import WorkShift from './components/WorkShift.vue';
 
 import '@vuepic/vue-datepicker/dist/main.css';
 import 'vue-select/dist/vue-select.css';
+import 'vue-easy-lightbox/external-css/vue-easy-lightbox.css'
 import './scss/workshift.scss';
 
 
@@ -38,6 +40,7 @@ window.addEventListener('notify', (event) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const app = createApp(WorkShift);
+    app.use(VueEasyLightBox);
     app.directive('loading', loadingDirective);
     app.component('v-select', vSelect);
     app.component('DestroyButton', DestroyButton);

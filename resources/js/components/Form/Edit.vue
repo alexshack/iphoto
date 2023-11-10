@@ -1,5 +1,5 @@
 <template>
-    <div class="edit-button">
+    <div class="edit-button" v-if="available">
         <a href="#" @click="setCurrentEditable" class="action-btns1" v-loading="loading">
             <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
         </a>
@@ -64,6 +64,10 @@
                     modalID = getModalID(this.entityName, this.entity.id);
                 }
                 return modalID;
+            },
+            available() {
+                return false;
+                //return;
             }
         },
         props: {

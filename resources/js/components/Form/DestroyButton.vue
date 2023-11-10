@@ -20,6 +20,11 @@
                 loading: false,
             };
         },
+        computed: {
+            available() {
+                return !window.agenda.access.closed;
+            }
+        },
         props: {
             entity: {
                 type: String,
