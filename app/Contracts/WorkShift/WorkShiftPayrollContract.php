@@ -13,6 +13,10 @@ interface WorkShiftPayrollContract {
     public const FIELD_AMOUNT = 'amount';
     public const FIELD_CUSTOM_DATA = 'custom_data';
 
+    public const CASTS = [
+        self::FIELD_CUSTOM_DATA => 'array',
+    ];
+
     public const FILLABLE_FIELDS = [
         self::FIELD_WORK_SHIFT_ID,
         self::FIELD_EMPLOYEE_ID,

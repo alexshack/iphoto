@@ -16,6 +16,8 @@ class WorkShiftPayroll extends Model
 
     protected $fillable = WorkShiftPayrollContract::FILLABLE_FIELDS;
 
+    protected $casts = WorkShiftPayrollContract::CASTS;
+
     public function employee() {
         return $this->belongsTo(WorkShiftEmployee::class, WorkShiftPayrollContract::FIELD_EMPLOYEE_ID, WorkShiftEmployeeContract::FIELD_ID);
     }
