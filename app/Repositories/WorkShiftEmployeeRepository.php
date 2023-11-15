@@ -41,4 +41,31 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
             ])
             ->get();
     }
+
+    public function getBySameWithdrawalPeriod($workShiftID, $startTime, $endTime, $positions = [])
+    {
+        $positions = array_map(function ($item) {
+            return (int) $item;
+        }, $positions);
+        $builder = WorkShiftEmployee::where(function ($query) use ($startTime, $endTime) {
+            $query->where(function ($query) use ($startTime, $endTime) {
+                $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)
+                    ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<=', $endTime);
+            })
+                ->orWhere(function ($query) use ($startTime, $endTime) {
+                    $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>=', $startTime)
+                        ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<=', $endTime);
+                });
+        })
+            ->where(WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID, $workShiftID);
+
+        if (count($positions) > 0) {
+            if (count($positions) === 1) {
+                $builder->where(WorkShiftEmployeeContract::FIELD_POSITION_ID, $positions[0]);
+            } else {
+                $builder->whereIn(WorkShiftEmployeeContract::FIELD_POSITION_ID, $positions);
+            }
+        }
+        return $builder->get();
+    }
 }

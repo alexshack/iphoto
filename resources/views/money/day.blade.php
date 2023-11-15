@@ -61,6 +61,7 @@
             window.workshiftUrls = {
                 actions: {
                     close: '{{ route("workshift.close") }}',
+                    preview: '{{ route("workshift.preview") }}',
                     reopen: '{{ route("workshift.reopen") }}',
                 },
                 calcs: {

@@ -94,6 +94,12 @@
                 </table>
             </div>
             <div class="py-3">
+                <a class="btn btn-info btn-block font-weight-semibold text-uppercase"
+                    v-loading="previewLoading"
+                    v-if="access.closable"
+                    href="#" @click.prevent="preview">
+                    Расчитать начисления
+                </a>
                 <a v-if="access.closable"
                    v-loading="loading"
                     @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
@@ -119,7 +125,7 @@
 </script>
 
 <script>
-    import { close, reopen } from '@/db/workshift.js';
+    import { close, preview, reopen } from '@/db/workshift.js';
 
     export default {
         name: 'WorkShiftAgenda',
@@ -143,6 +149,7 @@
         data: () => {
             return {
                 loading: false,
+                previewLoading: false,
             };
         },
         props: {
@@ -160,23 +167,30 @@
         },
         methods: {
             async closeWorkshift() {
-                if (this.loading) {
+                if (this.loading || this.previewLoading) {
                     return;
                 }
                 this.loading = true;
                 const response = await close();
-                console.log({response})
                 this.loading = false;
+            },
+            async preview() {
+                if (this.loading || this.previewLoading) {
+                    return;
+                }
+                this.previewLoading = true;
+                const response = await preview();
+                this.previewLoading = false;
+                window.dispatchEvent(new Event('workDataEmployeeUpdate'))
             },
             refreshData() {
             },
             async reopen() {
-                if (this.loading) {
+                if (this.loading || this.previewLoading) {
                     return;
                 }
                 this.loading = true;
                 const response = await reopen();
-                console.log({response})
                 this.loading = false;
             }
         },

@@ -190,9 +190,9 @@ class WorkShiftHelper {
         $cashBalance = $placeRecipientFcdAmount - $expensesTotal;
 
         $isClosed = $workshift->isClosed;
+        $payroll = $workshift->payrolls->sum(WorkShiftPayrollContract::FIELD_AMOUNT);
         if ($isClosed) {
             $status = 'closed';
-            $payroll = $workshift->payrolls->sum(WorkShiftPayrollContract::FIELD_AMOUNT);
         }
 
         $agenda = compact(

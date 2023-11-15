@@ -61,27 +61,7 @@ class WorkShiftController extends Controller
         $this->workShiftPayrollRepository = $workShiftPayrollRepository;
     }
 
-    public function close(Request $request) {
-        $workShift = $this->workShiftRepo->find($request->get('id'));
-
-        $stats = WorkShiftHelper::recalculateStats($workShift);
-
-        // close action
-        $this->closeAction($workShift);
-
-        $stats = WorkShiftHelper::recalculateStats($workShift);
-
-        return response()->json([
-            'data' => $workShift->id,
-            'agenda' => $stats['agenda'],
-        ]);
-    }
-
-    public function closeAction(WorkShift $workShift, $stats = []) {
-        if (empty($stats)) {
-            $stats = WorkShiftHelper::recalculateStats($workShift);
-        }
-
+    protected function calculatePayrolls(WorkShift $workShift) {
         $payRolls = [];
 
         $placeCalcs = $this->placeCalcsRepository->getActiveByPlaceId($workShift->{WorkShiftContract::FIELD_PLACE_ID});
@@ -106,17 +86,31 @@ class WorkShiftController extends Controller
             }
         }
 
-        $existingPayRolls = $this->workShiftPayrollRepository->getByWorkShiftID($workShift->{WorkShiftContract::FIELD_ID});
+        return $payRolls;
+    }
 
-        if ($existingPayRolls->count() > 0) {
-            foreach ($existingPayRolls as $payroll) {
-                $payroll->delete();
-            }
+    public function close(Request $request) {
+        $workShift = $this->workShiftRepo->find($request->get('id'));
+
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+
+        // close action
+        $this->closeAction($workShift);
+
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+
+        return response()->json([
+            'data' => $workShift->id,
+            'agenda' => $stats['agenda'],
+        ]);
+    }
+
+    public function closeAction(WorkShift $workShift, $stats = []) {
+        if (empty($stats)) {
+            $stats = WorkShiftHelper::recalculateStats($workShift);
         }
 
-        foreach ($payRolls as $payRoll) {
-            WorkShiftPayroll::create($payRoll);
-        }
+        $this->savePayrolls($workShift);
 
         $calcs = [];
         $workShiftPayrolls = $this->workShiftPayrollRepository->getByWorkShiftID($workShift->{WorkShiftContract::FIELD_ID});
@@ -243,39 +237,86 @@ class WorkShiftController extends Controller
             return in_array($employee->{WorkShiftEmployeeContract::FIELD_POSITION_ID}, $positions);
         });
 
-        foreach ($calcTypeEmployees as $employee) {
-            if (!$employee->{WorkShiftEmployeeContract::FIELD_END_TIME}) {
+        $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShift($workShift->{WorkShiftContract::FIELD_ID});
+
+        if ($withdrawals->count() <= 1) {
+            return;
+        }
+
+        for ($i = 1; $i < $withdrawals->count(); $i++) {
+            $startTime = $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_TIME};
+            $endTime = $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_TIME};
+            $d = (float) $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_SUM} - (float) $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_SUM};
+
+            $companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
+
+            if ($companionEmployees->count() === 0) {
                 continue;
             }
 
-            $companionEmployees = $this->workShiftEmloyeeRepository->companions($employee, $positions);
             $saleAmount = 0;
-
-            $employeeStartWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_START_TIME});
-            $employeeEndWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_END_TIME});
-
-            if ($employeeStartWithdrawal && $employeeEndWithdrawal) {
-                $d = (float) $employeeEndWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM} - (float) $employeeStartWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM};
-            } else {
-                continue;
-            }
-
-            if ($companionEmployees->count() > 0) {
+            if ($companionEmployees->count() > 1) {
                 $saleAmount = ($d * (int)$custom->percent_for_multiple / 100) / $companionEmployees->count();
             } else {
                 $saleAmount = $d * (int)$custom->percent_for_one / 100;
             }
 
-            $data = [
-                WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
-                WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
-                WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
-                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
-                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
-            ];
-
-            $payRolls[] = $data;
+            foreach ($companionEmployees as $companionEmployee) {
+                $data = [
+                    WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
+                    WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $companionEmployee->{WorkShiftEmployeeContract::FIELD_ID},
+                    WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
+                    WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
+                    WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+                    WorkShiftPayrollContract::FIELD_CUSTOM_DATA => json_encode(compact('startTime', 'endTime')),
+                ];
+                $payRolls[] = $data;
+            }
         }
+
+        //foreach ($calcTypeEmployees as $employee) {
+            //if (!$employee->{WorkShiftEmployeeContract::FIELD_END_TIME}) {
+                //continue;
+            //}
+
+            //$companionEmployees = $this->workShiftEmloyeeRepository->companions($employee, $positions);
+            //$saleAmount = 0;
+
+            //$employeeStartWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_START_TIME});
+            //$employeeEndWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_END_TIME});
+
+            //if ($employeeStartWithdrawal && $employeeEndWithdrawal) {
+                //$d = (float) $employeeEndWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM} - (float) $employeeStartWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM};
+            //} else {
+                //continue;
+            //}
+
+            //if ($companionEmployees->count() > 0) {
+                //$saleAmount = ($d * (int)$custom->percent_for_multiple / 100) / $companionEmployees->count();
+            //} else {
+                //$saleAmount = $d * (int)$custom->percent_for_one / 100;
+            //}
+
+            //$data = [
+                //WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
+                //WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
+                //WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
+                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
+                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+            //];
+
+            //$payRolls[] = $data;
+        //}
+    }
+
+    public function previewPayrolls(Request $request) {
+        $workShift = $this->workShiftRepo->find($request->get('id'));
+        $this->savePayrolls($workShift);
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+        return response()->json([
+            'data' => $workShift->id,
+            'agenda' => $stats['agenda'],
+        ]);
     }
 
     public function reopen(Request $request)
@@ -294,6 +335,21 @@ class WorkShiftController extends Controller
         ]);
     }
 
+    protected function savePayrolls(WorkShift $workShift) {
+        $payRolls = $this->calculatePayrolls($workShift);
+
+        $existingPayRolls = $this->workShiftPayrollRepository->getByWorkShiftID($workShift->{WorkShiftContract::FIELD_ID});
+
+        if ($existingPayRolls->count() > 0) {
+            foreach ($existingPayRolls as $payroll) {
+                $payroll->delete();
+            }
+        }
+
+        foreach ($payRolls as $payRoll) {
+            WorkShiftPayroll::create($payRoll);
+        }
+    }
 
     public function validateEmployeeSalaryData(WorkShiftEmployee $employee)
     {
