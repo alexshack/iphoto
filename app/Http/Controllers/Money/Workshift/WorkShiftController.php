@@ -249,7 +249,6 @@ class WorkShiftController extends Controller
             $startSum = (float) $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $endSum = (float) $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $d = $endSum - $startSum;
-            dump(compact('startTime', 'endTime', 'd', 'startSum', 'endSum'));
 
             $companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
 
@@ -276,7 +275,6 @@ class WorkShiftController extends Controller
                 $payRolls[] = $data;
             }
         }
-        dd($payRolls);
 
         //foreach ($calcTypeEmployees as $employee) {
             //if (!$employee->{WorkShiftEmployeeContract::FIELD_END_TIME}) {
