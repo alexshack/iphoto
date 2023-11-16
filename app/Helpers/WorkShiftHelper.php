@@ -237,7 +237,7 @@ class WorkShiftHelper {
             ->first();
 
         if ($isClosed &&
-            ($user->role->{UserRoleContract::FIELD_SLUG} === UserRoleContract::ADMIN_SLUG || $isEmployee) &&
+            ($user && $user->role->{UserRoleContract::FIELD_SLUG} === UserRoleContract::ADMIN_SLUG || $isEmployee) &&
             ($nextWorkShift && !$nextWorkShift->isClosed)
             ) {
             $access['cancelable'] = true;

@@ -55,7 +55,7 @@
 
         <script>
             window.agenda = @js($agenda);
-            window.workshiftData = JSON.parse('{!! json_encode($workshift) !!}');
+            window.workshiftData = @js($workshift);
             {{--window.workshiftData = @js($workshift);--}}
             window.workshiftTitle = '{{ $workshift->title }}';
             window.workshiftUrls = {
