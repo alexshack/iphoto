@@ -86,13 +86,26 @@ class WorkShiftEmployeeObserver
         if (!$workShiftEmployee->{WorkShiftEmployeeContract::FIELD_START_TIME} || !$workShiftEmployee->{WorkShiftEmployeeContract::FIELD_END_TIME}) {
             return;
         }
-        $startTime = $workShiftEmployee->{WorkShiftEmployeeContract::FIELD_START_TIME};
-        $endTime = $workShiftEmployee->{WorkShiftEmployeeContract::FIELD_END_TIME};
+        $startTime = Carbon::parse($workShiftEmployee->{WorkShiftEmployeeContract::FIELD_START_TIME});
+        $endTime = Carbon::parse($workShiftEmployee->{WorkShiftEmployeeContract::FIELD_END_TIME});
 
         $start = Carbon::createFromTimeString($startTime);
         $end = Carbon::createFromTimeString($endTime);
 
-        $d = $start->diffInMinutes($end);
+        $placeStartTime = null;
+        if (!$placeStartTime) {
+            $placeStartTime = Carbon::parse('08:00:00');
+        }
+
+        $d = 0;
+        $midnight = Carbon::parse('00:00:00');
+        if ($endTime->lessThan($placeStartTime) && $startTime->greaterThan($placeStartTime)) {
+            $d = $start->diffInMinutes($midnight);
+            $d += $midnight->diffInMinutes($endTime);
+        } else {
+            $d = $start->diffInMinutes($end);
+        }
+
         $workShiftEmployee->{WorkShiftEmployeeContract::FIELD_WORK_TIME} = $d;
         $workShiftEmployee->saveQuietly();
     }

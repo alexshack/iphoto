@@ -42,20 +42,25 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
             ->get();
     }
 
-    public function getBySameWithdrawalPeriod($workShiftID, $startTime, $endTime, $positions = [])
+    public function getBySameWithdrawalPeriod($workShiftID, $startTime, $endTime, $positions = [], $placeWorkStartTime = null)
     {
+        if (!$placeWorkStartTime) {
+            $placeWorkStartTime = Carbon::parse('08:00:00');
+        }
+
         $positions = array_map(function ($item) {
             return (int) $item;
         }, $positions);
-        $builder = WorkShiftEmployee::where(function ($query) use ($startTime, $endTime) {
+
+        $builder = WorkShiftEmployee::where(function ($query) use ($startTime, $endTime, $placeWorkStartTime) {
+            //if ($placeWorkStartTime->lessThanOrEqualTo($startTime) && $placeWorkStartTime->lessThanOrEqualTo($endTime)) {
             $query->where(function ($query) use ($startTime, $endTime) {
                 $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>', $startTime)
                     ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $endTime);
-            })
-                ->orWhere(function ($query) use ($startTime, $endTime) {
-                    $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
-                        ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<', $endTime);
-                });
+            })->orWhere(function ($query) use ($startTime, $endTime) {
+                $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
+                    ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<', $endTime);
+            });
         })
             ->where(WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID, $workShiftID);
 
