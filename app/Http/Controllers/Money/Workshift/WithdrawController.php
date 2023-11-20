@@ -28,7 +28,7 @@ class WithdrawController extends Controller
      */
     public function index(Request $request)
     {
-        $withdrawals = $this->withdrawRepo->getByWorkShift($request->get('workshiftID'));
+        $withdrawals = $this->withdrawRepo->getByWorkShiftWithWorkTimeSort($request->get('workshiftID'));
         return response()->json($withdrawals);
 
     }

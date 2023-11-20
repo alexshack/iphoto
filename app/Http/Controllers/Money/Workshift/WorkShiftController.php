@@ -275,40 +275,6 @@ class WorkShiftController extends Controller
                 $payRolls[] = $data;
             }
         }
-
-        //foreach ($calcTypeEmployees as $employee) {
-            //if (!$employee->{WorkShiftEmployeeContract::FIELD_END_TIME}) {
-                //continue;
-            //}
-
-            //$companionEmployees = $this->workShiftEmloyeeRepository->companions($employee, $positions);
-            //$saleAmount = 0;
-
-            //$employeeStartWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_START_TIME});
-            //$employeeEndWithdrawal = $this->workShiftWithdrawalRepository->getByTime($workShift->{WorkShiftContract::FIELD_ID}, $employee->{WorkShiftEmployeeContract::FIELD_END_TIME});
-
-            //if ($employeeStartWithdrawal && $employeeEndWithdrawal) {
-                //$d = (float) $employeeEndWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM} - (float) $employeeStartWithdrawal->{WorkShiftWithdrawalContract::FIELD_SUM};
-            //} else {
-                //continue;
-            //}
-
-            //if ($companionEmployees->count() > 0) {
-                //$saleAmount = ($d * (int)$custom->percent_for_multiple / 100) / $companionEmployees->count();
-            //} else {
-                //$saleAmount = $d * (int)$custom->percent_for_one / 100;
-            //}
-
-            //$data = [
-                //WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
-                //WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
-                //WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
-                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
-                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
-            //];
-
-            //$payRolls[] = $data;
-        //}
     }
 
     public function previewPayrolls(Request $request) {
