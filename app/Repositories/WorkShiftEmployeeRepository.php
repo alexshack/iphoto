@@ -7,6 +7,7 @@ use App\Contracts\UserPersonalDataContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Models\WorkShift\WorkShiftEmployee;
 use App\Repositories\Interfaces\WorkShiftEmployeeRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterface
@@ -55,11 +56,11 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
         $builder = WorkShiftEmployee::where(function ($query) use ($startTime, $endTime, $placeWorkStartTime) {
             //if ($placeWorkStartTime->lessThanOrEqualTo($startTime) && $placeWorkStartTime->lessThanOrEqualTo($endTime)) {
             $query->where(function ($query) use ($startTime, $endTime) {
-                $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>', $startTime)
+                $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)
                     ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $endTime);
             })->orWhere(function ($query) use ($startTime, $endTime) {
                 $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
-                    ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<', $endTime);
+                    ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<=', $endTime);
             });
         })
             ->where(WorkShiftEmployeeContract::FIELD_WORK_SHIFT_ID, $workShiftID);
@@ -71,6 +72,9 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
                 $builder->whereIn(WorkShiftEmployeeContract::FIELD_POSITION_ID, $positions);
             }
         }
+        $query = str_replace(array('?'), array('\'%s\''), $builder->toSql());
+        $query = vsprintf($query, $builder->getBindings());
+        //dd($query);
         return $builder->get();
     }
 }

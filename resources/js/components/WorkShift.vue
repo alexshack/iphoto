@@ -10,9 +10,7 @@
 
         <div class="row">
             <div class="col-xl-3 col-md-12 col-lg-12">
-                <WorkShiftAgenda
-                 :access="access"
-                 :errors="errors" />
+                <WorkShiftAgenda/>
             </div>
             <div class="col-xl-9 col-md-12 col-lg-12">
                 <WorkShiftTabs :workShift="workShift"/>
@@ -54,9 +52,9 @@
                 }
 
                 if (typeof window.agenda != 'undefined') {
-                    this.errors = window.agenda.errors;
-                    this.access = window.agenda.access;
                     store.updateAgenda(window.agenda.agenda);
+                    store.updateAgendaErrors(window.agenda.errors);
+                    store.updateAgendaAccess(window.agenda.access);
                 }
 
                 if (typeof window.workshiftTitle != 'undefined') {
@@ -72,17 +70,6 @@
                     url: window.workshiftUrls.update,
                     data,
                 }).then((response) => {
-                    if (typeof response.data.access != 'undefined') {
-                        this.access = response.data.access;
-                    }
-
-                    if (typeof response.data.agenda != 'undefined') {
-                        this.agenda = response.data.agenda;
-                    }
-
-                    if (typeof response.data.errors != 'undefined') {
-                        this.errors = response.data.errors;
-                    }
                 });
             }
         },

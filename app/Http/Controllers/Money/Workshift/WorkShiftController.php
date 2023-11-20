@@ -68,6 +68,7 @@ class WorkShiftController extends Controller
         $employees = $this->workShiftEmloyeeRepository->getAll($workShift->{WorkShiftContract::FIELD_ID});
         foreach ($placeCalcs as $placeCalc) {
             $calcType = $placeCalc->calcsType;
+            \Log::info("Handle calc type: {$calcType->{CalcsTypeContract::FIELD_TYPE}}");
             switch ($calcType->{CalcsTypeContract::FIELD_TYPE}) {
             case 1:
                 $this->handlePercentCalcType($workShift, $calcType, $payRolls, $employees);
@@ -84,6 +85,7 @@ class WorkShiftController extends Controller
             default:
                 break;
             }
+            \Log::info("updated payrolls after handle: " . count($payRolls));
         }
 
         return $payRolls;
@@ -237,7 +239,7 @@ class WorkShiftController extends Controller
             return in_array($employee->{WorkShiftEmployeeContract::FIELD_POSITION_ID}, $positions);
         });
 
-        $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShift($workShift->{WorkShiftContract::FIELD_ID});
+        $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShiftWithWorkTimeSort($workShift->{WorkShiftContract::FIELD_ID});
 
         if ($withdrawals->count() <= 1) {
             return;
@@ -249,6 +251,10 @@ class WorkShiftController extends Controller
             $startSum = (float) $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $endSum = (float) $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $d = $endSum - $startSum;
+
+            if ($d === 0.0) {
+                continue;
+            }
 
             $companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
 
@@ -305,6 +311,8 @@ class WorkShiftController extends Controller
 
     protected function savePayrolls(WorkShift $workShift) {
         $payRolls = $this->calculatePayrolls($workShift);
+
+        @file_put_contents(public_path() . '/data.json', json_encode($payRolls));
 
         $existingPayRolls = $this->workShiftPayrollRepository->getByWorkShiftID($workShift->{WorkShiftContract::FIELD_ID});
 

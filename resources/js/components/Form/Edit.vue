@@ -1,14 +1,16 @@
 <template>
     <div class="edit-button" v-if="available">
         <a href="#" @click="setCurrentEditable" class="action-btns1" v-loading="loading">
-            <i class="feather feather-edit-2  text-success" data-toggle="tooltip" data-placement="top" title="Изменить"></i>
+            <i class="feather text-success"
+               :class="iconClass"
+               data-toggle="tooltip" data-placement="top" title="Изменить"></i>
         </a>
         <div v-if="active">
             <AdvancePayment v-if="entityName === 'advancePayment'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Consumables v-if="entityName === 'consumables'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Employee v-if="entityName === 'employee'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Equipment v-if="entityName === 'equipment'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
-            <Expense v-if="entityName === 'expense'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
+            <Expense v-if="entityName === 'expense'" :entity="getData(entity)" :delta="delta" :preview="preview" @submitted="submitted"/>
             <FCD v-if="entityName === 'fcd'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <Move v-if="entityName === 'move'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
             <SaleGeneral v-if="entityName === 'saleGeneral'" :entity="getData(entity)" :delta="delta" @submitted="submitted"/>
@@ -43,9 +45,11 @@
         name: 'EditButton',
         data: () => {
             return {
+                available: false,
                 active: false,
                 loading: false,
                 delta: 1,
+                preview: false,
             };
         },
         components: {
@@ -69,8 +73,11 @@
                 }
                 return modalID;
             },
-            available() {
-                return store.agenda.status === 'open';
+            iconClass() {
+                return {
+                    'feather-edit-2': !this.preview,
+                    'feather-eye': this.preview,
+                };
             },
         },
         props: {
@@ -104,10 +111,27 @@
                 window.dispatchEvent(new Event(`showModal.${this.modalID}`));
                 this.loading = false;
             },
+            setupData() {
+                if (store.agenda.status === 'open') {
+                    this.available = true;
+                } else if (store.agenda.status === 'closed') {
+                    switch (this.entityName) {
+                        case 'expense':
+                            this.preview = true;
+                            this.available = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            },
             submitted() {
                 this.$emit('submitted');
             },
         },
+        mounted() {
+            this.setupData();
+        }
     }
 </script>
 

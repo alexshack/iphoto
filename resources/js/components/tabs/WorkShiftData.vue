@@ -3,7 +3,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Сотрудники</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createEmployee">
+                <a v-if="createAvailable" href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createEmployee">
                     Добавить сотрудника
                 </a>
             </div>
@@ -56,7 +56,7 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Снятие кассы</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createWithdraw">
+                <a v-if="createAvailable" href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createWithdraw">
                     Добавить снятие
                 </a>
             </div>
@@ -85,10 +85,14 @@
                 </table>
             </div>
         </div>
-        <CreateEmployee @submitted="getEmployees"/>
-        <CreateWithdraw @submitted="getWithdraw"/>
+        <CreateEmployee v-if="createAvailable" @submitted="getEmployees"/>
+        <CreateWithdraw v-if="createAvailable" @submitted="getWithdraw"/>
     </div>
 </template>
+
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
 
 <script>
     import * as employeeApi from '@/db/employee.js';
@@ -114,6 +118,11 @@
                 withdrawals: [],
             };
         },
+        computed: {
+            createAvailable() {
+                return store.agenda.status === 'open';
+            },
+        },
         methods: {
             async deleteEmployee(ID) {
                 await employeeApi.deleteEmployee(ID);
@@ -130,6 +139,10 @@
                 this.withdrawals = await withdrawApi.all();
             },
             getUserName,
+            async onPreview(e) {
+                console.log(e);
+                await this.getEmployees();
+            },
             setCurrentEmployee(ID) {
                 this.currentEmployee = ID;
             },
@@ -138,6 +151,12 @@
                 window.addEventListener('withDrawUpdate', await this.getWithdraw);
             },
             toHoursAndMinutes,
+        },
+        async created() {
+            window.emitter.on('updateEmployees', async (e) => {
+                console.log('updateEmployees');
+                await this.getEmployees()
+            });
         },
         async mounted() {
             await this.getEmployees();

@@ -12,6 +12,7 @@ use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\WorkShift\WorkShiftPayrollContract;
+use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
 use App\Models\Money\Income;
@@ -23,6 +24,7 @@ use App\Models\WorkShift\WorkShiftFinalCashDesk;
 use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftWithdrawal;
 use Auth;
+use Carbon\Carbon;
 
 class WorkShiftHelper {
     public static function recalculateStats(WorkShift $workshift) {
@@ -37,6 +39,21 @@ class WorkShiftHelper {
 
         $withdrawal = 0;
         $lastWithdrawal = $workshift->withdrawals->last();
+        $placeWorkStartTime = Carbon::parse('08:00:00');
+        $lastWithdrawal = WorkShiftWithdrawal::where(function ($query) use ($placeWorkStartTime) {
+            $query->where(WorkShiftWithdrawalContract::FIELD_TIME, '>=', '00:00:00')
+                ->where(WorkShiftWithdrawalContract::FIELD_TIME, '<', $placeWorkStartTime);
+        })
+            ->where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
+            ->orderBy('time', 'desc')
+            ->first();
+
+        if (!$lastWithdrawal) {
+            $lastWithdrawal = WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
+                ->orderBy('time', 'desc')
+                ->first();
+        }
+
         if ($lastWithdrawal) {
             $withdrawal = $lastWithdrawal->sum;
         }
@@ -180,6 +197,7 @@ class WorkShiftHelper {
             $access['closable'] = false;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['cash_sums_not_equal'];
         }
+        \Log::info(serialize(compact('withdrawal', 'salesTotal')));
 
         $payroll = 0;
 

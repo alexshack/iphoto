@@ -95,26 +95,27 @@
             </div>
             <div class="py-3">
                 <a class="btn btn-info btn-block font-weight-semibold text-uppercase"
-                    v-loading="previewLoading"
-                    v-if="access.closable"
-                    href="#" @click.prevent="preview">
+                   v-loading="previewLoading"
+                   v-if="store.access.closable"
+                   href="#"
+                   @click.prevent="previewEvent()">
                     Расчитать начисления
                 </a>
-                <a v-if="access.closable"
+                <a v-if="store.access.closable"
                    v-loading="loading"
-                    @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
+                   @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
                     ЗАКРЫТЬ СМЕНУ
                 </a><!-- если смена открыта, видят только сотрудники и админ -->
-                <a v-if="access.cancelable"
+                <a v-if="store.access.cancelable"
                    v-loading="loading"
                    @click="reopen()"
-                    href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
+                   href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
             </div>
             <!-- Алерт отображается удалением класса d-none -->
-            <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
+            <div class="alert alert-danger" role="alert" v-if="store.errors.length > 0">
                 <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
                 <span class="font-weight-semibold">Невозможно закрыть смену:</span>
-                <div v-for="err in errors">{{ err }}</div>
+                <div v-for="err in store.errors">{{ err }}</div>
             </div>
         </div>
     </div>
@@ -152,19 +153,6 @@
                 previewLoading: false,
             };
         },
-        props: {
-            access: {
-                type: Object,
-                default: {
-                    closable: false,
-                    cancelable: false,
-                },
-            },
-            errors: {
-                type: Array,
-                default: [],
-            }
-        },
         methods: {
             async closeWorkshift() {
                 if (this.loading || this.previewLoading) {
@@ -174,16 +162,13 @@
                 const response = await close();
                 this.loading = false;
             },
-            async preview() {
+            async previewEvent() {
                 if (this.loading || this.previewLoading) {
                     return;
                 }
                 this.previewLoading = true;
                 const response = await preview();
                 this.previewLoading = false;
-                window.dispatchEvent(new Event('workDataEmployeeUpdate'))
-            },
-            refreshData() {
             },
             async reopen() {
                 if (this.loading || this.previewLoading) {
@@ -192,10 +177,17 @@
                 this.loading = true;
                 const response = await reopen();
                 this.loading = false;
-            }
+            },
         },
         mounted() {
             document.addEventListener('refreshAgenda', () => this.refreshData());
         },
+        watch: {
+            previewLoading(newValue) {
+                if (newValue) {
+                    window.emitter.emit('updateEmployees', {});
+                }
+            },
+        }
     }
 </script>

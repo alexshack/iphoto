@@ -3,7 +3,13 @@
         <div class="card-header  border-0">
             <h4 class="card-title">Расходные материалы</h4>
             <div class="card-options">
-                <a href="#" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#createConsumable">Добавить расходник</a>
+                <a href="#"
+                   v-if="createAvailable"
+                   class="btn btn-primary btn-sm mr-2"
+                   data-toggle="modal"
+                   data-target="#createConsumable">
+                    Добавить расходник
+                </a>
             </div>
         </div>
         <div class="card-body pt-1">
@@ -35,6 +41,10 @@
     </div>
 </template>
 
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
+
 <script>
     import {all} from '@/db/sales.js';
     import Create from '@/components/Modals/Consumbales/Create.vue';
@@ -45,6 +55,11 @@
         components: {
             Create,
             EditButton,
+        },
+        computed: {
+            createAvailable() {
+                return store.agenda.status === 'open';
+            },
         },
         data: () => {
             return {

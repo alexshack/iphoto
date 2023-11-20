@@ -10,7 +10,7 @@
             <div class="mu-elements-wraper">
 
                 <!--UPLOAD BUTTON-->
-                <div class="mu-plusbox-container">
+                <div class="mu-plusbox-container" v-if="!disabled">
                     <label for="mu-file-input" class="mu-plusbox">
                         <svg
                             class="mu-plus-icon"
@@ -113,6 +113,10 @@
     export default {
 
         props:{
+            disabled: {
+                type: Boolean,
+                default: false,
+            },
             server: {
                 type: String,
                 default: '/api/upload'

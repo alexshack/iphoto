@@ -7,19 +7,20 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Вид расхода</label>
-                            <v-select v-model="formData.expense_type_id" :options="expenseTypes" label="name"/>
+                            <v-select :disabled="preview" v-model="formData.expense_type_id" :options="expenseTypes" label="name"/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Сумма</label>
-                            <input v-model="formData.amount" class="form-control" placeholder="Укажите сумму расхода" type="number">
+                            <input :disabled="preview" v-model="formData.amount" class="form-control" placeholder="Укажите сумму расхода" type="number">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-label">Чек</div>
                             <Uploader :max="1"
+                                 :disabled="preview"
                                  ref="uploaderComponent"
                                  :server="uploadURL"
                                  @add="addAttachment"
@@ -31,7 +32,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Примечания:</label>
-                            <input v-model="formData.note" class="form-control" placeholder="Укажите примечания" type="text">
+                            <input v-model="formData.note" class="form-control" :disabled="preview" placeholder="Укажите примечания" type="text">
                         </div>
                         <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
                             <i class="fa fa-exclamation mr-2" aria-hidden="true"></i>
@@ -42,7 +43,7 @@
                 </div>
             </template>
             <template v-slot:footer>
-                <button @click="submit" v-loading="loading"  class="btn btn-success">Сохранить</button>
+                <button @click="submit" v-loading="loading"  class="btn btn-success" v-if="!preview">Сохранить</button>
             </template>
         </Modal>
     </div>
@@ -96,6 +97,11 @@
             entity: {
                 type: Object,
                 required: true,
+            },
+            preview: {
+                type: Boolean,
+                required: true,
+                default: false,
             },
         },
         methods: {

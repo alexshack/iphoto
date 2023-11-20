@@ -26,6 +26,10 @@
     </div>
 </template>
 
+<script setup>
+    import { store } from '@/store/workshift.js';
+</script>
+
 <script>
     import Consumables from '@/components/tabs/Consumables.vue';
     import Equipment from '@/components/tabs/Equipment.vue';
@@ -73,8 +77,7 @@
                         display: true,
                     },
                 };
-                if (this.workShift && this.workShift.is_closed) {
-                //if (this.workShift) {
+                if (store.agenda.status === 'closed') {
                     tabs.pays = {
                         label: 'Начисления ЗП',
                     };

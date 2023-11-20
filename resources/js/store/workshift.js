@@ -1,6 +1,11 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
+    access: {
+        closed: false,
+        closable: false,
+        cancelable: false,
+    },
     agenda: {
         cashBalance: 0,
         cashBox: {
@@ -21,6 +26,7 @@ export const store = reactive({
         status: 'open',
         withdrawal: 0,
     },
+    errors: [],
     updateAgenda(obj) {
         if (typeof obj === 'undefined' || !obj) {
             return;
@@ -28,5 +34,19 @@ export const store = reactive({
         for (let p in obj) {
             this.agenda[p] = obj[p];
         }
+    },
+    updateAgendaAccess(obj) {
+        if (typeof obj === 'undefined' || !obj) {
+            return;
+        }
+        for (let p in obj) {
+            this.access[p] = obj[p];
+        }
+    },
+    updateAgendaErrors(arr) {
+        if (typeof arr === 'undefined') {
+            return;
+        }
+        this.errors = arr;
     },
 });
