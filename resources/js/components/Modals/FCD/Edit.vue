@@ -16,6 +16,20 @@
                             <input v-model="formData.sum" class="form-control" placeholder="Укажите сумму" type="number">
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-label">Чек</div>
+                            <Uploader :max="1"
+                                 :disabled="preview"
+                                 ref="uploaderComponent"
+                                 :server="uploadURL"
+                                 @add="addAttachment"
+                                 @remove="removeAttachment"
+                                 :media="media"/>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Примечания:</label>
@@ -38,14 +52,18 @@
 
 <script>
     import {getSaleTypes} from '@/db/sales.js';
+    import mime from 'mime';
     import Modal from '@/components/Modals/Modal.vue';
     import {update} from '@/db/fcd.js';
     import { getModalID, prepareData, prepareFormData } from '@/helpers/form.js';
+    import { toRaw } from 'vue';
+    import Uploader from '@/components/Form/Uploader/Uploader.vue';
 
     export default {
         name: 'Create',
         components: {
             Modal,
+            Uploader,
         },
         computed: {
             modalID() {
@@ -58,14 +76,18 @@
         },
         data: () => {
             return {
+                attachments: [],
                 errors: [],
                 formData: {
+                    check_file: null,
                     sale_type_id: null,
                     sum: null,
                     note: null,
                 },
                 loading: false,
                 saleTypes: [],
+                media: [],
+                uploadURL: '',
             };
         },
         props: {
@@ -79,7 +101,15 @@
             },
         },
         methods: {
+            addAttachment(attachment) {
+                this.attachments.push(toRaw(attachment));
+            },
+            removeAttachment(attachment) {
+                this.attachments = this.attachments.filter(item => item.name !== attachment.name);
+                this.media = {...this.attachments};
+            },
             async initForm() {
+                this.uploadURL = `${window.workshiftUrls.file.upload}?workshiftID=${window.workshiftData.id}`;
                 if (typeof this.entity != 'undefined' && this.entity) {
                     const db = {
                         saleTypes: this.saleTypes,
@@ -88,6 +118,17 @@
                     for (let p in entity) {
                         this.formData[p] = entity[p];
                     }
+                    if (entity.check_file) {
+                        this.media.push({
+                            name: entity.check_file,
+                            type: mime.getType(entity.check_file),
+                        });
+                    }
+                }
+            },
+            setFile(data) {
+                if (typeof data.path != 'undefined' && data.path) {
+                    this.formData.check_file = data.path;
                 }
             },
             async setSaleTypes() {
@@ -97,6 +138,11 @@
                 this.loading = true;
                 this.errors = [];
                 const formData = prepareFormData(this.formData);
+                if (this.attachments.length > 0) {
+                    formData.check_file = this.attachments[0].name;
+                } else if (this.attachments.length === 0 && this.media.length === 0) {
+                    formData.check_file = null;
+                }
                 const response = await update(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
@@ -119,6 +165,11 @@
         async mounted() {
             await this.setSaleTypes();
             await this.initForm();
+        },
+        async updated() {
+            if (typeof this.entity === 'undefined' || typeof this.entity.id === 'undefined') {
+                await this.initForm();
+            }
         },
     };
 </script>

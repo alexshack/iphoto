@@ -44,4 +44,11 @@ class CalcsRepository implements CalcsRepositoryInterface
             ->whereMonth(CalcsContract::FIELD_DATE, $data['month'])
             ->get();
     }
+
+    public function getByUserID($userID)
+    {
+        return Calc::where(CalcsContract::FIELD_USER_ID, $userID)
+            ->orderBy(CalcsContract::FIELD_ID, 'desc')
+            ->paginate(40);
+    }
 }

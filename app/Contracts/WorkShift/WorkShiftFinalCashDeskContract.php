@@ -9,6 +9,7 @@ interface WorkShiftFinalCashDeskContract {
     public const FIELD_SUM = 'sum';
     public const FIELD_WORK_SHIFT_ID = 'workshift_id';
     public const FIELD_SALE_TYPE_ID = 'sale_type_id';
+    public const FIELD_CHECK_FILE = 'check_file';
     public const FIELD_NOTE = 'note';
 
     public const FILLABLE_FIELDS = [
@@ -16,6 +17,7 @@ interface WorkShiftFinalCashDeskContract {
         self::FIELD_SUM,
         self::FIELD_SALE_TYPE_ID,
         self::FIELD_NOTE,
+        self::FIELD_CHECK_FILE,
     ];
 
     public const RULES = [
@@ -23,11 +25,13 @@ interface WorkShiftFinalCashDeskContract {
         self::FIELD_SUM => 'required|numeric',
         self::FIELD_SALE_TYPE_ID => 'required',
         self::FIELD_NOTE => 'nullable',
+        self::FIELD_CHECK_FILE => 'nullable',
     ];
 
     public const ATTRIBUTES = [
         self::FIELD_SUM => 'Сумма',
         self::FIELD_SALE_TYPE_ID => 'Вид продажи',
         self::FIELD_NOTE => 'Примечания',
+        self::FIELD_CHECK_FILE => 'Чек',
     ];
 }

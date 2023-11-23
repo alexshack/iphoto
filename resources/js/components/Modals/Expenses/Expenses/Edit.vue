@@ -106,7 +106,6 @@
         },
         methods: {
             addAttachment(attachment) {
-                //console.log('addAttachment', attachment);
                 this.attachments.push(toRaw(attachment));
             },
             removeAttachment(attachment) {
@@ -143,10 +142,6 @@
                 this.loading = true;
                 this.errors = [];
                 const formData = prepareFormData(this.formData);
-                console.log({
-                    attachments: this.attachments,
-                    media: this.media,
-                });
                 if (this.attachments.length > 0) {
                     formData.check_file = this.attachments[0].name;
                 } else if (this.attachments.length === 0 && this.media.length === 0) {

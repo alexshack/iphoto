@@ -18,6 +18,7 @@
                     <thead>
                         <tr>
                             <th class="border-bottom-0 text-center">Товар</th>
+                            <th class="border-bottom-0">Продавец</th>
                             <th class="border-bottom-0">Цена</th>
                             <th class="border-bottom-0">Количество</th>
                             <th class="border-bottom-0">Сумма</th>
@@ -27,6 +28,7 @@
                     <tbody>
                         <tr v-for="sale in sales" :key="sale.id">
                             <td>{{ getName(sale) }}</td>
+                            <td>{{ getUserName(sale.employee.user.personal_data, 'F I') }}</td>
                             <td data-order="200" class="text-right">{{ sale.price }}₽</td>
                             <td class="text-right">{{ sale.qty }}</td>
                             <td data-order="4000" class="text-right  text-bold">{{ sale.price * sale.qty }}₽</td>
@@ -53,6 +55,7 @@
     import * as salesApi from '@/db/sales.js';
     import Create from '@/components/Modals/Sales/Individual/Create.vue';
     import EditButton from '@/components/Form/Edit.vue';
+    import {getUserName} from '@/helpers/employee.js';
 
     export default{
         name: 'IndividualSales',
@@ -80,6 +83,7 @@
                 }
                 return '';
             },
+            getUserName,
         },
         async mounted() {
             await this.getSales();

@@ -18,6 +18,17 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
+                            <div class="form-label">Чек</div>
+                            <Uploader :max="1"
+                                 ref="uploaderComponent"
+                                 :server="uploadURL"
+                                 @add="addAttachment"
+                                 @remove="removeAttachment"
+                                 :media="media"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label class="form-label">Примечания:</label>
                             <input v-model="formData.note" class="form-control" placeholder="Укажите примечания" type="text">
                         </div>
@@ -39,28 +50,46 @@
 <script>
     import {getSaleTypes} from '@/db/sales.js';
     import Modal from '@/components/Modals/Modal.vue';
-    import {store} from '@/db/fcd.js';
     import {prepareFormData} from '@/helpers/form.js';
+    import {store} from '@/db/fcd.js';
+    import { toRaw } from 'vue';
+    import Uploader from '@/components/Form/Uploader/Uploader.vue';
 
     export default {
         name: 'Create',
         components: {
             Modal,
+            Uploader,
         },
         data: () => {
             return {
+                attachments: [],
                 errors: [],
                 formData: {
+                    check_file: null,
                     sale_type_id: null,
                     sum: null,
                     note: null,
                 },
                 loading: false,
+                media: [],
                 modalID: 'createFCD',
                 saleTypes: [],
+                uploadURL: '',
             };
         },
         methods: {
+            addAttachment(attachment) {
+                this.attachments.push(toRaw(attachment));
+            },
+            removeAttachment(attachment) {
+                this.attachments = this.attachments.filter(item => item.name !== attachment.name);
+            },
+            setFile(data) {
+                if (typeof data.path != 'undefined' && data.path) {
+                    this.formData.check_file = data.path;
+                }
+            },
             async setSaleTypes() {
                 this.saleTypes = await getSaleTypes();
             },
@@ -68,6 +97,9 @@
                 this.loading = true;
                 this.errors = [];
                 const formData = prepareFormData(this.formData);
+                if (!formData.check_file && this.attachments.length > 0) {
+                    formData.check_file = this.attachments[0].name;
+                }
                 const response = await store(formData);
                 this.loading = false;
                 if (response.errors.length > 0) {
@@ -76,6 +108,9 @@
                     for (let p in this.formData) {
                         this.formData[p] = null;
                     }
+                    this.attachments = [];
+                    this.media = [];
+                    this.$refs.uploaderComponent.removeAllMedia();
                     window.dispatchEvent(new Event(`hideModal.${this.modalID}`));
                     window.dispatchEvent(new CustomEvent('notify', {
                         detail: {
@@ -89,6 +124,7 @@
         },
         async mounted() {
             await this.setSaleTypes();
+            this.uploadURL = `${window.workshiftUrls.file.upload}?workshiftID=${window.workshiftData.id}`;
         },
     };
 </script>

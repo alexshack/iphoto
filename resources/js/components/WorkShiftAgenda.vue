@@ -103,12 +103,12 @@
                 </a>
                 <a v-if="store.access.closable"
                    v-loading="loading"
-                   @click="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
+                   @click.prevent="closeWorkshift()" href="#" class="btn btn-success btn-block font-weight-semibold">
                     ЗАКРЫТЬ СМЕНУ
                 </a><!-- если смена открыта, видят только сотрудники и админ -->
                 <a v-if="store.access.cancelable"
                    v-loading="loading"
-                   @click="reopen()"
+                   @click.prevent="reopenWorkShift()"
                    href="#" class="btn btn-danger btn-block font-weight-semibold" >ОТМЕНИТЬ ЗАКРЫТИЕ</a><!-- если смена закрыта, при этом следующая смена этой точки не закрыта. видят сотрудники и админ -->
             </div>
             <!-- Алерт отображается удалением класса d-none -->
@@ -170,7 +170,7 @@
                 const response = await preview();
                 this.previewLoading = false;
             },
-            async reopen() {
+            async reopenWorkShift() {
                 if (this.loading || this.previewLoading) {
                     return;
                 }

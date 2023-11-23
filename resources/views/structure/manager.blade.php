@@ -68,6 +68,9 @@
 										<ul class="nav panel-tabs">
 											<li class="ml-4"><a href="#tab1" class="active"  data-toggle="tab">Личные данные</a></li>
 											<li><a href="#tab2"  data-toggle="tab">Рабочие данные</a></li>
+                                            <li>
+                                                <a href="#calcs" data-toggle="tab">Начисления</a>
+                                            </li>
 										</ul>
 									</div>
 								</div>
@@ -252,6 +255,9 @@
                                                     </div>
                                                     @endif
                                                 </div>
+                                            </div>
+                                            <div id="calcs" class="tab-pane">
+                                                @livewire('user.calcs', compact('user'))
                                             </div>
                                             <div class="tab-pane" id="tab2">
                                                 <div class="card-body">
