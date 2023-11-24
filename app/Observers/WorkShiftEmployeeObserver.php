@@ -99,9 +99,11 @@ class WorkShiftEmployeeObserver
 
         $d = 0;
         $midnight = Carbon::parse('00:00:00');
+
         if ($endTime->lessThan($placeStartTime) && $startTime->greaterThan($placeStartTime)) {
-            $d = $start->diffInMinutes($midnight);
-            $d += $midnight->diffInMinutes($endTime);
+            $midnightDiff = $midnight->diffInMinutes($startTime);
+            $d = 24 * 60 - $midnightDiff;
+            $d += $endTime->diffInMinutes($midnight);
         } else {
             $d = $start->diffInMinutes($end);
         }
