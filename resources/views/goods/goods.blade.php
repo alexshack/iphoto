@@ -22,6 +22,7 @@
 								<div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
 
 									<div class="btn-list">
+                                        <a class="btn btn-outline-primary" href="{{ route('admin.goods.categories.index') }}">Категории</a>
 										<a href="" data-target="#category-add" data-toggle="modal" class="btn btn-primary mr-3">Добавить категорию</a>
 										<a href="{{ route('admin.goods.create') }}"  class="btn btn-primary mr-3">Добавить товар</a>
 									</div>

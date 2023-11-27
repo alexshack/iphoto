@@ -8,12 +8,15 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\UserSalaryDataRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ManagerController extends Controller
 {
     private UserRepositoryInterface $userRepository;
+    private UserSalaryDataRepositoryInterface $userSalaryDataRepository;
+
     private $text = [
         'title' => 'Менеджеры',
         'count' => 'Всего менеджеров',
@@ -24,9 +27,12 @@ class ManagerController extends Controller
         'role' => 'managers'
     ];
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository,
+        UserSalaryDataRepositoryInterface $userSalaryDataRepository
+    )
     {
         $this->userRepository = $userRepository;
+        $this->userSalaryDataRepository = $userSalaryDataRepository;
     }
 
     public function index()
@@ -97,6 +103,11 @@ class ManagerController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
 
+    public function userSalaryData(Request $request, $salaryDataID)
+    {
+        $salaryData = $this->userSalaryDataRepository->getSalaryItem($salaryDataID);
+        return view('salary.user-data-item', compact('salaryData'));
     }
 }

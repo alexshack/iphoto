@@ -23,6 +23,7 @@ class WithdrawalValue implements ValidationRule
         if ($currentTime->greaterThan($placeWorkStartTime)) {
             return WorkShiftWithdrawal::where(WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID, $this->attributes[WorkShiftWithdrawalContract::FIELD_WORK_SHIFT_ID])
                 ->where(WorkShiftWithdrawalContract::FIELD_TIME, '<', $this->attributes[WorkShiftWithdrawalContract::FIELD_TIME])
+                ->where(WorkShiftWithdrawalContract::FIELD_TIME, '>', $placeWorkStartTime)
                 ->orderBy(WorkShiftWithdrawalContract::FIELD_TIME, 'desc')
                 ->first();
         } else {

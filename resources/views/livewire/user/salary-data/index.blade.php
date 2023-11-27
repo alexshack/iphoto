@@ -33,7 +33,14 @@
                             @endif
                         @endforeach
                         <td>
-                            -
+                            @if($isEditable)
+                            <a class="btn btn-default btn-sm" href="{{ route('admin.salary.data-item', ['id' => $salaryDataItem->{UserSalaryDataContract::FIELD_ID}]) }}">
+                                <span class="feather feather-edit"></span>
+                            </a>
+                            <button class="btn btn-danger btn-sm" type="button" onclick="confirmDelete('{{ $salaryDataItem->{UserSalaryDataContract::FIELD_ID} }}', 'Удалить {{ $type["label"] }}?')">
+                                <span class="feather feather-trash"></span>
+                            </button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -46,3 +53,12 @@
     </table>
     @endforeach
 </div>
+
+<script>
+    function confirmDelete(id, text = '') {
+        let confirmed = confirm(text);
+        if (confirmed) {
+            @this.emit('deleteSalaryData', id);
+        }
+    }
+</script>

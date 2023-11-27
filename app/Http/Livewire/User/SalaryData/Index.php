@@ -6,17 +6,29 @@ use App\Contracts\Salary\CalcsTypeContract;
 use App\Contracts\PositionContract;
 use App\Contracts\UserSalaryDataContract;
 use App\Models\User;
+use App\Models\UserSalaryData;
+use Auth;
 use Livewire\Component;
 
 class Index extends Component
 {
     protected $listeners = [
+        'deleteSalaryData',
         'submitted' => '$refresh',
     ];
 
     public $typesList = [];
 
     public User $user;
+
+    public $isEditable = false;
+
+    public function mount()
+    {
+        if (Auth::user()->role_id === 6) {
+            $this->isEditable = true;
+        }
+    }
 
     public function render()
     {
@@ -41,5 +53,17 @@ class Index extends Component
             $this->typesList[(int)$typeKey] = $type;
         }
         return view('livewire.user.salary-data.index');
+    }
+
+    public function deleteSalaryData($id) {
+        if (!$this->isEditable = false) {
+            return;
+        }
+
+        $data = UserSalaryData::find($id);
+        if ($data) {
+            $data->delete();
+            $this->emit('$refresh');
+        }
     }
 }

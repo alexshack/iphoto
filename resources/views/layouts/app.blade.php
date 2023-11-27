@@ -33,9 +33,12 @@
                     <div class="side-app">
 
                         @include('layouts.verticalmenu.header')
-
+                        @if(Session::has('message'))
+                            <div class='alert alert-success mt-1'>
+                                {{ Session::get('message') }}
+                            </div>
+                        @endif
                         @yield('content')
-
                     </div>
                 </div><!-- end app-content-->
             </div>

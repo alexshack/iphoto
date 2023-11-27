@@ -31,4 +31,11 @@ class CalcsTypeRepository implements CalcsTypeRepositoryInterface
             ->orWhereNull(CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION)
             ->get();
     }
+
+    public function getByTypeLast($type)
+    {
+        return CalcsType::where(CalcsTypeContract::FIELD_TYPE, $type)
+            ->orderBy(CalcsTypeContract::FIELD_ID, 'desc')
+            ->first();
+    }
 }

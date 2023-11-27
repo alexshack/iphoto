@@ -126,6 +126,7 @@ Route::middleware(['web'])->group(function () {
              * Учет зарплаты
              */
             // Статусы сотрудников
+            Route::get('salary/data-item/{id}', 'App\Http\Controllers\Structure\ManagerController@userSalaryData')->name('admin.salary.data-item');
             Route::get('salary/employee-status', 'App\Http\Controllers\Salary\EmployeeStatusController@index')->name('admin.salary.employee_statuses.index');
             Route::post('salary/employee-status/add', 'App\Http\Controllers\Salary\EmployeeStatusController@store')->name('admin.salary.employee_statuses.store');
             Route::post('salary/employee-statuses/{id}', 'App\Http\Controllers\Salary\EmployeeStatusController@update')->name('admin.salary.employee_statuses.update');
@@ -149,9 +150,10 @@ Route::middleware(['web'])->group(function () {
             Route::post('goods/{id}', 'App\Http\Controllers\Goods\GoodsController@update')->name('admin.goods.update');
             Route::get('good/add', 'App\Http\Controllers\Goods\GoodsController@create')->name('admin.goods.create');
             Route::post('good/add', 'App\Http\Controllers\Goods\GoodsController@store')->name('admin.goods.store');
+            Route::get('goods/category/all', 'App\Http\Controllers\Goods\GoodsCategoryController@index')->name('admin.goods.categories.index');
+            Route::get('goods/category/create', 'App\Http\Controllers\Goods\GoodsCategoryController@create')->name('admin.goods.categories.create');
             Route::post('goods/category/add', 'App\Http\Controllers\Goods\GoodsCategoryController@store')->name('admin.goods.categories.store');
-            //Route::delete('goods/categories/{id}/delete', 'App\Http\Controllers\Goods\CityManagerController@destroy')->name('admin.structure.city_manager.destroy');
-            //Route::post('goods/categories/{id}', 'App\Http\Controllers\Goods\CityManagerController@update')->name('admin.structure.city_manager.update');
+            Route::get('goods/category/{id}/edit', 'App\Http\Controllers\Goods\GoodsCategoryController@edit')->name('admin.goods.categories.edit');
         });
 
         Route::get('/', 'App\Http\Controllers\AdminController@index')->name('home');

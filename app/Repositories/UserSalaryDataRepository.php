@@ -23,4 +23,8 @@ class UserSalaryDataRepository implements UserSalaryDataRepositoryInterface {
         return $builder->first();
     }
 
+    public function getSalaryItem($salaryDataID)
+    {
+        return UserSalaryData::find($salaryDataID);
+    }
 }

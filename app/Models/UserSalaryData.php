@@ -48,4 +48,9 @@ class UserSalaryData extends Model
 
         $this->attributes[UserSalaryDataContract::FIELD_START_DATE] = $value;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
