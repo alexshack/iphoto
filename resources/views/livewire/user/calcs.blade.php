@@ -1,6 +1,18 @@
 <div class="card">
+    <div class="card-header justify-content-between">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="form-label">Дата</label>
+                <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <span>
+                Итого: {{ $total }}
+            </span>
+        </div>
+    </div>
     <div class="card-body">
-
     <table class="table  table-vcenter text-nowrap table-bordered border-bottom">
         <thead>
             <tr>
@@ -9,7 +21,6 @@
                 <th class="border-bottom-0">Вид начисления</th>
                 <th class="border-bottom-0">Город</th>
                 <th class="border-bottom-0">Точка</th>
-                <th class="border-bottom-0">Сотрудник</th>
                 <th class="border-bottom-0">Сумма</th>
             </tr>
         </thead>
@@ -36,11 +47,6 @@
                             {{ $calc->place ? $calc->place->name : '' }}
                         </a>
                     </td>
-                    <td data-order="{{ $calc->user ? $calc->user->getFullName() : '' }}">
-                        <a href="{{ route('admin.structure.employees.edit', ['id' => $calc->user_id]) }}">
-                            {{ $calc->user ? $calc->user->getFullName() : '' }}
-                        </a>
-                    </td>
                     <td data-order="{{ $calc->amount }}" class="text-right {{ $calc->amount < 0 ? 'text-danger' : '' }}">
                         {{ $calc->amount }}₽
                     </td>
@@ -53,3 +59,33 @@
         {{ $calcs->links() }}
     </div>
 </div>
+
+@push('custom-scripts')
+<script>
+function calcFilterCreateInit() {
+    $( ".filterDatePicker" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: "mm.yy",
+        monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+        dayNamesMin: [ "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" ]
+    }).on('change', function (e) {
+        var data = $(this).val();
+        var model = $(this).attr('wire:model');
+        @this.set(model, data);
+    });
+}
+
+$(document).ready(function() {
+    calcFilterCreateInit();
+    window.livewire.on('updatedComponent',()=>{
+        calcFilterCreateInit();
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    window.Livewire.hook('component.initialized', (component) => {
+        calcFilterCreateInit();
+    });
+});
+</script>
+@endpush

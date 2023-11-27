@@ -53,6 +53,16 @@ class Calc extends Model
         return $this->belongsTo(Place::class, CalcsContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
     }
 
+    public function scopeFilterData($query, $filterData)
+    {
+        if (isset($filterData['year']) && $filterData['year']) {
+            $query->whereYear(CalcsContract::FIELD_DATE, $filterData['year']);
+            if (isset($filterData['month']) && $filterData['month']) {
+                $query->whereMonth(CalcsContract::FIELD_DATE, $filterData['month']);
+            }
+        }
+    }
+
     public function setDateAttribute($value) {
         $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');
     }
