@@ -10,6 +10,7 @@ use App\Contracts\UserContract;
 use App\Contracts\UserSalaryDataContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
+use App\Contracts\WorkShift\WorkShiftGoodEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
@@ -20,6 +21,7 @@ use App\Models\User;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftEmployee;
 use App\Models\WorkShift\WorkShiftPayroll;
+use App\Repositories\Interfaces\CalcsRepositoryInterface;
 use App\Repositories\Interfaces\CalcsTypeRepositoryInterface;
 use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\UserSalaryDataRepositoryInterface;
@@ -34,6 +36,7 @@ use Illuminate\Http\Request;
 
 class WorkShiftController extends Controller
 {
+    private CalcsRepositoryInterface $calcsRepository;
     private CalcsTypeRepositoryInterface $calcsTypeRepository;
     private PlaceCalcRepositoryInterface $placeCalcsRepository;
     private UserSalaryDataRepositoryInterface $userSalaryDataRepository;
@@ -43,7 +46,8 @@ class WorkShiftController extends Controller
     private WorkShiftRepositoryInterface $workShiftRepo;
     private WorkShiftWithdrawalRepositoryInterface $workShiftWithdrawalRepository;
 
-    public function __construct(CalcsTypeRepositoryInterface $calcsTypeRepository,
+    public function __construct(CalcsRepositoryInterface $calcsRepository,
+        CalcsTypeRepositoryInterface $calcsTypeRepository,
         PlaceCalcRepositoryInterface $placeCalcsRepository,
         UserSalaryDataRepositoryInterface $userSalaryDataRepository,
         WorkShiftRepositoryInterface $workShiftRepo,
@@ -51,6 +55,7 @@ class WorkShiftController extends Controller
         WorkShiftGoodsRepositoryInterface $workShiftGoodsRepository,
         WorkShiftPayrollRepositoryInterface $workShiftPayrollRepository,
         WorkShiftWithdrawalRepositoryInterface $workShiftWithdrawalRepository) {
+        $this->calcsRepository = $calcsRepository;
         $this->calcsTypeRepository = $calcsTypeRepository;
         $this->placeCalcsRepository = $placeCalcsRepository;
         $this->userSalaryDataRepository = $userSalaryDataRepository;
@@ -67,6 +72,7 @@ class WorkShiftController extends Controller
         $placeCalcs = $this->placeCalcsRepository->getActiveByPlaceId($workShift->{WorkShiftContract::FIELD_PLACE_ID});
         $employees = $this->workShiftEmloyeeRepository->getAll($workShift->{WorkShiftContract::FIELD_ID});
         $hasTypeCalculated = [
+            "type.2" => false,
             "type.3" => false,
             "type.4" => false,
         ];
@@ -77,7 +83,8 @@ class WorkShiftController extends Controller
                 $this->handlePercentCalcType($workShift, $calcType, $payRolls, $employees);
                 break;
             case 2:
-                $this->handleSaleCalcType($workShift, $calcType, $payRolls, $employees);
+                $this->handleGeneralSaleCalcType($workShift, $calcType, $payRolls, $employees);
+                $hasTypeCalculated["type.2"] = true;
                 break;
             case 3:
                 $this->handleSalaryCalcType($workShift, $calcType, $payRolls, $employees);
@@ -89,6 +96,21 @@ class WorkShiftController extends Controller
                 break;
             default:
                 break;
+            }
+        }
+
+        $individualSaleCalcType = $placeCalcs->filter(function ($item) {
+            return $item->{CalcsTypeContract::FIELD_TYPE} === 2;
+        })->first();
+        if (!$individualSaleCalcType) {
+            $individualSaleCalcType = $this->calcsTypeRepository->getByTypeLast(2);
+        }
+        $this->handleIndividualSaleCalcType($workShift, $individualSaleCalcType, $payRolls, $employees);
+
+        if (!$hasTypeCalculated['type.2']) {
+            $calcType = $this->calcsTypeRepository->getByTypeLast(2);
+            if ($calcType) {
+                $this->handleGeneralSaleCalcType($workShift, $calcType, $payRolls, $employees);
             }
         }
 
@@ -139,6 +161,12 @@ class WorkShiftController extends Controller
             $user = User::find(1);
         }
         $userID = $user->{UserContract::FIELD_ID};
+
+        $existingCalcs = $this->calcsRepository->getByWorkShift($workShift);
+        foreach ($existingCalcs as $calc) {
+            $calc->delete();
+        }
+
         foreach ($workShiftPayrolls as $payRoll) {
             $employee = $payRoll->employee;
             if (!$employee) {
@@ -233,14 +261,48 @@ class WorkShiftController extends Controller
         }
     }
 
-    protected function handleSaleCalcType(WorkShift $workShift, $calcType, &$payRolls, $employees) {
-        $individualSales = $this->workShiftGoodsRepository->getAll($workShift->{WorkShiftContract::FIELD_ID}, 2);
-        foreach ($individualSales as $sale) {
+    protected function handleGeneralSaleCalcType(WorkShift $workShift, $calcType, &$payRolls, $employees)
+    {
+        $generalSales = $this->workShiftGoodsRepository->getAll($workShift->{WorkShiftContract::FIELD_ID}, 1);
+        foreach ($generalSales as $sale) {
+            $amount = 0;
+
+            if ($sale->employees->count() > 1) {
+                $amount = $sale->{WorkShiftGoodsContract::FIELD_PRICE} * 0.13 * $sale->{WorkShiftGoodsContract::FIELD_QTY};
+            } else {
+                $amount = $sale->{WorkShiftGoodsContract::FIELD_PRICE} * 0.17 * $sale->{WorkShiftGoodsContract::FIELD_QTY};
+            }
+
             $data = [
                 WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
-                WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $sale->{WorkShiftGoodsContract::FIELD_EMPLOYEE_ID},
-                WorkShiftPayrollContract::FIELD_AMOUNT => $sale->{WorkShiftGoodsContract::FIELD_PRICE},
+                WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => null,
+                WorkShiftPayrollContract::FIELD_AMOUNT => $amount,
                 WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+                WorkShiftPayrollContract::FIELD_WORK_SHIFT_GOOD_ID => $sale->{WorkShiftGoodsContract::FIELD_ID},
+            ];
+
+            foreach ($sale->employees as $employee) {
+                $goodEmployee = $employee->employee;
+                if (!$goodEmployee) {
+                    continue;
+                }
+                $employeeData = $data;
+                $employeeData[WorkShiftPayrollContract::FIELD_EMPLOYEE_ID] = $goodEmployee->{WorkShiftEmployeeContract::FIELD_ID};
+                $payRolls[] = $employeeData;
+            }
+        }
+    }
+
+    protected function handleIndividualSaleCalcType(WorkShift $workShift, $calcType, &$payRolls, $employees) {
+        $individualSales = $this->workShiftGoodsRepository->getAll($workShift->{WorkShiftContract::FIELD_ID}, 2);
+        foreach ($individualSales as $sale) {
+            $amount = $sale->good->{GoodsContract::FIELD_PRIZE_AMOUNT} * $sale->{WorkShiftGoodsContract::FIELD_QTY};
+            $data = [
+                WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
+                WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $sale->employee->{WorkShiftEmployeeContract::FIELD_ID},
+                WorkShiftPayrollContract::FIELD_AMOUNT => $amount,
+                WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
+                WorkShiftPayrollContract::FIELD_WORK_SHIFT_GOOD_ID => $sale->{WorkShiftGoodsContract::FIELD_ID},
             ];
             $payRolls[] = $data;
         }
@@ -337,6 +399,8 @@ class WorkShiftController extends Controller
                 $payroll->delete();
             }
         }
+
+        file_put_contents(storage_path() . '/app/data.json', json_encode($payRolls));
 
         foreach ($payRolls as $payRoll) {
             WorkShiftPayroll::create($payRoll);

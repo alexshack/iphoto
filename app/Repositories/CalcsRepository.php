@@ -21,16 +21,18 @@ class CalcsRepository implements CalcsRepositoryInterface
         return Calc::all();
     }
 
-    public function getByWorkshift(WorkShift $workShift) {
+    public function getByWorkshift(WorkShift $workShift, $withoutRelations = false) {
         $calcs = Calc::where(CalcsContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
             ->where(CalcsContract::FIELD_PLACE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
             ->where(CalcsContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID});
 
-        $calcs = $calcs->with(
-            'calcType',
-            'user',
-            'user.personalData:'. UserContract::FIELD_ID . ',' . UserPersonalDataContract::FIELD_USER_ID . ',' . UserPersonalDataContract::FIELD_LAST_NAME . ',' .UserPersonalDataContract::FIELD_FIRST_NAME . ',' .UserPersonalDataContract::FIELD_MIDDLE_NAME,
-        );
+        if (!$withoutRelations) {
+            $calcs = $calcs->with(
+                'calcType',
+                'user',
+                'user.personalData:'. UserContract::FIELD_ID . ',' . UserPersonalDataContract::FIELD_USER_ID . ',' . UserPersonalDataContract::FIELD_LAST_NAME . ',' .UserPersonalDataContract::FIELD_FIRST_NAME . ',' .UserPersonalDataContract::FIELD_MIDDLE_NAME,
+            );
+        }
 
         return $calcs->get();
     }
