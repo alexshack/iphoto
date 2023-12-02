@@ -65,20 +65,30 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
         $builder = WorkShiftEmployee::where(function ($query) use ($startTime, $startTimeBeforeMidnight, $endTimeBeforeMidnight, $endTime, $placeWorkStartTimeC, $midnight) {
 
             if ($startTimeBeforeMidnight && $endTimeBeforeMidnight) {
-                $query->where(function ($query) use ($startTime, $endTime) {
-                    $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)
-                        ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $endTime);
-                })
-                    ->orWhere(function ($query) use ($startTime, $endTime, $placeWorkStartTimeC) {
-                        $query->where([
-                            [WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $placeWorkStartTimeC],
-                            [WorkShiftEmployeeContract::FIELD_END_TIME, '>=', $endTime],
-                        ]);
-                    })
-                    ->orWhere(function ($query) use ($startTime, $endTime) {
-                    $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
-                        ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<=', $endTime);
+                $query->where(function ($query) use ($startTime, $endTime, $placeWorkStartTimeC) {
+                    $query->where([
+                        [WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $placeWorkStartTimeC],
+                        [WorkShiftEmployeeContract::FIELD_START_TIME, '<=', $startTime],
+                    ])
+                    ->where([
+                        [WorkShiftEmployeeContract::FIELD_END_TIME, '<=', '23:59:59'],
+                        [WorkShiftEmployeeContract::FIELD_END_TIME, '>=', $endTime],
+                    ]);
                 });
+                //$query->where(function ($query) use ($startTime, $endTime) {
+                    //$query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)
+                        //->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $endTime);
+                //})
+                    //->orWhere(function ($query) use ($startTime, $endTime, $placeWorkStartTimeC) {
+                        //$query->where([
+                            //[WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $placeWorkStartTimeC],
+                            //[WorkShiftEmployeeContract::FIELD_END_TIME, '<=', '23:59:59'],
+                        //]);
+                    //})
+                    //->orWhere(function ($query) use ($startTime, $endTime) {
+                    //$query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
+                        //->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<=', $endTime);
+                //});
             } /*else if ($startTimeBeforeMidnight && !$endTimeBeforeMidnight) {
                 $query->where(function ($query) use ($startTime, $endTime) {
                     $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)

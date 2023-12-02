@@ -316,7 +316,7 @@ class WorkShiftController extends Controller
                 //'employees' => $companionEmployees->map(function ($item) {
                     //return $item->user->name;
                 //})->implode(', '),
-                //'custom' => $custom,
+                ////'custom' => $custom,
                 //'saleAmount' => $saleAmount,
             //]);
 
