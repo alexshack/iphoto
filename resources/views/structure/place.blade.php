@@ -20,7 +20,7 @@
 
 
 						<!-- Row -->
-						<div class="row calcs-type">
+						<div class="row calcs-types">
 							<div class="col-xl-12 col-md-12 col-lg-12">
 								<div class="card">
 									<div class="card-header  border-0">
@@ -132,6 +132,8 @@
 							</div>
 						</div>
 						<!-- End Row-->
+                        @livewire('place.place-goods', compact('place'))
+
 
 @endsection('content')
 

@@ -24,4 +24,16 @@ class GoodsRepository implements GoodsRepositoryInterface
     public function getByType($type) {
         return Goods::where(GoodsContract::FIELD_TYPE, $type)->get();
     }
+
+    public function getTMCByPlaceID($placeID, $paginate = false)
+    {
+        $builder = Goods::where(GoodsContract::FIELD_PLACE_ID, $placeID)
+            ->where(GoodsContract::FIELD_TYPE, 3);
+
+        if ($paginate) {
+            return $builder->paginate($paginate);
+        } else {
+            return $builder->get();
+        }
+    }
 }

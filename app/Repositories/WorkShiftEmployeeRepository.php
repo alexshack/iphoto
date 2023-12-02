@@ -68,7 +68,14 @@ class WorkShiftEmployeeRepository implements WorkShiftEmployeeRepositoryInterfac
                 $query->where(function ($query) use ($startTime, $endTime) {
                     $query->where(WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $startTime)
                         ->where(WorkShiftEmployeeContract::FIELD_START_TIME, '<', $endTime);
-                })->orWhere(function ($query) use ($startTime, $endTime) {
+                })
+                    ->orWhere(function ($query) use ($startTime, $endTime, $placeWorkStartTimeC) {
+                        $query->where([
+                            [WorkShiftEmployeeContract::FIELD_START_TIME, '>=', $placeWorkStartTimeC],
+                            [WorkShiftEmployeeContract::FIELD_END_TIME, '>=', $endTime],
+                        ]);
+                    })
+                    ->orWhere(function ($query) use ($startTime, $endTime) {
                     $query->where(WorkShiftEmployeeContract::FIELD_END_TIME, '>', $startTime)
                         ->where(WorkShiftEmployeeContract::FIELD_END_TIME, '<=', $endTime);
                 });

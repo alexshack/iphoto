@@ -4,6 +4,7 @@ namespace App\Models\WorkShift;
 
 use App\Contracts\PositionContract;
 use App\Contracts\Salary\EmployeeStatusContract;
+use App\Contracts\Salary\PaysContract;
 use App\Contracts\Structure\PlaceCalcContract;
 use App\Contracts\UserContract;
 use App\Contracts\WorkShift\WorkShiftContract;
@@ -11,6 +12,7 @@ use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Http\Controllers\Money\Workshift\WorkShiftController;
 use App\Models\Salary\EmployeeStatuses;
+use App\Models\Salary\Pay;
 use App\Models\Salary\Position;
 use App\Models\Structure\PlaceCalc;
 use App\Models\User;
