@@ -369,7 +369,6 @@ class WorkShiftController extends Controller
                     WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
                     WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $companionEmployee[WorkShiftEmployeeContract::FIELD_ID],
                     WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
-                    WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
                     WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
                     WorkShiftPayrollContract::FIELD_CUSTOM_DATA => json_encode(compact('startTime', 'endTime')),
                 ];
