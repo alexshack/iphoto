@@ -294,7 +294,7 @@ class WorkShiftController extends Controller
         $placeWorkStartTimeC = Carbon::parse('08:00:00');
         $midnight = Carbon::parse('00:00:00');
         $endOfDay = Carbon::parse('23:59:59');
-        $workShiftEmployees = $employees->map(function ($item) use ($endOfDay, $midnight, $placeWorkStartTimeC) {
+        $workShiftEmployees = $calcTypeEmployees->map(function ($item) use ($endOfDay, $midnight, $placeWorkStartTimeC) {
             $startTimeC = Carbon::parse($item->{WorkShiftEmployeeContract::FIELD_START_TIME});
             $endTimeC = Carbon::parse($item->{WorkShiftEmployeeContract::FIELD_END_TIME});
 
