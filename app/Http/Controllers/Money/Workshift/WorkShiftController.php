@@ -14,6 +14,7 @@ use App\Contracts\WorkShift\WorkShiftGoodEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\WorkShift\WorkShiftPayrollContract;
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
+use App\Helpers\Helper;
 use App\Helpers\WorkShiftHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Salary\Calc;
@@ -281,23 +282,66 @@ class WorkShiftController extends Controller
         });
 
         $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShiftWithWorkTimeSort($workShift->{WorkShiftContract::FIELD_ID});
+        //foreach ($withdrawals as $key => $withdrawal) {
+            //dump("[$key] {$withdrawal->{WorkShiftWithdrawalContract::FIELD_TIME}}");
+        //}
+        //exit;
 
         if ($withdrawals->count() <= 1) {
             return;
         }
 
+        $placeWorkStartTimeC = Carbon::parse('08:00:00');
+        $midnight = Carbon::parse('00:00:00');
+        $endOfDay = Carbon::parse('23:59:59');
+        $workShiftEmployees = $employees->map(function ($item) use ($endOfDay, $midnight, $placeWorkStartTimeC) {
+            $startTimeC = Carbon::parse($item->{WorkShiftEmployeeContract::FIELD_START_TIME});
+            $endTimeC = Carbon::parse($item->{WorkShiftEmployeeContract::FIELD_END_TIME});
+
+            $startTimeStamp = 0;
+            if ($startTimeC->greaterThanOrEqualTo($placeWorkStartTimeC)) {
+                $startTimeStamp = $placeWorkStartTimeC->diffInMinutes($startTimeC);
+            } else if ($startTimeC->greaterThanOrEqualTo($midnight) && $startTimeC->lessThan($placeWorkStartTimeC)) {
+                $startTimeStamp = $placeWorkStartTimeC->diffInMinutes($endOfDay);
+                $startTimeStamp += $midnight->diffInMinutes($startTimeC) + 1;
+            }
+
+            $endTimeStamp = 0;
+            if ($endTimeC->greaterThanOrEqualTo($placeWorkStartTimeC)) {
+                $endTimeStamp = $placeWorkStartTimeC->diffInMinutes($endTimeC);
+            } else if ($endTimeC->greaterThanOrEqualTo($midnight) && $endTimeC->lessThan($placeWorkStartTimeC)) {
+                $endTimeStamp = $placeWorkStartTimeC->diffInMinutes($endOfDay);
+                $endTimeStamp += $midnight->diffInMinutes($endTimeC) + 1;
+            }
+
+            return [
+                WorkShiftEmployeeContract::FIELD_ID => $item->{WorkShiftEmployeeContract::FIELD_ID},
+                'startTimeStamp' => $startTimeStamp,
+                'endTimeStamp' => $endTimeStamp,
+            ];
+        });
+        //dump($workShiftEmployees);
+
         for ($i = 1; $i < $withdrawals->count(); $i++) {
+            //dump($i);
             $startTime = $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_TIME};
             $endTime = $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_TIME};
+
+            $startTimestamp = Helper::timeToTimestamp(Carbon::parse($startTime), $placeWorkStartTimeC);
+            $endTimestamp = Helper::timeToTimestamp(Carbon::parse($endTime), $placeWorkStartTimeC);
+
             $startSum = (float) $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $endSum = (float) $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $d = $endSum - $startSum;
+            //dump(compact('startSum', 'endSum', 'd', 'startTimestamp', 'endTimestamp'));
 
             if ($d === 0.0) {
                 continue;
             }
 
-            $companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
+            $companionEmployees = $workShiftEmployees->where('startTimeStamp', '<=', $startTimestamp)
+                ->where('endTimeStamp', '>=', $endTimestamp);
+            //$companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
 
             if ($companionEmployees->count() === 0) {
                 continue;
@@ -314,7 +358,7 @@ class WorkShiftController extends Controller
                 //'endTime' => $endTime,
                 //'d' => $d,
                 //'employees' => $companionEmployees->map(function ($item) {
-                    //return $item->user->name;
+                    //return $item['id'];
                 //})->implode(', '),
                 ////'custom' => $custom,
                 //'saleAmount' => $saleAmount,
@@ -323,7 +367,7 @@ class WorkShiftController extends Controller
             foreach ($companionEmployees as $companionEmployee) {
                 $data = [
                     WorkShiftPayrollContract::FIELD_WORK_SHIFT_ID => $workShift->{WorkShiftContract::FIELD_ID},
-                    WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $companionEmployee->{WorkShiftEmployeeContract::FIELD_ID},
+                    WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $companionEmployee[WorkShiftEmployeeContract::FIELD_ID],
                     WorkShiftPayrollContract::FIELD_AMOUNT => $saleAmount,
                     WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 1,
                     WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},

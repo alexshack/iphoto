@@ -6,6 +6,7 @@ use App\Contracts\UserRoleContract;
 use App\Models\City;
 use App\Models\Structure\Place;
 use App\Models\User;
+use Carbon\Carbon;
 
 class Helper
 {
@@ -94,5 +95,24 @@ class Helper
 
     public static function prepareJsonString($data) {
         return self::escapeJsonString(json_encode($data));
+    }
+
+    public static function timeToTimestamp($timeC, $placeWorkStartTimeC, $midnight = null, $endOfDay = null) {
+        if (!$midnight) {
+            $midnight = Carbon::parse('00:00:00');
+        }
+
+        if (!$endOfDay) {
+            $endOfDay = Carbon::parse('23:59:59');
+        }
+
+        $timeStamp = 0;
+        if ($timeC->greaterThanOrEqualTo($placeWorkStartTimeC)) {
+            $timeStamp = $placeWorkStartTimeC->diffInMinutes($timeC);
+        } else if ($timeC->greaterThanOrEqualTo($midnight) && $timeC->lessThan($placeWorkStartTimeC)) {
+            $timeStamp = $placeWorkStartTimeC->diffInMinutes($endOfDay);
+            $timeStamp += $midnight->diffInMinutes($timeC) + 1;
+        }
+        return $timeStamp;
     }
 }
