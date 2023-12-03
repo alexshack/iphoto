@@ -116,9 +116,9 @@ class WorkShiftController extends Controller
         }
 
         if (!$hasTypeCalculated['type.4']) {
-            $calcType = $this->calcsTypeRepository->getByTypeLast(4);
-            if ($calcType) {
-                $this->handleSalaryCalcType($workShift, $calcType, $payRolls, $employees);
+            $calcTypeFixed = $this->calcsTypeRepository->getByTypeLast(4);
+            if ($calcTypeFixed) {
+                $this->handleFixSalaryCalcType($workShift, $calcTypeFixed, $payRolls, $employees);
             }
         }
 
@@ -228,7 +228,7 @@ class WorkShiftController extends Controller
         }
 
         $calcTypeEmployees = $employees->filter(function ($employee) use ($employeeStatuses) {
-            return in_array($employee->{WorkShiftEmployeeContract::FIELD_STATUS}, $employeeStatuses);
+            return in_array((string) $employee->{WorkShiftEmployeeContract::FIELD_STATUS}, $employeeStatuses);
         });
 
         foreach ($calcTypeEmployees as $employee) {
