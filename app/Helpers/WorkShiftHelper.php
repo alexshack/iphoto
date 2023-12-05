@@ -39,7 +39,7 @@ class WorkShiftHelper {
 
         $withdrawal = 0;
         $lastWithdrawal = $workshift->withdrawals->last();
-        $placeWorkStartTime = Carbon::parse('08:00:00');
+        $placeWorkStartTime = Carbon::parse($workshift->start_time);
         $lastWithdrawal = WorkShiftWithdrawal::where(function ($query) use ($placeWorkStartTime) {
             $query->where(WorkShiftWithdrawalContract::FIELD_TIME, '>=', '00:00:00')
                 ->where(WorkShiftWithdrawalContract::FIELD_TIME, '<', $placeWorkStartTime);

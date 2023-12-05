@@ -180,7 +180,22 @@ class WorkShiftController extends Controller
         }
 
         $workShift->{WorkShiftContract::FIELD_CLOSED_AT} = Carbon::now();
+
+        $currentUser = Auth::user();
+        if ($currentUser) {
+            $workShift->{WorkShiftContract::FIELD_CLOSED_BY} = $currentUser->{UserContract::FIELD_ID};
+        }
+
+        if (isset($stats['agenda']['expensesTotal'])) {
+            $workShift->{WorkShiftContract::FIELD_EXPENSES} = (float) $stats['agenda']['expensesTotal'];
+        }
+
+        if (isset($stats['agenda']['payroll'])) {
+            $workShift->{WorkShiftContract::FIELD_SALARY} = (float) $stats['agenda']['payroll'];
+        }
+
         $workShift->save();
+
         if ($stats['access']['closable']) {
         }
     }
@@ -203,7 +218,6 @@ class WorkShiftController extends Controller
             $salaryData = $this->userSalaryDataRepository
                 ->getActualSalaryData($userID, $calcTypeID);
             if (!$salaryData) {
-                \Log::info('No salary data => ' . $userID);
                 continue;
             }
 
@@ -213,7 +227,6 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $salaryAmount,
                 WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
-                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 4,
             ];
             $payRolls[] = $data;
         }
@@ -249,7 +262,6 @@ class WorkShiftController extends Controller
                 WorkShiftPayrollContract::FIELD_EMPLOYEE_ID => $employee->{WorkShiftEmployeeContract::FIELD_ID},
                 WorkShiftPayrollContract::FIELD_AMOUNT => $amount,
                 WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => $calcType->{CalcsTypeContract::FIELD_ID},
-                //WorkShiftPayrollContract::FIELD_CALC_TYPE_ID => 3,
             ];
             $payRolls[] = $data;
         }
@@ -281,17 +293,13 @@ class WorkShiftController extends Controller
             return in_array($employee->{WorkShiftEmployeeContract::FIELD_POSITION_ID}, $positions);
         });
 
-        $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShiftWithWorkTimeSort($workShift->{WorkShiftContract::FIELD_ID});
-        //foreach ($withdrawals as $key => $withdrawal) {
-            //dump("[$key] {$withdrawal->{WorkShiftWithdrawalContract::FIELD_TIME}}");
-        //}
-        //exit;
+        $withdrawals = $this->workShiftWithdrawalRepository->getByWorkShiftWithWorkTimeSort($workShift->{WorkShiftContract::FIELD_ID}, $workShift->start_time);
 
         if ($withdrawals->count() <= 1) {
             return;
         }
 
-        $placeWorkStartTimeC = Carbon::parse('08:00:00');
+        $placeWorkStartTimeC = Carbon::parse($workShift->start_time);
         $midnight = Carbon::parse('00:00:00');
         $endOfDay = Carbon::parse('23:59:59');
         $workShiftEmployees = $calcTypeEmployees->map(function ($item) use ($endOfDay, $midnight, $placeWorkStartTimeC) {
@@ -333,7 +341,6 @@ class WorkShiftController extends Controller
             $startSum = (float) $withdrawals[$i - 1]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $endSum = (float) $withdrawals[$i]->{WorkShiftWithdrawalContract::FIELD_SUM};
             $d = $endSum - $startSum;
-            //dump(compact('startSum', 'endSum', 'd', 'startTimestamp', 'endTimestamp'));
 
             if ($d === 0.0) {
                 continue;
@@ -341,7 +348,6 @@ class WorkShiftController extends Controller
 
             $companionEmployees = $workShiftEmployees->where('startTimeStamp', '<=', $startTimestamp)
                 ->where('endTimeStamp', '>=', $endTimestamp);
-            //$companionEmployees = $this->workShiftEmloyeeRepository->getBySameWithdrawalPeriod($workShift->{WorkShiftContract::FIELD_ID}, $startTime, $endTime, $positions);
 
             if ($companionEmployees->count() === 0) {
                 continue;
@@ -353,16 +359,6 @@ class WorkShiftController extends Controller
             } else {
                 $saleAmount = $d * (int)$custom->percent_for_one / 100;
             }
-            //dump([
-                //'startTime' => $startTime,
-                //'endTime' => $endTime,
-                //'d' => $d,
-                //'employees' => $companionEmployees->map(function ($item) {
-                    //return $item['id'];
-                //})->implode(', '),
-                ////'custom' => $custom,
-                //'saleAmount' => $saleAmount,
-            //]);
 
             foreach ($companionEmployees as $companionEmployee) {
                 $data = [

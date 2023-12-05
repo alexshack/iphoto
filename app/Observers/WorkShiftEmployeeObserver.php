@@ -94,7 +94,7 @@ class WorkShiftEmployeeObserver
 
         $placeStartTime = null;
         if (!$placeStartTime) {
-            $placeStartTime = Carbon::parse('08:00:00');
+            $placeStartTime = Carbon::parse($workShiftEmployee->workShift->start_time);
         }
 
         $d = 0;

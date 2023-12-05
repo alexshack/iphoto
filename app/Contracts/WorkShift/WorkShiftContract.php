@@ -17,11 +17,13 @@ interface WorkShiftContract  {
     public const FIELD_SALARY = 'salary';
     public const FIELD_CLOSED_AT = 'closed_at';
     public const FIELD_CLOSED_BY = 'closed_by';
+    public const FIELD_START_TIME = 'start_time';
 
     public const FILLABLE_FIELDS = [
         self::FIELD_DATE,
         self::FIELD_CITY_ID,
         self::FIELD_PLACE_ID,
+        self::FIELD_START_TIME,
     ];
 
     public const CASTS = [
@@ -41,6 +43,7 @@ interface WorkShiftContract  {
         self::FIELD_TOTAL_SALES => 'Касса',
         self::FIELD_EXPENSES => 'Расходы',
         self::FIELD_SALARY => 'Зарплата',
+        self::FIELD_START_TIME => 'Начало смены',
     ];
 
     public const AGENDA_ERRORS = [

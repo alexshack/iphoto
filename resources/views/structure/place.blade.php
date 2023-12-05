@@ -33,6 +33,7 @@
                                             </div>
                                         @endif
 
+
                                         @if(Route::currentRouteName() == 'admin.structure.places.edit')
 										<form class="form-horizontal" action="{{ route('admin.structure.places.update', ['id' => $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }]) }}" method="post">
                                         @else
@@ -133,6 +134,7 @@
 						</div>
 						<!-- End Row-->
                         @livewire('place.place-goods', compact('place'))
+                        @livewire('place.place-work-time.index', compact('place'))
 
 
 @endsection('content')

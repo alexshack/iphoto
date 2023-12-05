@@ -19,6 +19,7 @@
                         <tr>
                             <th class="border-bottom-0">Вид продажи</th>
                             <th class="border-bottom-0">Сумма</th>
+                            <th class="border-bottom">Чек</th>
                             <th class="border-bottom-0">Примечания</th>
                             <th class="border-bottom-0">Действия</th>
                         </tr>
@@ -27,6 +28,9 @@
                         <tr v-for="fcd in fcds" :key="fcd.id">
                             <td>{{ fcd.sale_type.name }}</td>
                             <td :data-order="fcd.sum" class="text-right">{{ fcd.sum }}₽</td>
+                            <td>
+                                <CheckFilePreview :url="fcd.check_file"/>
+                            </td>
                             <td v-html="fcd.note"></td>
                             <td>
                                 <div class="d-flex">
@@ -49,12 +53,14 @@
 
 <script>
     import {all} from '@/db/fcd.js';
+    import CheckFilePreview from '@/components/Media/CheckFilePreview.vue';
     import Create from '@/components/Modals/FCD/Create.vue';
     import EditButton from '@/components/Form/Edit.vue';
 
     export default{
         name: 'FinalCashDrawTable',
         components: {
+            CheckFilePreview,
             Create,
             EditButton,
         },

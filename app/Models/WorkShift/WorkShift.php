@@ -4,6 +4,7 @@ namespace App\Models\WorkShift;
 
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
+use App\Contracts\Structure\PlaceWorkTimeContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftEmployeeContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
@@ -15,6 +16,7 @@ use App\Helpers\WorkShiftHelper;
 use App\Models\City;
 use App\Models\Structure\Place;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -68,6 +70,20 @@ class WorkShift extends Model
             return $withdrawals->last()->{WorkShiftWithdrawalContract::FIELD_TIME};
         }
         return '';
+    }
+
+    public function getStartTimeAttribute()
+    {
+        $startTime = @$this->{WorkShiftContract::FIELD_START_TIME};
+        if (!$startTime) {
+            $workTimes = $this->place->place_work_times;
+            $originalDate = $this->getOriginal(WorkShiftContract::FIELD_DATE);
+            $workShiftDate = Carbon::parse($originalDate);
+            $startTime = $workTimes[$workShiftDate->weekday() - 1][PlaceWorkTimeContract::FIELD_START_TIME];
+            $this->{WorkShiftContract::FIELD_START_TIME} = $startTime;
+            $this->saveQuietly();
+        }
+        return $startTime;
     }
 
     public function getStatsAttribute() {

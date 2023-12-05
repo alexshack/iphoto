@@ -19,6 +19,7 @@
                         <tr>
                             <th class="border-bottom-0">Расход</th>
                             <th class="border-bottom-0">Сумма</th>
+                            <th class="border-bottom">Чек</th>
                             <th class="border-bottom-0">Примечания</th>
                             <th class="border-bottom-0">Действия</th>
                         </tr>
@@ -27,6 +28,9 @@
                         <tr v-for="expense in expenses" :key="expense.id">
                             <td>{{ expenseType(expense) }}</td>
                             <td data-order="500" class="text-right">{{ expense.amount }}₽</td>
+                            <td>
+                                <CheckFilePreview :url="expense.check_file"/>
+                            </td>
                             <td v-html="expense.note"></td>
                             <td>
                                 <div class="d-flex">
@@ -49,12 +53,14 @@
 
 <script>
     import * as expensesApi from '@/db/expenses.js';
+    import CheckFilePreview from '@/components/Media/CheckFilePreview.vue';
     import Create from '@/components/Modals/Expenses/Expenses/Create.vue';
     import EditButton from '@/components/Form/Edit.vue';
 
-    export default{
+    export default {
         name: 'Expenses',
         components: {
+            CheckFilePreview,
             Create,
             EditButton,
         },
@@ -81,7 +87,7 @@
         },
         async mounted() {
             await this.getExpenses();
-        }
+        },
     }
 </script>
 
