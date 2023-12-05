@@ -21,7 +21,8 @@ class Index extends Component
     }
 
     public function submit() {
-        foreach ($this->workTimes as $id => $workTimeData) {
+        foreach ($this->workTimes as $key => $workTimeData) {
+            $id = $workTimeData[PlaceWorkTimeContract::FIELD_ID];
             $workTime = PlaceWorkTime::find($id);
             if ($workTime) {
                 $workTime->{PlaceWorkTimeContract::FIELD_START_TIME} = $workTimeData[PlaceWorkTimeContract::FIELD_START_TIME];

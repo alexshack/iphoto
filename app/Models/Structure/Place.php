@@ -45,7 +45,7 @@ class Place extends Model
                     continue;
                 } else if ($weekDayPass->count() === 0) {
                     $data = [
-                        PlaceWorkTimeContract::FIELD_PLACE_ID => $this->place->{PlaceContract::FIELD_ID},
+                        PlaceWorkTimeContract::FIELD_PLACE_ID => $this->{PlaceContract::FIELD_ID},
                         PlaceWorkTimeContract::FIELD_WEEK_DAY => $weekDayNum,
                         PlaceWorkTimeContract::FIELD_START_TIME => PlaceWorkTimeContract::DEFAULT_WORK_TIME_START,
                     ];
@@ -56,7 +56,8 @@ class Place extends Model
         }
 
         foreach ($workTimes as $workTime) {
-            $workTimesArr[$workTime->{PlaceWorkTimeContract::FIELD_ID}] = [
+            $workTimesArr[$workTime->{PlaceWorkTimeContract::FIELD_WEEK_DAY}] = [
+                PlaceWorkTimeContract::FIELD_ID => $workTime->{PlaceWorkTimeContract::FIELD_ID},
                 'weekDayName' => $workTime->week_day_name,
                 PlaceWorkTimeContract::FIELD_START_TIME => $workTime->{PlaceWorkTimeContract::FIELD_START_TIME},
                 PlaceWorkTimeContract::FIELD_END_TIME => $workTime->{PlaceWorkTimeContract::FIELD_END_TIME},
