@@ -237,6 +237,8 @@ Route::middleware(['web'])->group(function () {
             Route::resource('fcd', 'FCDController');
             Route::get('goods-list', 'GoodsController@index')->name('goods_list');
             Route::get('places', 'PlacesController@getByWorkShiftCity')->name('places_list');
+            Route::get('visitors/all', 'WorkShiftVisitorsController@index')->name('visitors.all');
+            Route::put('visitors/update', 'WorkShiftVisitorsController@update')->name('visitors.update');
 
             Route::group(['prefix' => 'file', 'as' => 'file.'], function () {
                 Route::post('upload', 'UploadController@upload')->name('upload');

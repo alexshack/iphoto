@@ -60,6 +60,7 @@
 														<th class="border-bottom-0">Касса</th>
 														<th class="border-bottom-0">Расходы</th>
 														<th class="border-bottom-0">Зарплата</th>
+                                                        <th class="border-bottom-0">Кол-во посетителей</th>
 														<th class="border-bottom-0">Действия</th>
 													</tr>
 												</thead>
@@ -99,6 +100,9 @@
                                                         </td>
                                                         <td data-order="{{ $workshift->salary }}" class="text-right">
                                                             {{ $workshift->salary }}₽
+                                                        </td>
+                                                        <td>
+                                                            0
                                                         </td>
 														<td>
 															<!-- кнопка редактирования показывается:

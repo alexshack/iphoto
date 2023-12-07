@@ -18,12 +18,16 @@ interface WorkShiftContract  {
     public const FIELD_CLOSED_AT = 'closed_at';
     public const FIELD_CLOSED_BY = 'closed_by';
     public const FIELD_START_TIME = 'start_time';
+    public const FIELD_VISITORS_TOTAL = 'visitors_total';
+    public const FIELD_CHECK_AVERAGE = 'check_average';
 
     public const FILLABLE_FIELDS = [
         self::FIELD_DATE,
         self::FIELD_CITY_ID,
         self::FIELD_PLACE_ID,
         self::FIELD_START_TIME,
+        self::FIELD_VISITORS_TOTAL,
+        self::FIELD_CHECK_AVERAGE,
     ];
 
     public const CASTS = [

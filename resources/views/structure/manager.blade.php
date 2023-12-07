@@ -71,6 +71,9 @@
                                             <li>
                                                 <a href="#calcs" data-toggle="tab">Начисления</a>
                                             </li>
+                                            <li>
+                                                <a href="#pays" data-toggle="tab">Выплаты</a>
+                                            </li>
 										</ul>
 									</div>
 								</div>

@@ -90,6 +90,22 @@
                                 <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.payroll }}₽</h4>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="py-5">
+                                <span class="w-50 font-weight-semibold">Кол-во посетителей</span>
+                            </td>
+                            <td>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.visitors }}</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-5">
+                                <span class="w-50 font-weight-semibold">Средний чек</span>
+                            </td>
+                            <td>
+                                <h4 class="font-weight-semibold text-right mb-0">{{ store.agenda.checkAverage }}₽</h4>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

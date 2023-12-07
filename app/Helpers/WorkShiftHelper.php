@@ -12,6 +12,7 @@ use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftFinalCashDeskContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
 use App\Contracts\WorkShift\WorkShiftPayrollContract;
+use App\Contracts\WorkShift\WorkShiftVisitorContract;
 use App\Contracts\WorkShift\WorkShiftWithdrawalContract;
 use App\Contracts\UserRoleContract;
 use App\Models\Money\Expense;
@@ -22,6 +23,7 @@ use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftFinalCashDesk;
 use App\Models\WorkShift\WorkShiftGood;
+use App\Models\WorkShift\WorkShiftVisitor;
 use App\Models\WorkShift\WorkShiftWithdrawal;
 use Auth;
 use Carbon\Carbon;
@@ -197,7 +199,6 @@ class WorkShiftHelper {
             $access['closable'] = false;
             $errors[] = WorkShiftContract::AGENDA_ERRORS['cash_sums_not_equal'];
         }
-        \Log::info(serialize(compact('withdrawal', 'salesTotal')));
 
         $payroll = 0;
 
@@ -213,6 +214,9 @@ class WorkShiftHelper {
             $status = 'closed';
         }
 
+        $visitors = WorkShiftVisitor::where(WorkShiftVisitorContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
+                ->sum(WorkShiftVisitorContract::FIELD_TOTAL);
+
         $agenda = compact(
             'cashBox',
             'cashBalance',
@@ -225,6 +229,7 @@ class WorkShiftHelper {
             'salesIndividual',
             'salesTotal',
             'status',
+            'visitors',
             'withdrawal'
         );
 

@@ -125,6 +125,10 @@
                     activeManagers: '{{ route("workshift.users.active_managers") }}',
                     city: '{{ route("workshift.users.city", ["cityID" => $workshift->city_id]) }}',
                 },
+                visitors: {
+                    all: '{{ route("workshift.visitors.all") }}',
+                    update: '{{ route("workshift.visitors.update") }}',
+                },
                 withdraw: {
                     all: '{{ route("workshift.withdraw.index") }}',
                     store: '{{ route("workshift.withdraw.store") }}',

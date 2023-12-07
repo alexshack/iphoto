@@ -85,6 +85,11 @@
                 </table>
             </div>
         </div>
+
+        <VisitorsTable/>
+        <WorkshiftVariables/>
+
+
         <CreateEmployee v-if="createAvailable" @submitted="getEmployees"/>
         <CreateWithdraw v-if="createAvailable" @submitted="getWithdraw"/>
     </div>
@@ -102,6 +107,8 @@
     import EditButton from '@/components/Form/Edit.vue';
     import {getUserName} from '@/helpers/employee.js';
     import {toHoursAndMinutes} from '@/helpers/dateTime.js';
+    import VisitorsTable from '@/components/Tables/VisitorsTable.vue';
+    import WorkshiftVariables from '@/components/Tables/WorkshiftVariables.vue';
 
     export default{
         name: 'WorkShiftData',
@@ -109,6 +116,8 @@
             CreateEmployee,
             CreateWithdraw,
             EditButton,
+            VisitorsTable,
+            WorkshiftVariables,
         },
         data: () => {
             return {
