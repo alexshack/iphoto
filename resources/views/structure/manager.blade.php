@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('styles')
+    <!-- INTERNAL Sumoselect css-->
+    <link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
 
-		<!-- INTERNAL Sumoselect css-->
-		<link rel="stylesheet" href="{{URL::asset('assets/plugins/sumoselect/sumoselect.css')}}">
+    <!-- INTERNAL Bootstrap DatePicker css-->
+    <link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 
 @endsection
 
@@ -262,6 +264,9 @@
                                             <div id="calcs" class="tab-pane">
                                                 @livewire('user.calcs', compact('user'))
                                             </div>
+                                            <div id="pays" class="tab-pane">
+                                                @livewire('user.pays', compact('user'))
+                                            </div>
                                             <div class="tab-pane" id="tab2">
                                                 <div class="card-body">
                                                     <h4 class="mb-4 font-weight-bold">Основное</h4>
@@ -412,6 +417,9 @@
 
 		<!-- INTERNAL  Datepicker js -->
 		<script src="{{URL::asset('assets/plugins/date-picker/jquery-ui.js')}}"></script>
+
+		<!-- INTERNAL Bootstrap-Datepicker js-->
+		<script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 
 		<!-- INTERNAL Index js-->
 		<script src="{{URL::asset('assets/js/structure/manager.js')}}"></script>

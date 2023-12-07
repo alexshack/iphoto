@@ -194,6 +194,10 @@ class WorkShiftController extends Controller
             $workShift->{WorkShiftContract::FIELD_SALARY} = (float) $stats['agenda']['payroll'];
         }
 
+        if (isset($stats['agenda']['visitors'])) {
+            $workShift->{WorkShiftContract::FIELD_VISITORS_TOTAL} = (int) $stats['agenda']['visitors'];
+        }
+
         $workShift->save();
 
         if ($stats['access']['closable']) {
@@ -466,5 +470,44 @@ class WorkShiftController extends Controller
         }
 
         return $emptySalaryData;
+    }
+
+    public function updateField(Request $request) {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+
+        $availableFields = array_keys(WorkShiftContract::USER_INPUT_FIELDS);
+
+        foreach ($request->get('fields') as $fieldName => $fieldValue) {
+            if (in_array($fieldName, $availableFields)) {
+                $workShift->{$fieldName} = $fieldValue;
+                try {
+                    $workShift->save();
+                } catch (Exception $e) {
+                    \Log::error($e->getMessage());
+                }
+            }
+        }
+
+        $stats = WorkShiftHelper::recalculateStats($workShift);
+        return response()->json([
+            'data' => $workShift->id,
+            'agenda' => $stats['agenda'],
+        ]);
+    }
+
+    public function getFields(Request $request) {
+        $workShift = $this->workShiftRepo->find($request->get('workshift_id'));
+
+        $fields = WorkShiftContract::USER_INPUT_FIELDS;
+        $data = [];
+        foreach ($fields as $field => $fieldData) {
+            $data[] = [
+                'field' => $field,
+                'label' => WorkShiftContract::ATTRIBUTES[$field],
+                'value' => $workShift->{$field},
+                'fieldData' => $fieldData,
+            ];
+        }
+        return response()->json($data);
     }
 }

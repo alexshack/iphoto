@@ -3,7 +3,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="form-label">Дата</label>
-                <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="">
+                <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="" id="filterDatePickerCalcs">
             </div>
         </div>
         <div class="col-md-3">
@@ -28,7 +28,7 @@
             @foreach($calcs as $calc)
                 <tr>
                     <td>{{ $calc->id }}</td>
-                    <td data-order="<?php strtotime('24.06.2023') ?>">
+                    <td data-order="<?php strtotime($calc->date) ?>">
                         @if($calc->type === 1)
                             {{ $calc->date->format('d.m.Y') }}
                         @else
@@ -63,16 +63,17 @@
 @push('custom-scripts')
 <script>
 function calcFilterCreateInit() {
-    $( ".filterDatePicker" ).datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: "mm.yy",
-        monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
-        dayNamesMin: [ "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" ]
-    }).on('change', function (e) {
-        var data = $(this).val();
+    $('#filterDatePickerCalcs').bootstrapdatepicker({
+        language: 'ru-RU',
+        format: "MM yyyy",
+        viewMode: "months",
+        minViewMode: "months",
+        autoclose: true,
+        endDate: '0d'
+    }).on('changeMonth', function (e) {
         var model = $(this).attr('wire:model');
-        @this.set(model, data);
+        @this.emit('onChangeMonth', e.date.getMonth() + 1, e.date.getFullYear());
+        {{--@this.set(model, data);--}}
     });
 }
 

@@ -48,6 +48,7 @@ interface WorkShiftContract  {
         self::FIELD_EXPENSES => 'Расходы',
         self::FIELD_SALARY => 'Зарплата',
         self::FIELD_START_TIME => 'Начало смены',
+        self::FIELD_CHECK_AVERAGE => 'Средний чек',
     ];
 
     public const AGENDA_ERRORS = [
@@ -55,5 +56,11 @@ interface WorkShiftContract  {
         'fcd_empty' => 'Не заполнены данные по оборудованию',
         'previous_workshift_not_closed' => 'Предыдущая смена не закрыта',
         'withdrawal_not_numeric' => 'Не заполнены суммы снятия кассы',
+    ];
+
+    public const USER_INPUT_FIELDS = [
+        self::FIELD_CHECK_AVERAGE => [
+            'type' => 'number',
+        ],
     ];
 }

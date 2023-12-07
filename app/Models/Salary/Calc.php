@@ -61,6 +61,8 @@ class Calc extends Model
                 $query->whereMonth(CalcsContract::FIELD_DATE, $filterData['month']);
             }
         }
+
+        return $query;
     }
 
     public function setDateAttribute($value) {

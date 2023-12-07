@@ -221,6 +221,8 @@ Route::middleware(['web'])->group(function () {
             Route::post('close', 'WorkShiftController@close')->name('close');
             Route::post('reopen', 'WorkShiftController@reopen')->name('reopen');
             Route::post('preview', 'WorkShiftController@previewPayrolls')->name('preview');
+            Route::get('fields', 'WorkShiftController@getFields')->name('getFields');
+            Route::post('update-field', 'WorkShiftController@updateField')->name('update_field');
             Route::resource('employee', 'WorkshiftEmployeeController');
             Route::get('employee-status', 'EmployeeStatusController@index')->name('employee.status');
             Route::get('employee-position', 'PositionController@index')->name('employee.position');

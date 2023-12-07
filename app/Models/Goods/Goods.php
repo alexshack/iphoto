@@ -39,7 +39,8 @@ class Goods extends Model
         if(!empty($this->{ GoodsContract::FIELD_PLACE_ID })) {
             GoodsPlaceHistory::create([
                 GoodsPlaceHistoryContract::FIELD_PLACE_ID => $this->{ GoodsContract::FIELD_PLACE_ID },
-                GoodsPlaceHistoryContract::FIELD_GOODS_ID => $this->{ GoodsContract::FIELD_ID }
+                GoodsPlaceHistoryContract::FIELD_GOODS_ID => $this->{ GoodsContract::FIELD_ID },
+                GoodsPlaceHistoryContract::FIELD_NOTE => $this->{ GoodsContract::FIELD_NOTE },
            ]);
         }
     }

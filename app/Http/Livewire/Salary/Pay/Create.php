@@ -116,8 +116,8 @@ class Create extends Component
     }
 
     public function submit() {
-        $this->validate();
         $this->pay['type'] = 1;
+        $this->validate();
         $this->pay['agent_id'] = Auth::user()->id;
         $this->setBillingMonth();
         $payData = $this->pay;

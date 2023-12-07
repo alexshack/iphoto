@@ -31,6 +31,18 @@ class PaysRepository implements PaysRepositoryInterface
             ->get();
     }
 
+
+    public function getByUserID($userID, $filterData = [])
+    {
+        $builder = Pay::where(PaysContract::FIELD_USER_ID, $userID)
+            ->filterData($filterData)
+            ->orderBy(PaysContract::FIELD_ID, 'desc');
+
+        return [
+            'total' => $builder->sum(PaysContract::FIELD_AMOUNT),
+            'entries' => $builder->paginate(40),
+        ];
+    }
     public function getByWorkshift(WorkShift $workShift, $type = null) {
         $pays = Pay::where(PaysContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
             ->where(PaysContract::FIELD_SOURCE_TYPE, 2)

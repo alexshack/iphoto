@@ -110,6 +110,15 @@
 																	<span class="custom-switch-description">Да</span>
 																</label>
 															</div>
+
+                                                            <div class="form-group row">
+                                                                <label class="form-label col-md-3">Примечания</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" class="form-control" name="{{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE }}" placeholder="Укажите примечания" value="{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE } ?? old(\App\Contracts\Goods\GoodsContract::FIELD_NOTE) }}">
+                                                                </div>
+                                                            </div>
+
+
                                                             <div class="form-group row">
                                                                 <div class="form-label col-md-3">Точка</div>
                                                                 <div class="col-md-9">
@@ -130,6 +139,7 @@
 																				<th class="border-bottom-0 w-10">Дата</th>
 																				<th class="border-bottom-0">Город</th>
 																				<th class="border-bottom-0">Точка</th>
+                                                                                <th class="border-bottom-0">Примечания</th>
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -139,6 +149,7 @@
                                                                                         <td>{{ $item->created_at->format('d.m.Y') }}</td>
                                                                                         <td>{{ $item->place->city->{ \App\Contracts\Structure\CityContract::FIELD_NAME } }}</td>
                                                                                         <td>{{ $item->place->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } }}</td>
+                                                                                        <td>{{ $item->{ \App\Contracts\Goods\GoodsPlaceHistoryContract::FIELD_NOTE } }}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                             @endif
@@ -157,14 +168,6 @@
 													</div>
 												</div>
 											</div>
-
-											<div class="form-group row">
-												<label class="form-label col-md-3">Примечания</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control" name="{{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE }}" placeholder="Укажите примечания" value="{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE } ?? old(\App\Contracts\Goods\GoodsContract::FIELD_NOTE) }}">
-												</div>
-											</div>
-
                                             @if ($errors->any())
                                                 <div class="alert alert-danger" role="alert">
                                                     <button  class="close" data-dismiss="alert" aria-hidden="true">×</button>

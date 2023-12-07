@@ -217,9 +217,12 @@ class WorkShiftHelper {
         $visitors = WorkShiftVisitor::where(WorkShiftVisitorContract::FIELD_WORK_SHIFT_ID, $workshift->{WorkShiftContract::FIELD_ID})
                 ->sum(WorkShiftVisitorContract::FIELD_TOTAL);
 
+        $checkAverage = $workshift->{WorkShiftContract::FIELD_CHECK_AVERAGE};
+
         $agenda = compact(
             'cashBox',
             'cashBalance',
+            'checkAverage',
             'expensesTotal',
             'expenses',
             'moves',

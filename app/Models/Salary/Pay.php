@@ -65,6 +65,17 @@ class Pay extends Model
     }
 
 
+    public function scopeFilterData($query, $filterData)
+    {
+        if (isset($filterData['year']) && $filterData['year']) {
+            $query->whereYear(PaysContract::FIELD_DATE, $filterData['year']);
+            if (isset($filterData['month']) && $filterData['month']) {
+                $query->whereMonth(PaysContract::FIELD_DATE, $filterData['month']);
+            }
+        }
+
+        return $query;
+    }
     public function setDateAttribute($value) {
         if (strpos($value, '.') !== false) {
             $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');

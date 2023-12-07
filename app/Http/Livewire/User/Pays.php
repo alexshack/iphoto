@@ -2,20 +2,18 @@
 
 namespace App\Http\Livewire\User;
 
-use App\Contracts\Salary\CalcsContract;
 use App\Contracts\UserContract;
 use App\Helpers\Helper;
 use App\Models\User;
-use App\Repositories\Interfaces\CalcsRepositoryInterface;
-use Carbon\Carbon;
+use App\Repositories\Interfaces\PaysRepositoryInterface;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Calcs extends Component
+class Pays extends Component
 {
     use WithPagination;
 
-    private CalcsRepositoryInterface $calcsRepository;
+    private PaysRepositoryInterface $paysRepository;
 
     public User $user;
 
@@ -34,13 +32,14 @@ class Calcs extends Component
         $this->filterDate = "{$monthName} {$year}";
     }
 
-    public function render(CalcsRepositoryInterface $calcsRepository)
+    public function render(PaysRepositoryInterface $paysRepository)
     {
-        $this->calcsRepository = $calcsRepository;
-        $calcs = $this->calcsRepository->getByUserID($this->user->{UserContract::FIELD_ID}, $this->filterData);
-        return view('livewire.user.calcs', [
-            'total' => $calcs['total'],
-            'calcs' => $calcs['entries'],
+        $this->paysRepository = $paysRepository;
+        $pays = $this->paysRepository->getByUserID($this->user->{UserContract::FIELD_ID}, $this->filterData);
+
+        return view('livewire.user.pays', [
+            'total' => $pays['total'],
+            'pays' => $pays['entries'],
         ]);
     }
 

@@ -63,6 +63,8 @@
                     close: '{{ route("workshift.close") }}',
                     preview: '{{ route("workshift.preview") }}',
                     reopen: '{{ route("workshift.reopen") }}',
+                    updateField: '{{ route("workshift.update_field") }}',
+                    fields: '{{ route("workshift.getFields") }}',
                 },
                 calcs: {
                     all: '{{ route("workshift.calc.index") }}',
