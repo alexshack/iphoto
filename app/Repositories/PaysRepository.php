@@ -31,6 +31,18 @@ class PaysRepository implements PaysRepositoryInterface
             ->get();
     }
 
+    public function getAdvancePaymentsForUserAndMonth($userID, $month, $year) {
+        $builder = Pay::whereYear(PaysContract::FIELD_DATE, $year)
+            ->whereMonth(PaysContract::FIELD_DATE, $month)
+            ->where(PaysContract::FIELD_TYPE, 2)
+            ->where(PaysContract::FIELD_USER_ID, $userID);
+
+        return [
+            'total' => $builder->sum(PaysContract::FIELD_AMOUNT),
+            'entries' => $builder->get(),
+        ];
+    }
+
 
     public function getByUserID($userID, $filterData = [])
     {

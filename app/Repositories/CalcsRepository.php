@@ -47,7 +47,7 @@ class CalcsRepository implements CalcsRepositoryInterface
             ->get();
     }
 
-    public function getByUserID($userID, $filterData = [])
+    public function getByUserID($userID, $filterData = [], $paginate = true)
     {
         $builder = Calc::where(CalcsContract::FIELD_USER_ID, $userID)
             ->filterData($filterData)
@@ -55,7 +55,7 @@ class CalcsRepository implements CalcsRepositoryInterface
 
         return [
             'total' => $builder->sum(CalcsContract::FIELD_AMOUNT),
-            'entries' => $builder->paginate(40),
+            'entries' => $paginate ? $builder->paginate(40) : $builder->get(),
         ];
     }
 }

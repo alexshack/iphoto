@@ -212,6 +212,8 @@ Route::middleware(['web'])->group(function () {
         Route::get('money/days/{id}', 'App\Http\Controllers\Money\WorkShiftController@edit')->name('money.days.edit');
         Route::put('money/days/{id}', 'App\Http\Controllers\Money\WorkShiftController@update')->name('money.days.update');
 
+        Route::resource('settings', 'App\Http\Controllers\SettingsController');
+
         Route::group([
             'prefix' => 'workshift',
             'as' => 'workshift.',
