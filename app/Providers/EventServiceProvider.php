@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\WorkShift\WorkShiftEmployee;
+use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftVisitor;
 use App\Observers\WorkShiftEmployeeObserver;
+use App\Observers\WorkShiftGoodObserver;
 use App\Observers\WorkShift\WorkShiftVisitorObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
     protected $observers = [
         WorkShiftEmployee::class => [
             WorkShiftEmployeeObserver::class,
+        ],
+        WorkShiftGood::class => [
+            WorkShiftGoodObserver::class,
         ],
         WorkShiftVisitor::class => [
             WorkShiftVisitorObserver::class,
