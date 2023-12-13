@@ -26,8 +26,17 @@ class CreateCalcTypeRequest extends FormRequest
             CalcsTypeContract::FIELD_NAME => 'required|string|max:255',
             CalcsTypeContract::FIELD_STATUS => 'required|numeric|in:1,2',
             CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION => 'sometimes',
-            CalcsTypeContract::FIELD_SALARY_PAYMENT => 'sometimes'
+            CalcsTypeContract::FIELD_SALARY_PAYMENT => 'sometimes',
+            CalcsTypeContract::FIELD_CUSTOM_DATA => 'required|array|min:1',
         ];
+
+        if ($this->input(CalcsTypeContract::FIELD_TYPE) === 3) {
+            $validation[CalcsTypeContract::FIELD_CUSTOM_DATA . ".employee_statuses"] = 'required|array|min:1';
+        }
+
+        if ($this->input(CalcsTypeContract::FIELD_TYPE) === 5) {
+            $validation[CalcsTypeContract::FIELD_CUSTOM_DATA . ".positions"] = 'required|array|min:1';
+        }
 
         if(isset(CalcsTypeContract::TYPE_LIST[ $this->input( CalcsTypeContract::FIELD_TYPE ) ])) {
             foreach(CalcsTypeContract::TYPE_LIST[ $this->input( CalcsTypeContract::FIELD_TYPE ) ]['fields'] as $item) {
@@ -45,6 +54,7 @@ class CreateCalcTypeRequest extends FormRequest
             CalcsTypeContract::FIELD_STATUS => 'Статус',
             CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION => 'Участие в автоматическом расчете',
             CalcsTypeContract::FIELD_SALARY_PAYMENT => 'Участие в выплате оклада',
+            CalcsTypeContract::FIELD_CUSTOM_DATA => 'Настройки',
         ];
 
         foreach(CalcsTypeContract::TYPE_LIST as $item) {

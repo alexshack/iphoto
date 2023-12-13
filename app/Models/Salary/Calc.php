@@ -62,6 +62,10 @@ class Calc extends Model
             }
         }
 
+        if (isset($filterData['calc_type_id']) && $filterData['calc_type_id']) {
+            $query->where(CalcsContract::FIELD_TYPE_ID, $filterData['calc_type_id']);
+        }
+
         return $query;
     }
 

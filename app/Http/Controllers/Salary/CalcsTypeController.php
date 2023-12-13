@@ -62,6 +62,10 @@ class CalcsTypeController extends Controller
         $positions = $this->employeePositionRepository->getAll();
         $statuses = $this->employeeStatusRepository->getAll();
 
+        //if ($calcsType->{ CalcsTypeContract::FIELD_TYPE } === 3) {
+            //$custom = $calcsType->get
+        //}
+
         return view('salary.calcs-type')->with(['type' => $calcsType, 'positions' => $positions, 'statuses' => $statuses]);
     }
 

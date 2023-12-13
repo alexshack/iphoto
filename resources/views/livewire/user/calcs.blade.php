@@ -6,6 +6,17 @@
                 <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="" id="filterDatePickerCalcs">
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="form-label" for="calc_type_id">Вид начисления</label>
+                <select id="calc_type_id" class="form-control custom-select" name="calc_type_id" wire:model="filterData.calc_type_id">
+                    <option value=""></option>
+                    @foreach($calcTypes as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div class="col-md-3">
             <span>
                 Итого: {{ $total }}

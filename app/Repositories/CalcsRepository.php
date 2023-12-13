@@ -50,12 +50,16 @@ class CalcsRepository implements CalcsRepositoryInterface
     public function getByUserID($userID, $filterData = [], $paginate = true)
     {
         $builder = Calc::where(CalcsContract::FIELD_USER_ID, $userID)
-            ->filterData($filterData)
-            ->orderBy(CalcsContract::FIELD_ID, 'desc');
+            ->filterData($filterData);
+
+        $entriesBuilder = clone $builder;
 
         return [
+            'ids' => $builder->select(CalcsContract::FIELD_TYPE_ID)->distinct()->get()->map(function ($item) {
+                return $item->{ CalcsContract::FIELD_TYPE_ID };
+            })->toArray(),
             'total' => $builder->sum(CalcsContract::FIELD_AMOUNT),
-            'entries' => $paginate ? $builder->paginate(40) : $builder->get(),
+            'entries' => $paginate ? $entriesBuilder->orderBy(CalcsContract::FIELD_ID, 'desc')->paginate(40) : $entriesBuilder->get(),
         ];
     }
 }

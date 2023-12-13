@@ -74,6 +74,13 @@ class Pay extends Model
             }
         }
 
+        if (isset($filterData['billing_year']) && $filterData['billing_year']) {
+            $query->whereYear(PaysContract::FIELD_DATE, $filterData['billing_year']);
+            if (isset($filterData['billing_month']) && $filterData['billing_month']) {
+                $query->whereMonth(PaysContract::FIELD_DATE, $filterData['billing_month']);
+            }
+        }
+
         return $query;
     }
     public function setDateAttribute($value) {

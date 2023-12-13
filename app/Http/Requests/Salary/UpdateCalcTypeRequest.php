@@ -26,8 +26,18 @@ class UpdateCalcTypeRequest extends FormRequest
             CalcsTypeContract::FIELD_NAME => 'required|string|max:255',
             CalcsTypeContract::FIELD_STATUS => 'required|numeric|in:1,2',
             CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION => 'sometimes|numeric|max:1',
-            CalcsTypeContract::FIELD_SALARY_PAYMENT => 'sometimes'
+            CalcsTypeContract::FIELD_SALARY_PAYMENT => 'sometimes',
+            CalcsTypeContract::FIELD_CUSTOM_DATA => 'required|array|min:1',
         ];
+
+        if ($this->input(CalcsTypeContract::FIELD_TYPE) === 3) {
+            $validation[CalcsTypeContract::FIELD_CUSTOM_DATA . ".employee_statuses"] = 'required|array|min:1';
+        }
+
+        if ($this->input(CalcsTypeContract::FIELD_TYPE) === 5) {
+            $validation[CalcsTypeContract::FIELD_CUSTOM_DATA . ".positions"] = 'required|array|min:1';
+        }
+
 
         if(isset(CalcsTypeContract::TYPE_LIST[ $this->input( CalcsTypeContract::FIELD_TYPE ) ])) {
             foreach(CalcsTypeContract::TYPE_LIST[ $this->input( CalcsTypeContract::FIELD_TYPE ) ]['fields'] as $item) {
@@ -56,5 +66,14 @@ class UpdateCalcTypeRequest extends FormRequest
         }
 
         return $attributes;
+    }
+
+    protected function prepareForValidation()
+    {
+        $data = [];
+        if (!is_numeric($this->input(CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION))) {
+            $data[CalcsTypeContract::FIELD_AUTOMATIC_CALCULATION] = 0;
+        }
+        $this->merge($data);
     }
 }

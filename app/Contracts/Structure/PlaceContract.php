@@ -49,7 +49,6 @@ interface PlaceContract
         self::FIELD_STATUS => 'Статус',
         self::FIELD_CITY_ID => 'Город',
         self::FIELD_OPENING_DATE => 'Дата открытия',
-        self::FIELD_WORK_SHIFT_START_TIME => ''
     ];
 
     public const DEMO_DATA = [

@@ -237,7 +237,7 @@
 											<div class="form-group row">
 												<div class="form-label col-md-3">Участвует в выплате оклада</div>
 												<label class="custom-switch col-md-9">
-													<input type="checkbox" name="salary_payment" class="custom-switch-input" {{ (isset($type) && (!empty($type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_SALARY_PAYMENT })) ) ? 'checked' : '' }}>
+													<input type="checkbox" name="salary_payment" class="custom-switch-input" {{ (isset($type) && (!empty($type->{ \App\Contracts\Salary\CalcsTypeContract::FIELD_SALARY_PAYMENT })) ) ? 'checked="checked"' : '' }}>
 													<span class="custom-switch-indicator custom-switch-indicator-xl"></span>
 													<span class="custom-switch-description">Да</span>
 												</label>

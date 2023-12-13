@@ -38,4 +38,10 @@ class CalcsTypeRepository implements CalcsTypeRepositoryInterface
             ->orderBy(CalcsTypeContract::FIELD_ID, 'desc')
             ->first();
     }
+
+    public function getByIDs($arr = [])
+    {
+        return CalcsType::whereIn(CalcsTypeContract::FIELD_ID, $arr)
+            ->get();
+    }
 }

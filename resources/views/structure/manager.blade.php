@@ -70,12 +70,14 @@
 										<ul class="nav panel-tabs">
 											<li class="ml-4"><a href="#tab1" class="active"  data-toggle="tab">Личные данные</a></li>
 											<li><a href="#tab2"  data-toggle="tab">Рабочие данные</a></li>
+                                            @if(isset($user) && $user)
                                             <li>
                                                 <a href="#calcs" data-toggle="tab">Начисления</a>
                                             </li>
                                             <li>
                                                 <a href="#pays" data-toggle="tab">Выплаты</a>
                                             </li>
+                                            @endif
 										</ul>
 									</div>
 								</div>
@@ -261,12 +263,14 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            @if(isset($user) && $user)
                                             <div id="calcs" class="tab-pane">
                                                 @livewire('user.calcs', compact('user'))
                                             </div>
                                             <div id="pays" class="tab-pane">
                                                 @livewire('user.pays', compact('user'))
                                             </div>
+                                            @endif
                                             <div class="tab-pane" id="tab2">
                                                 <div class="card-body">
                                                     <h4 class="mb-4 font-weight-bold">Основное</h4>
@@ -350,7 +354,9 @@
                                                         </div>
                                                     </div>
 
-                                                    @livewire('user.salary-data.index', compact('user'))
+                                                    @if(isset($user) && $user)
+                                                        @livewire('user.salary-data.index', compact('user'))
+                                                    @endif
                                                 </div>
                                             </div>
 

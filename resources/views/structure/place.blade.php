@@ -133,8 +133,10 @@
 							</div>
 						</div>
 						<!-- End Row-->
+                        @if(isset($place) && $place)
                         @livewire('place.place-goods', compact('place'))
                         @livewire('place.place-work-time.index', compact('place'))
+                        @endif
 
 
 @endsection('content')
