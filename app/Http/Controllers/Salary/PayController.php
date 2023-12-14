@@ -36,4 +36,9 @@ class PayController extends Controller
         $pay = $this->paysRepository->find($id);
         return view('salary.pay', compact('pay'));
     }
+
+    public function payLists()
+    {
+        return view('salary.pay-lists');
+    }
 }

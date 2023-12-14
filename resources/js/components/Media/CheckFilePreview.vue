@@ -1,13 +1,13 @@
 <template>
     <div class="check-file-preview">
         <div @click="openPopup" ref="popupToggler">
-            <img class="preview-image" :src="url" alt="" v-if="fileType === 'image'">
+            <img class="preview-image" :src="fileUrl" alt="" v-if="fileType === 'image'">
             <img class="preview-image" src="/assets/images/icons/pdf.png" alt="" v-if="fileType === 'pdf'">
         </div>
         <div v-if="showPopup">
             <div class="preview-popup-wrapper">
                 <div class="preview-popup" ref="popup">
-                    <img :src="url" alt="" v-if="fileType === 'image'">
+                    <img :src="fileUrl" alt="" v-if="fileType === 'image'">
                     <div class="pdf-preview" v-if="fileType === 'pdf'">
                         <span v-loading="loading"></span>
                         <canvas :id="pdfCanvasID"></canvas>
@@ -34,6 +34,14 @@
                     fileType = 'pdf';
                 }
                 return fileType;
+            },
+            fileUrl() {
+                let url = this.url;
+                const uploadsPath = import.meta.env.VITE_UPLOADS_PATH;
+                if (uploadsPath !== 'storage') {
+                    url = url.replace('storage', uploadsPath);
+                }
+                return url;
             },
         },
         data: () => {

@@ -101,6 +101,11 @@
 								<ul class="slide-menu">
 									<li><a href="{{url('salary/calcs')}}" class="slide-item"> Начисления</a></li>
 									<li><a href="{{url('salary/pays')}}" class="slide-item"> Выплаты</a></li>
+                                    <li>
+                                        <a class="slide-item" href="{{ route('admin.salary.pays_list') }}">
+                                            Списки на зп и оклад
+                                        </a>
+                                    </li>
 								</ul>
 							</li>
 							<li class="slide">

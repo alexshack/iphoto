@@ -81,6 +81,18 @@ class Pay extends Model
             }
         }
 
+        if (isset($filterData['issued'])) {
+            $query->where(PaysContract::FIELD_ISSUED, (boolean) $filterData['issued']);
+        }
+
+        if (isset($filterData['type'])) {
+            $query->where(PaysContract::FIELD_TYPE, $filterData['type']);
+        }
+
+        if (isset($filterData['calcType']) && $filterData['calcType']) {
+            $query->where(PaysContract::FIELD_TYPE_ID, $filterData['calcType']);
+        }
+
         return $query;
     }
     public function setDateAttribute($value) {

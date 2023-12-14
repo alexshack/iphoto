@@ -140,6 +140,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('salary/calc-type/add', 'App\Http\Controllers\Salary\CalcsTypeController@store')->name('admin.salary.calc_type.store');
             Route::get('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@edit')->name('admin.salary.calc_type.edit');
             Route::post('salary/calc-types/{id}', 'App\Http\Controllers\Salary\CalcsTypeController@update')->name('admin.salary.calc_type.update');
+            Route::get('salary/pay-lists', 'App\Http\Controllers\Salary\PayController@payLists')->name('admin.salary.pays_list');
 
             /**
              * Товарный учет

@@ -26,8 +26,7 @@ class PaysRepository implements PaysRepositoryInterface
     }
 
     public function getByFilter($data): Collection {
-        return Pay::whereYear(PaysContract::FIELD_DATE, $data['year'])
-            ->whereMonth(PaysContract::FIELD_DATE, $data['month'])
+        return Pay::filterData($data)
             ->get();
     }
 
@@ -69,5 +68,16 @@ class PaysRepository implements PaysRepositoryInterface
             'user.personalData:'. UserContract::FIELD_ID . ',' . UserPersonalDataContract::FIELD_USER_ID . ',' . UserPersonalDataContract::FIELD_LAST_NAME . ',' .UserPersonalDataContract::FIELD_FIRST_NAME . ',' .UserPersonalDataContract::FIELD_MIDDLE_NAME,
         );
         return $pays->get();
+    }
+
+    public function getForLists($filterData, $paginate = false)
+    {
+        $builder = Pay::filterData($filterData);
+
+        if ($paginate) {
+            return $builder->paginate(max(40, $paginate));
+        } else {
+            return $builder->get();
+        }
     }
 }
