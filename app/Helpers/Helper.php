@@ -67,6 +67,10 @@ class Helper
 
     public static function getEntityEditRoute($entity) {
         $route = '';
+        if (!$entity) {
+            return $route;
+        }
+
         switch (get_class($entity)) {
         case Place::class:
             $route = route('admin.structure.places.edit', ['id' => $entity->id]);
