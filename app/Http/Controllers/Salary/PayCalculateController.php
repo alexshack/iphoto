@@ -79,6 +79,7 @@ class PayCalculateController extends Controller
         foreach ($users as $user) {
             $amount = $this->calculateUsersTotals($user, $month, $year);
             $workData = $user->getWorkData();
+            $cityID = $workData->{UserWorkDataContract::FIELD_CITY_ID} ?? 1;
             if ($amount > 0) {
                 foreach ($calcTypesForSalary as $calcTypeID => $dateField) {
                     $data = [
@@ -87,7 +88,7 @@ class PayCalculateController extends Controller
                         PaysContract::FIELD_TYPE_ID => $calcTypeID,
                         PaysContract::FIELD_TYPE => 1,
                         PaysContract::FIELD_AGENT_ID => $admin->{UserContract::FIELD_ID},
-                        PaysContract::FIELD_CITY_ID => $workData->{UserWorkDataContract::FIELD_CITY_ID},
+                        PaysContract::FIELD_CITY_ID => $cityID,
                         PaysContract::FIELD_AMOUNT => $amount / 2,
                         PaysContract::FIELD_SOURCE_ID => $admin->{UserContract::FIELD_ID},
                         PaysContract::FIELD_SOURCE_TYPE => 1,
@@ -102,7 +103,7 @@ class PayCalculateController extends Controller
                     PaysContract::FIELD_TYPE_ID => $salaryLastMonthDebtOption,
                     PaysContract::FIELD_TYPE => 1,
                     PaysContract::FIELD_AGENT_ID => $admin->{UserContract::FIELD_ID},
-                    PaysContract::FIELD_CITY_ID => $workData->{UserWorkDataContract::FIELD_CITY_ID},
+                    PaysContract::FIELD_CITY_ID => $cityID,
                     PaysContract::FIELD_AMOUNT => 0,
                     PaysContract::FIELD_SOURCE_ID => $admin->{UserContract::FIELD_ID},
                     PaysContract::FIELD_USER_ID => $user->{UserContract::FIELD_ID},

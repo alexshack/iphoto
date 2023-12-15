@@ -26,8 +26,8 @@ class Pays extends Component
     public $filterDate = '';
 
     public function onChangeMonth($month, $year) {
-        $this->filterData['year'] = $year;
-        $this->filterData['month'] = $month;
+        $this->filterData['billing_year'] = $year;
+        $this->filterData['billing_month'] = $month;
         $monthName = Helper::getMonthName($month);
         $this->filterDate = "{$monthName} {$year}";
     }

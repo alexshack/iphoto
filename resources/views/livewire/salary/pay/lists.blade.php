@@ -20,23 +20,33 @@
 
     </div>
     <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Дата</label>
+                    <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="" id="filterDatePickerPays">
+                </div>
+            </div>
+        </div>
         @if(!$isEmptyLists)
-        <nav>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#salary10">
+        <nav class="tab-menu-heading hremp-tabs p-0">
+            <div class="tabs-menu1">
+            <ul class="nav panel-tabs-tabs">
+                <li class="ml-4">
+                    <a class="active" href="#salary10" data-toggle="tab">
                         Список на зп
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#salary25">
+                <li>
+                    <a href="#salary25" data-toggle="tab">
                         Список на оклад
                     </a>
                 </li>
             </ul>
+            </div>
         </nav>
         <div class="tab-content">
-            <div class="tab-pane fade active show" role="tabpanel" aria-labeledby="tab">
+            <div class="tab-pane active" id="salary10" role="tabpanel" aria-labeledby="tab">
                 <div class="table-responsive">
                     <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                         <thead>
@@ -57,7 +67,7 @@
                     {{ $data['salary10']->links() }}
                 </div>
             </div>
-            <div class="tab-pane fade" role="tabpanel" aria-labeledby="tab">
+            <div class="tab-pane fade" id="salary25" role="tabpanel" aria-labeledby="tab">
                 <div class="table-responsive">
                     <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                         <thead>
@@ -82,3 +92,33 @@
         @endif
     </div>
 </div>
+
+@push('custom-scripts')
+<script>
+function payFilterCreateInit() {
+    $('#filterDatePickerPays').bootstrapdatepicker({
+        language: 'ru-RU',
+        format: "MM yyyy",
+        viewMode: "months",
+        minViewMode: "months",
+        autoclose: true,
+        endDate: '0d'
+    }).on('changeMonth', function (e) {
+        var model = $(this).attr('wire:model');
+        @this.emit('onChangeMonth', e.date.getMonth() + 1, e.date.getFullYear());
+    });
+}
+
+$(document).ready(function() {
+    payFilterCreateInit();
+    window.livewire.on('updatedComponent',()=>{
+        payFilterCreateInit();
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    window.Livewire.hook('component.initialized', (component) => {
+        payFilterCreateInit();
+    });
+});
+</script>
+@endpush

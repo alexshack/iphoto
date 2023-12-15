@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Salary\Pay;
 
+use App\Contracts\SettingContract;
+use App\Helpers\Helper;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
 use App\Repositories\Interfaces\SettingsRepositoryInterface;
 use Carbon\Carbon;
@@ -16,12 +18,24 @@ class Lists extends Component
     protected SettingsRepositoryInterface $settingRepository;
 
     public $filterData = [];
+    public $filterDate = '';
     public $isEmptyLists = false;
     public $isInProcess = false;
+    public $listeners = [
+        'onChangeMonth',
+    ];
 
     public function generatePays()
     {
         $this->isInProcess = true;
+    }
+
+    public function onChangeMonth($month, $year) {
+        $this->filterData['billing_year'] = $year;
+        $this->filterData['billing_month'] = $month;
+        $monthName = Helper::getMonthName($month);
+        $this->filterDate = "{$monthName} {$year}";
+        $this->emit('$refresh');
     }
 
     public function render(
@@ -34,11 +48,21 @@ class Lists extends Component
 
         $data = [];
 
-        $now = Carbon::now();
-        $deltaTime = $now->subMonth();
+        $year = null;
+        $month = null;
+        if (isset($this->filterData['billing_month']) && isset($this->filterData['billing_year'])) {
+            $month = $this->filterData['billing_month'];
+            $year = $this->filterData['billing_year'];
+        } else {
+            $now = Carbon::now();
+            $deltaTime = $now->subMonth();
+            $month = $deltaTime->month;
+            $year = $deltaTime->year;
+        }
+
         $filterData = [
-            'billing_month' => $deltaTime->month,
-            'billing_year' => $deltaTime->year,
+            'billing_month' => $month,
+            'billing_year' => $year,
             'type' => 1,
         ];
 
@@ -46,6 +70,7 @@ class Lists extends Component
         if ($pays->total() === 0) {
             $this->isEmptyLists = true;
         } else {
+            $this->isEmptyLists = false;
             $salary10 = $this->settingRepository->get('salary_10');
             $salary10Option = $salary10 && $salary10->{SettingContract::FIELD_VALUE} ? $salary10->{SettingContract::FIELD_VALUE} : null;
             $salary25 = $this->settingRepository->get('salary_25');

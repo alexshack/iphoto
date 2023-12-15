@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Salary\PayCalculateController;
+use App\Http\Controllers\Service\ExcelGeneratorController;
 use Illuminate\Console\Command;
 
 class SalaryCalculate extends Command
@@ -30,5 +31,6 @@ class SalaryCalculate extends Command
         $year = 2023;
 
         app(PayCalculateController::class)->calculatePayments($month, $year);
+        app(ExcelGeneratorController::class)->generatePaysLists($month, $year);
     }
 }

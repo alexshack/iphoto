@@ -16,3 +16,13 @@
         </div>
     </div>
 @endsection
+
+@section('styles')
+    <!-- INTERNAL Bootstrap DatePicker css-->
+    <link rel="stylesheet" href="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
+@endsection
+
+@section('scripts')
+    <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src="{{URL::asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+@endsection
