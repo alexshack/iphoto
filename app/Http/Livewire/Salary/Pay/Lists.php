@@ -3,9 +3,15 @@
 namespace App\Http\Livewire\Salary\Pay;
 
 use App\Contracts\SettingContract;
+Use App\Contracts\Service\PaysGeneratorContract;
+use App\Contracts\UserContract;
 use App\Helpers\Helper;
+use App\Jobs\SalaryListsGeneratorJob;
+use App\Models\Service\PaysGenerator;
+use App\Repositories\Interfaces\PaysGeneratorRepositoryInterface;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
 use App\Repositories\Interfaces\SettingsRepositoryInterface;
+use Auth;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,6 +20,7 @@ class Lists extends Component
 {
     use WithPagination;
 
+    protected PaysGeneratorRepositoryInterface $paysGeneratorRepository;
     protected PaysRepositoryInterface $paysRepository;
     protected SettingsRepositoryInterface $settingRepository;
 
@@ -22,6 +29,7 @@ class Lists extends Component
     public $isEmptyLists = false;
     public $isInProcess = false;
     public $listeners = [
+        'checkSalaryGenerationProcess' => '$refresh',
         'onChangeMonth',
     ];
 
@@ -39,10 +47,12 @@ class Lists extends Component
     }
 
     public function render(
+        PaysGeneratorRepositoryInterface $paysGeneratorRepository,
         PaysRepositoryInterface $paysRepository,
         SettingsRepositoryInterface $settingRepository
     )
     {
+        $this->paysGeneratorRepository = $paysGeneratorRepository;
         $this->paysRepository = $paysRepository;
         $this->settingRepository = $settingRepository;
 
@@ -82,6 +92,20 @@ class Lists extends Component
             $filterData25 = array_merge($filterData, ['calcType' => $salary25Option]);
             $data['salary25'] = $this->paysRepository->getForLists($filterData25, 40);
         }
+
+        $generator = $this->paysGeneratorRepository->get($month, $year);
+        if (!$generator) {
+            $generator = PaysGenerator::create([
+                PaysGeneratorContract::FIELD_MONTH => $month,
+                PaysGeneratorContract::FIELD_YEAR => $year,
+                PaysGeneratorContract::FIELD_USER_ID => Auth::user()->{UserContract::FIELD_ID},
+            ]);
+            SalaryListsGeneratorJob::dispatch($generator);
+        }
+        if (!$generator->{PaysGeneratorContract::FIELD_COMPLETED_AT}) {
+            $this->isInProcess = true;
+        }
+        $data['generator'] = $generator;
 
         return view('livewire.salary.pay.lists', compact('data'));
     }

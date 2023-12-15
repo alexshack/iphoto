@@ -100,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(WorkShiftPayrollRepositoryInterface::class, WorkShiftPayrollRepository::class);
         $this->app->bind(UserSalaryDataRepositoryInterface::class, UserSalaryDataRepository::class);
         $this->app->bind(SettingsRepositoryInterface::class, SettingsRepository::class);
+        $this->app->bind(PaysGeneratorRepositoryInterface::class, PaysGeneratorRepository::class);
     }
 
     /**

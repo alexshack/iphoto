@@ -5,8 +5,10 @@ namespace App\Observers;
 use App\Contracts\Goods\GoodsContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Contracts\WorkShift\WorkShiftGoodsContract;
+use App\Contracts\WorkShift\WorkShiftVisitorContract;
 use App\Models\WorkShift\WorkShift;
 use App\Models\WorkShift\WorkShiftGood;
+use App\Models\WorkShift\WorkShiftVisitor;
 
 class WorkShiftGoodObserver
 {
@@ -69,7 +71,15 @@ class WorkShiftGoodObserver
 
         $visitorsTotal = $workShift->{WorkShiftContract::FIELD_VISITORS_TOTAL};
         if (!$visitorsTotal <= 1) {
-            $visitorsTotal = 1;
+            $visitorsSum = WorkShiftVisitor::where(WorkShiftVisitorContract::FIELD_WORK_SHIFT_ID, $workShiftID)
+                ->sum(WorkShiftVisitorContract::FIELD_TOTAL);
+            $workShift->{WorkShiftContract::FIELD_VISITORS_TOTAL} = $visitorsSum;
+            $workShift->saveQuietly();
+            if ($visitorsSum > 1) {
+                $visitorsTotal = $visitorsSum;
+            } else {
+                $visitorsTotal = 1;
+            }
         }
         $checkAverage = round($itemsTotal / $visitorsTotal, 2);
         WorkShift::where(WorkShiftContract::FIELD_ID, $workShiftID)->update([

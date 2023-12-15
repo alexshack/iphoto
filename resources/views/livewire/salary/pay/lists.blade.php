@@ -5,7 +5,7 @@
     <div class="card-header d-flex justify-content-between">
         <h4 class="card-title">Списки</h4>
         <div class="card-actions">
-            @if($isInProcess && $isEmptyLists)
+            @if($isInProcess)
                 <div class="btn btn-primary">
                     <span class="spinner-border spinner-border-sm"></span>
                     Создание списков
@@ -92,6 +92,14 @@
         @endif
     </div>
 </div>
+
+@if($isInProcess)
+<script>
+setInterval(function () {
+    @this.emit('checkSalaryGenerationProcess');
+}, 5000);
+</script>
+@endif
 
 @push('custom-scripts')
 <script>

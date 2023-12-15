@@ -10,9 +10,9 @@ class PaysGeneratorRepository implements PaysGeneratorRepositoryInterface
 {
     public function get($month, $year)
     {
-        return PaysGenerator::where(PaysGenerator::FIELD_MONTH, $month)
-            ->where(PaysGenerator::FIELD_YEAR, $year)
-            ->orderBy(PaysGenerator::FIELD_ID, 'desc')
+        return PaysGenerator::where(PaysGeneratorContract::FIELD_MONTH, $month)
+            ->where(PaysGeneratorContract::FIELD_YEAR, $year)
+            ->orderBy(PaysGeneratorContract::FIELD_ID, 'desc')
             ->first();
     }
 }
