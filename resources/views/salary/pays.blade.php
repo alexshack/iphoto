@@ -76,10 +76,8 @@
 													<tr>
                                                         <td>{{ $pay->id }}</td>
 														<td data-order="<?php strtotime('05.07.2023') ?>">
-                                                            <a href="/money/days/0">
-                                                                05.07.2023
-                                                            </a>
-                                                        </td><!-- ссылка на смену ставится, только если Вид выплаты = Аванс и Источник = Точка  -->
+                                                            {{ $pay->created_at->format('d.m.Y') }}
+                                                        </td>
 														<td>
                                                             {{ $pay->calcType ? $pay->calcType->name : '' }}
                                                         </td><!-- Всего три типа: Аванс, Оклад, Зарплата -->

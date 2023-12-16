@@ -33,8 +33,8 @@ class ExcelGeneratorController extends Controller
         ];
 
         $filterData = [
-            'month' => $month,
-            'year' => $year,
+            'billing_month' => $month,
+            'billing_year' => $year,
         ];
 
         $billingMonth = "{$year}-{$month}-01";
@@ -46,10 +46,11 @@ class ExcelGeneratorController extends Controller
             $salaryPays = $this->paysRepository->getForLists(array_merge($filterData, ['calcType' => $optionValue]));
             $items = [];
             foreach ($salaryPays as $payItem) {
-                $items[] = [
+                $item = [
                     $payItem->user->name,
                     $payItem->{PaysContract::FIELD_AMOUNT},
                 ];
+                $items[] = $item;
             }
             //$fileName = "excel-files/{$year}/{$month}/$optionValue.xlsx";
             $fileName = $this->getSalaryPaysFilePath($year, $month, $option);
@@ -64,6 +65,7 @@ class ExcelGeneratorController extends Controller
         ];
 
         $data = array_merge($header, $items);
+        file_put_contents($fileName . ".json", json_encode($data));
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray($data);

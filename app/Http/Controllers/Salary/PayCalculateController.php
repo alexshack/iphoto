@@ -41,15 +41,19 @@ class PayCalculateController extends Controller
 
     public function calculatePayments($month = null, $year = null)
     {
-        $calcs = [];
-        $pays = [];
-
         $now = Carbon::now();
         if (!$month || !$year) {
             $deltaTime = $now->subMonth();
             $month = $deltaTime->month;
             $year = $deltaTime->year;
         }
+
+        if ($month === $now->month && $year === $now->year) {
+            return;
+        }
+
+        $calcs = [];
+        $pays = [];
 
         $users = $this->userRepository->getAll();
 
@@ -96,7 +100,7 @@ class PayCalculateController extends Controller
                     ];
                     $pays[] = $data;
                 }
-            } else {
+            } else if ($amount < 0) {
                 $data = [
                     PaysContract::FIELD_DATE => $date10,
                     PaysContract::FIELD_BILLING_MONTH => $billingMonth,
@@ -111,19 +115,21 @@ class PayCalculateController extends Controller
                 ];
                 $pays[] = $data;
 
-                if ($amount < 0) {
-                    $calcData = [
-                        CalcsContract::FIELD_DATE => $date10,
-                        CalcsContract::FIELD_TYPE_ID => $salaryLastMonthDebtOption,
-                        CalcsContract::FIELD_CITY_ID => $workData->{UserWorkDataContract::FIELD_CITY_ID},
-                        CalcsContract::FIELD_USER_ID => $user->{UserContract::FIELD_ID},
-                        CalcsContract::FIELD_AGENT_ID => $admin->{UserContract::FIELD_ID},
-                        CalcsContract::FIELD_AMOUNT => $amount,
-                    ];
-                    $calcs[] = $calcData;
-                }
+                $calcData = [
+                    CalcsContract::FIELD_DATE => "{$now->day}.{$month}.{$year}",
+                    CalcsContract::FIELD_TYPE_ID => $salaryLastMonthDebtOption,
+                    CalcsContract::FIELD_CITY_ID => $workData->{UserWorkDataContract::FIELD_CITY_ID},
+                    CalcsContract::FIELD_USER_ID => $user->{UserContract::FIELD_ID},
+                    CalcsContract::FIELD_AGENT_ID => $admin->{UserContract::FIELD_ID},
+                    CalcsContract::FIELD_AMOUNT => $amount,
+                    CalcsContract::FIELD_TYPE => 5,
+                    CalcsContract::FIELD_PLACE_ID => 1,
+                ];
+                $calcs[] = $calcData;
             }
         }
+
+        @file_put_contents(storage_path() ."/app/public/data-{$month}.json" , json_encode(compact('pays', 'calcs')));
 
         foreach ($pays as $payData) {
             Pay::create($payData);

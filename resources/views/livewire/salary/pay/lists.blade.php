@@ -27,6 +27,18 @@
                     <input type="text" wire:loading.attr="disabled" wire:model="filterDate" class="form-control filterDatePicker" placeholder="MM.YYYY" value="" id="filterDatePickerPays">
                 </div>
             </div>
+            @if(count($lists) > 0)
+            <div class="col-md-4">
+                <div class="d-flex">
+                    @foreach($lists as $title => $listURL)
+                        <a class="btn btn-success mr-1" target="blank" href="{{ $listURL }}">
+                            <span class="feather feather-download"></span>
+                            {{ $title }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
         @if(!$isEmptyLists)
         <nav class="tab-menu-heading hremp-tabs p-0">
@@ -91,15 +103,14 @@
         </div>
         @endif
     </div>
+    @if($isInProcess)
+        <script>
+        setTimeout(function () {
+            @this.emit('checkSalaryGenerationProcess');
+        }, 5000);
+        </script>
+    @endif
 </div>
-
-@if($isInProcess)
-<script>
-setInterval(function () {
-    @this.emit('checkSalaryGenerationProcess');
-}, 5000);
-</script>
-@endif
 
 @push('custom-scripts')
 <script>

@@ -31,7 +31,9 @@ class Lists extends Component
     public $listeners = [
         'checkSalaryGenerationProcess' => '$refresh',
         'onChangeMonth',
+        'refreshComponent' => '$refresh',
     ];
+    public $lists = [];
 
     public function generatePays()
     {
@@ -43,7 +45,7 @@ class Lists extends Component
         $this->filterData['billing_month'] = $month;
         $monthName = Helper::getMonthName($month);
         $this->filterDate = "{$monthName} {$year}";
-        $this->emit('$refresh');
+        $this->emit('refreshComponent');
     }
 
     public function render(
@@ -52,6 +54,9 @@ class Lists extends Component
         SettingsRepositoryInterface $settingRepository
     )
     {
+        $this->isInProcess = false;
+        $this->lists = false;
+        $this->isEmptyLists = false;
         $this->paysGeneratorRepository = $paysGeneratorRepository;
         $this->paysRepository = $paysRepository;
         $this->settingRepository = $settingRepository;
@@ -60,14 +65,16 @@ class Lists extends Component
 
         $year = null;
         $month = null;
+        $now = Carbon::now();
         if (isset($this->filterData['billing_month']) && isset($this->filterData['billing_year'])) {
             $month = $this->filterData['billing_month'];
             $year = $this->filterData['billing_year'];
         } else {
-            $now = Carbon::now();
             $deltaTime = $now->subMonth();
             $month = $deltaTime->month;
             $year = $deltaTime->year;
+            $monthName = Helper::getMonthName($month);
+            $this->filterDate = "{$monthName} {$year}";
         }
 
         $filterData = [
@@ -77,6 +84,7 @@ class Lists extends Component
         ];
 
         $pays = $this->paysRepository->getForLists($filterData, true);
+        $this->lists = [];
         if ($pays->total() === 0) {
             $this->isEmptyLists = true;
         } else {
@@ -94,7 +102,7 @@ class Lists extends Component
         }
 
         $generator = $this->paysGeneratorRepository->get($month, $year);
-        if (!$generator) {
+        if (!$generator && $this->isEmptyLists) {
             $generator = PaysGenerator::create([
                 PaysGeneratorContract::FIELD_MONTH => $month,
                 PaysGeneratorContract::FIELD_YEAR => $year,
@@ -104,6 +112,13 @@ class Lists extends Component
         }
         if (!$generator->{PaysGeneratorContract::FIELD_COMPLETED_AT}) {
             $this->isInProcess = true;
+        } else {
+            if ($month != $now->month || $year != $now->year) {
+                $this->lists = [
+                    '10-го' => asset("storage/salary-excel-files/$year/$month/salary_10.xlsx"),
+                    '25-го' => asset("storage//salary-excel-files/$year/$month/salary_25.xlsx"),
+                ];
+            }
         }
         $data['generator'] = $generator;
 
