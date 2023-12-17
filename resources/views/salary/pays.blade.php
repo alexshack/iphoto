@@ -37,9 +37,6 @@
 									</div>
 									<div class="btn-list">
 										<a href="{{ route('admin.salary.pay.create') }}" class="btn btn-primary mr-3">Добавить выплату</a>
-										<!--Кнопки списков доступны только менеджеру-->
-										<a href="" data-target="#pays-list-oklad" data-toggle="modal" class="btn btn-primary mr-3">Список на оклад</a>
-										<a href="" data-target="#pays-list-zp" data-toggle="modal" class="btn btn-primary mr-3">Список на зарплату</a>
 									</div>
 								</div>
 							</div>
@@ -127,6 +124,7 @@
                                                     @endforeach
 												</tbody>
 											</table>
+                                            {{ $pays->links() }}
 										</div>
 									</div>
 								</div>
@@ -135,134 +133,6 @@
 						<!-- End Row-->
 
 @endsection('content')
-
-@section('modals')
-
-			<!--Oklad Modal -->
-			<!--Автоматически заполняются списком всех сотрудников по условиям:
-					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца
-				Сумма по сотруднику заполняется из суммы всех начислений по условиям:
-					Начисление.Сотрудник = Сотрудник и Начисление.УчаствуетВвыплатеОклада = Да и Начисление.Дата(месяц) = #datepicker-month
-			-->
-			<div class="modal fade"  id="pays-list-oklad">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Выдача оклада за Июнь 2023</h5>
-							<button  class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-vcenter text-nowrap table-bordered border-bottom" id="pays-oklad">
-									<thead>
-										<tr>
-											<th class="border-bottom-0">Сотрудник</th>
-											<th class="border-bottom-0">Сумма</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
-							<a href="#" class="btn btn-primary">Создать выплаты</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- При сохранении создаются выплаты на каждого сотрудника из таблицы #pays-oklad с заполнением полей:
-				Выплата.Дата = Сегодня
-				Выплата.ВидВыплаты = Оклад
-				Выплата.РасчетныйМесяц = #datepicker-month
-				Выплата.Город = Менеджер.Город
-				Выплата.Источник = Менеджер
-				Выплата.Сотрудник = #pays-oklad.Сотрудник
-				Выплата.Сумма = #pays-oklad.Сумма
-				Выплата.Выдано = Нет
-			 -->
-			<!-- End Oklad Modal  -->
-
-
-			<!--ZP Modal -->
-			<!--Автоматически заполняются списком всех сотрудников по условиям:
-					Сотрудник.Город = Менеджер.Город и Сотрудник.ДатаУвольнения < #datepicker-month.ПоследнееЧислоМесяца
-				Сумма по сотруднику заполняется по формуле (c - p + b), где :
-				c = Сумма всех начислений по условиям:
-					Начисление.Сотрудник = Сотрудник и Начисление.Дата(месяц) = #datepicker-month
-				p = Сумма всех выплат по условиям:
-					Выплата.Сотрудник = Сотрудник и Выплата.Дата(месяц) = #datepicker-month и Выплата.Выдано = Да
-				b = Сотрудник.Баланс
-			-->
-			<div class="modal fade"  id="pays-list-zp">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Выдача зарплаты за Июнь 2023</h5>
-							<button  class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-vcenter text-nowrap table-bordered border-bottom" id="pays-zp">
-									<thead>
-										<tr>
-											<th class="border-bottom-0">Сотрудник</th>
-											<th class="border-bottom-0">Сумма</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-										<tr>
-											<td>Иванов Иван</td>
-											<td data-order="5750" class="text-right">5 750₽</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<a href="#" class="btn btn-outline-primary" data-dismiss="modal">Отмена</a>
-							<a href="#" class="btn btn-primary">Создать выплаты</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- При сохранении создаются выплаты на каждого сотрудника из таблицы #pays-zp с заполнением полей:
-				Выплата.Дата = Сегодня
-				Выплата.ВидВыплаты = Зарплата
-				Выплата.РасчетныйМесяц = #datepicker-month
-				Выплата.Город = Менеджер.Город
-				Выплата.Источник = Менеджер
-				Выплата.Сотрудник = #pays-zp.Сотрудник
-				Выплата.Сумма = #pays-zp.Сумма
-				Выплата.Выдано = Нет
-			 -->
-			<!-- ZP Oklad Modal  -->
-@endsection('modals')
 
 @section('scripts')
 

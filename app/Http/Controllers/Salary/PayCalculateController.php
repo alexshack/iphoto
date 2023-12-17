@@ -64,7 +64,8 @@ class PayCalculateController extends Controller
         $salaryLastMonthDebt = $this->settingRepository->get('last_month_debt');
         $salaryLastMonthDebtOption = $salaryLastMonthDebt && $salaryLastMonthDebt->{SettingContract::FIELD_VALUE} ? $salaryLastMonthDebt->{SettingContract::FIELD_VALUE} : null;
 
-        $debtPlaceID = $this->settingRepository->get('last_month_debt_place');
+        $debtPlace = $this->settingRepository->get('last_month_debt_place');
+        $debtPlaceID = $debtPlace && $debtPlace->{SettingContract::FIELD_VALUE} ? $debtPlace->{SettingContract::FIELD_VALUE} : 1;
 
         $date10 = "{$now->year}-{$now->month}-10";
         $date25 = "{$now->year}-{$now->month}-25";

@@ -24,7 +24,7 @@ class PayController extends Controller
         if(request()->query('filter')) {
             $filter = Helper::dateFilterFormat(request()->query('filter'));
         }
-        $pays = $this->paysRepository->getByFilter($filter);
+        $pays = $this->paysRepository->getByFilter($filter, 100);
         return view('salary.pays', compact('pays'));
     }
 

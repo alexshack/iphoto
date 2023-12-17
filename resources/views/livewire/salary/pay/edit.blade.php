@@ -17,7 +17,6 @@
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" wire:submit.prevent="submit">
-                        <p>{{ serialize($pay->toArray()) }}</p>
                         <div class="form-group row">
                             <label class="form-label col-md-3">Дата</label>
                             <div class="col-md-9">

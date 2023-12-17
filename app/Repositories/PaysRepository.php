@@ -10,6 +10,7 @@ use App\Models\Salary\Pay;
 use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PaysRepository implements PaysRepositoryInterface
 {
@@ -25,9 +26,14 @@ class PaysRepository implements PaysRepositoryInterface
         return Pay::find($id);
     }
 
-    public function getByFilter($data): Collection {
-        return Pay::filterData($data)
-            ->get();
+    public function getByFilter($data, $paginate = false): Collection | LengthAwarePaginator {
+        $builder = Pay::filterData($data);
+
+        if ($paginate) {
+            return $builder->paginate($paginate);
+        } else {
+            return $builder->get();
+        }
     }
 
     public function getAdvancePaymentsForUserAndMonth($userID, $month, $year) {
