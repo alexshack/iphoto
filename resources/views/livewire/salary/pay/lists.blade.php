@@ -65,6 +65,7 @@
                             <tr>
                                 <th class="border-bottom-0">Сотрудник</th>
                                 <th class="border-bottom-0">Сумма</th>
+                                <th class="border-bottom-0">Действия</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +73,16 @@
                                 <tr>
                                     <td>{{ $payItem->user->name }}</td>
                                     <td>{{ $payItem->{ PaysContract::FIELD_AMOUNT } }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center align-content-center">
+                                        @if($payItem->{ PaysContract::FIELD_ISSUED })
+                                            <span class="feather feather-check text-success mr-2"></span>
+                                            Выдано
+                                        @else
+                                            <button class="btn btn-primary btn-sm" wire:click="issuePayItem({{ $payItem->{ PaysContract::FIELD_ID } }})" wire:loading.attr="disabled">Выдать</button>
+                                        @endif
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -86,6 +97,7 @@
                             <tr>
                                 <th class="border-bottom-0">Сотрудник</th>
                                 <th class="border-bottom-0">Сумма</th>
+                                <th class="border-bottom-0">Действия</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,6 +105,16 @@
                                 <tr>
                                     <td>{{ $payItem->user->name }}</td>
                                     <td>{{ $payItem->{ PaysContract::FIELD_AMOUNT } }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center align-content-center">
+                                        @if($payItem->{ PaysContract::FIELD_ISSUED })
+                                            <span class="feather feather-check text-success mr-2"></span>
+                                            Выдано
+                                        @else
+                                            <button class="btn btn-primary btn-sm" wire:click="issuePayItem({{ $payItem->{ PaysContract::FIELD_ID } }})" wire:loading.attr="disabled">Выдать</button>
+                                        @endif
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

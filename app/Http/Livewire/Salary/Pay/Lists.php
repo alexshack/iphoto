@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\Salary\Pay;
 
 use App\Contracts\SettingContract;
+use App\Contracts\Salary\PaysContract;
 Use App\Contracts\Service\PaysGeneratorContract;
 use App\Contracts\UserContract;
 use App\Helpers\Helper;
 use App\Jobs\SalaryListsGeneratorJob;
+use App\Models\Salary\Pay;
 use App\Models\Service\PaysGenerator;
 use App\Repositories\Interfaces\PaysGeneratorRepositoryInterface;
 use App\Repositories\Interfaces\PaysRepositoryInterface;
@@ -40,6 +42,15 @@ class Lists extends Component
         $this->isInProcess = true;
     }
 
+
+    public function issuePayItem($payItemID) {
+        $pay = Pay::find($payItemID);
+        if ($pay) {
+            $pay->{ PaysContract::FIELD_ISSUED } = true;
+            $pay->save();
+        }
+        $this->emit('refreshComponent');
+    }
     public function onChangeMonth($month, $year) {
         $this->filterData['billing_year'] = $year;
         $this->filterData['billing_month'] = $month;

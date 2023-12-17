@@ -58,8 +58,11 @@
                         {{ $pay->amount }}₽
                     </td>
                     <td>
-                        @if($pay->{PaysContract::FIELD_ISSUED})
-                            <span class="feather feather-check"></span>
+                        @if($pay->{ PaysContract::FIELD_ISSUED })
+                            <div class="d-flex align-items-center align-content-center">
+                                <span class="feather feather-check text-success mr-2"></span>
+                                Выдано
+                            </div>
                         @endif
                     </td>
                 </tr>

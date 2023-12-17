@@ -33,6 +33,10 @@ interface SettingContract
             'label' => 'Тип начислений',
             'class' => 'App\Models\Salary\CalcsType',
         ],
+        'Place' => [
+            'label' => 'Точка',
+            'class' => 'App\Models\Structure\Place',
+        ],
     ];
 
     public const RULES = [

@@ -64,6 +64,8 @@ class PayCalculateController extends Controller
         $salaryLastMonthDebt = $this->settingRepository->get('last_month_debt');
         $salaryLastMonthDebtOption = $salaryLastMonthDebt && $salaryLastMonthDebt->{SettingContract::FIELD_VALUE} ? $salaryLastMonthDebt->{SettingContract::FIELD_VALUE} : null;
 
+        $debtPlaceID = $this->settingRepository->get('last_month_debt_place');
+
         $date10 = "{$now->year}-{$now->month}-10";
         $date25 = "{$now->year}-{$now->month}-25";
         $billingMonth = "{$year}-{$month}-01";
@@ -123,13 +125,11 @@ class PayCalculateController extends Controller
                     CalcsContract::FIELD_AGENT_ID => $admin->{UserContract::FIELD_ID},
                     CalcsContract::FIELD_AMOUNT => $amount,
                     CalcsContract::FIELD_TYPE => 5,
-                    CalcsContract::FIELD_PLACE_ID => 1,
+                    CalcsContract::FIELD_PLACE_ID => $debtPlaceID,
                 ];
                 $calcs[] = $calcData;
             }
         }
-
-        @file_put_contents(storage_path() ."/app/public/data-{$month}.json" , json_encode(compact('pays', 'calcs')));
 
         foreach ($pays as $payData) {
             Pay::create($payData);
