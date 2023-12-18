@@ -14,9 +14,10 @@
         <div class="col-xl-12 col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header  border-0">
-                    <h4 class="card-title">Данные выплаты</h4>
+                    <h4 class="card-title">Данные аванса</h4>
                 </div>
                 <div class="card-body">
+                    <p>{{ serialize($pay) }}</p>
                     <form class="form-horizontal" wire:submit.prevent="submit">
                         <div class="form-group row">
                             <label class="form-label col-md-3">Дата</label>
@@ -24,18 +25,18 @@
                                 <input type="text" wire:model="pay.date" class="form-control fc-datepicker" placeholder="DD.MM.YYYY" value="">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="form-label  col-md-3">Вид выплаты</label>
-                            <div class="col-md-9" wire:ignore.self>
-                                <select data-select-init="true" wire:model="pay.calcs_type_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите вид начисления">
-                                    <option label="Выберите вид начисления"></option>
-                                    <!-- Задаются жестко-->
-                                    @foreach($calcTypes as $calcType)
-                                        <option value="{{ $calcType->id }}">{{ $calcType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                        {{--<div class="form-group row">--}}
+                            {{--<label class="form-label  col-md-3">Вид выплаты</label>--}}
+                            {{--<div class="col-md-9" wire:ignore.self>--}}
+                                {{--<select data-select-init="true" wire:model="pay.calcs_type_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите вид начисления">--}}
+                                    {{--<option label="Выберите вид начисления"></option>--}}
+                                    {{--<!-- Задаются жестко-->--}}
+                                    {{--@foreach($calcTypes as $calcType)--}}
+                                        {{--<option value="{{ $calcType->id }}">{{ $calcType->name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--</select>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="form-group row">
                             <label class="form-label  col-md-3">Расчетный месяц</label>
                             <div class="col-md-9">
@@ -59,14 +60,14 @@
                             <div class="row">
                                 <label class="form-label col-md-3">Выберите тип источника</label>
                                 <ul class="tabs-menu nav col-md-9">
-                                    <li class="">
-                                        <a href="#tab-1"
-                                           wire:click="setSourceType('place')"
-                                           {!! $pay[App\Contracts\Salary\PaysContract::FIELD_SOURCE_TYPE] === 'place' ? 'class="active"' : '' !!}
-                                            data-toggle="tab">
-                                            Точка
-                                        </a>
-                                    </li>
+                                    {{--<li class="">--}}
+                                        {{--<a href="#tab-1"--}}
+                                           {{--wire:click="setSourceType('place')"--}}
+                                           {{--{!! $pay[App\Contracts\Salary\PaysContract::FIELD_SOURCE_TYPE] === 'place' ? 'class="active"' : '' !!}--}}
+                                            {{--data-toggle="tab">--}}
+                                            {{--Точка--}}
+                                        {{--</a>--}}
+                                    {{--</li>--}}
                                     <li>
                                         <a href="#tab-2"
                                            wire:click="setSourceType('manager')"
@@ -94,11 +95,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane show {{ $pay[App\Contracts\Salary\PaysContract::FIELD_SOURCE_TYPE] === 'manager' ? 'active' : '' }}" id="tab-2">
+                                 <div class="tab-pane show {{ $pay[App\Contracts\Salary\PaysContract::FIELD_SOURCE_TYPE] === 'manager' ? 'active' : '' }}" id="tab-2">
+
                                     <div class="form-horizontal">
                                         <div class="form-group row">
                                             <label class="form-label  col-md-3">Менеджер</label>
                                             <div class="col-md-9" wire:ignore.self>
+                                                <p>{{ Auth::user()->name }}</p>
+                                                {{--
                                                 <select data-select-init="true" wire:model="pay.source_id" data-pharaonic="select2" data-component-id="{{ $this->id  }}" data-placeholder="Выберите менеджера">
                                                     <option label="Выберите менеджера"></option>
                                                     <!-- Если Админ, то менеджер с фильтром по городу, выбранному выше. Если менеджер, то только он -->
@@ -106,6 +110,7 @@
                                                         <option value="{{ $manager->id }}">{{ $manager->getFullName() }}</option>
                                                     @endforeach
                                                 </select>
+                                                --}}
                                             </div>
                                         </div>
                                     </div>

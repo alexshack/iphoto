@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Salary\Pay;
 
 use App\Contracts\Salary\CalcsContract;
 use App\Contracts\Salary\PaysContract;
+use App\Contracts\UserContract;
 use App\Contracts\UserRoleContract;
 use App\Helpers\Helper;
 use App\Models\Salary\Calc;
@@ -20,6 +21,7 @@ class Create extends Component
     public $billingMonth;
     public $calcTypes = [];
     public $cities = [];
+    public User $currentManager;
     public $managers = [];
     public $pay = [];
     public $places = [];
@@ -37,6 +39,9 @@ class Create extends Component
     protected function getRules() {
         $rules = [];
         foreach (PaysContract::RULES as $key => $rule) {
+            if ($key === PaysContract::FIELD_TYPE_ID) {
+                continue;
+            }
             $rules["pay.$key"] = $rule;
         }
         return $rules;
@@ -69,9 +74,9 @@ class Create extends Component
 
     public function mount() {
         $this->pay = collect(PaysContract::FILLABLE_FIELDS)->flip()->map(function ($item) {
-            return '';
+            return null;
         })->toArray();
-        $this->setSourceType('place');
+        $this->setSourceType('manager');
     }
 
     public function render(
@@ -112,7 +117,12 @@ class Create extends Component
 
     public function setSourceType($type) {
         $this->pay[PaysContract::FIELD_SOURCE_TYPE] = $type;
-        $this->pay[PaysContract::FIELD_SOURCE_ID] = null;
+        $this->pay[PaysContract::FIELD_TYPE] = 2;
+        if ($type === 'manager') {
+            $this->pay[PaysContract::FIELD_SOURCE_ID] = Auth::user()->{UserContract::FIELD_ID};
+        } else {
+            $this->pay[PaysContract::FIELD_SOURCE_ID] = null;
+        }
     }
 
     public function submit() {
