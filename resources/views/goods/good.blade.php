@@ -112,9 +112,18 @@
 															</div>
 
                                                             <div class="form-group row">
+                                                                <label class="form-label col-md-3">Комментарий</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" class="form-control" name="{{ \App\Contracts\Goods\GoodsContract::FIELD_COMMENT }}" placeholder="Укажите комментарий" value="{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_COMMENT } ?? old(\App\Contracts\Goods\GoodsContract::FIELD_COMMENT) }}">
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group row">
                                                                 <label class="form-label col-md-3">Примечания</label>
                                                                 <div class="col-md-9">
                                                                     <input type="text" class="form-control" name="{{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE }}" placeholder="Укажите примечания" value="{{ $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_NOTE } ?? old(\App\Contracts\Goods\GoodsContract::FIELD_NOTE) }}">
+                                                                    <span class="text-muted">Используется для отображения примечания в истории перемещений</span>
                                                                 </div>
                                                             </div>
 
@@ -124,7 +133,9 @@
                                                                 <div class="col-md-9">
                                                                     <select class="form-control select2-show-search custom-select" name="{{ \App\Contracts\Goods\GoodsContract::FIELD_PLACE_ID }}" data-placeholder="Выберите категорию товара">
                                                                         @foreach($places as $place)
-                                                                            <option value="{{ $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID } }}" {{ (isset($goods) && $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_PLACE_ID } == $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }) ? 'selected' : '' }} {{ ($place->{ \App\Contracts\Structure\PlaceContract::FIELD_STATUS } != 1) ? 'disabled' : '' }}>{{ $place->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } }}</option>
+                                                                            <option value="{{ $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID } }}" {{ (isset($goods) && $goods->{ \App\Contracts\Goods\GoodsContract::FIELD_PLACE_ID } == $place->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }) ? 'selected' : '' }}>
+                                                                            {{ $place->fullPath }}
+                                                                            </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>

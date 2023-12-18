@@ -54,6 +54,7 @@ interface PaysContract {
         self::FIELD_USER_ID => 'sometimes|nullable|numeric|exists:' . UserContract::TABLE . ',' . UserContract::FIELD_ID,
         self::FIELD_AMOUNT => 'required|numeric',
         self::FIELD_NOTE => 'nullable|string|max:255',
+        self::FIELD_ISSUED => 'nullable',
     ];
 
     public const ATTRIBUTES = [

@@ -33,6 +33,17 @@ class Place extends Model
         return $this->hasMany(PlaceCalc::class, PlaceCalcContract::FIELD_PLACE_ID, PlaceContract::FIELD_ID);
     }
 
+    public function getFullPathAttribute()
+    {
+        $city = $this->city()->first();
+        $str = '';
+        if ($city) {
+            $str = $city->{ CityContract::FIELD_NAME } . ' -> ';
+        }
+        $str .= $this->{ PlaceContract::FIELD_NAME };
+        return $str;
+    }
+
     public function getPlaceWorkTimesAttribute() {
         $workTimesArr = [];
         $workTimes = $this->getWorkTimes();

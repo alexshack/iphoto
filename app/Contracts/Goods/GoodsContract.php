@@ -19,6 +19,7 @@ interface GoodsContract
     public const FIELD_SERIAL_NUMBER = 'serial_number'; // Серийный номер ТМЦ
     public const FIELD_ENTER_READINGS = 'enter_readings'; // Вводить показания в смене
     public const FIELD_PLACE_ID = 'place_id';
+    public const FIELD_COMMENT = 'comment';
 
     public const DEFAULT_TYPE = 1;
 
@@ -32,6 +33,7 @@ interface GoodsContract
         self::FIELD_ENTER_READINGS,
         self::FIELD_SERIAL_NUMBER,
         self::FIELD_PLACE_ID,
+        self::FIELD_COMMENT,
     ];
 
     public const TYPE_LIST = [
@@ -52,6 +54,7 @@ interface GoodsContract
         self::FIELD_ENTER_READINGS => 'sometimes|nullable',
         self::FIELD_SERIAL_NUMBER => 'sometimes|nullable|string|max:255',
         self::FIELD_PLACE_ID => 'sometimes|nullable|exists:' . PlaceContract::TABLE . ',' . PlaceContract::FIELD_ID,
+        self::FIELD_COMMENT => 'sometimes|nullable',
     ];
 
     public const ATTRIBUTES = [
@@ -64,5 +67,6 @@ interface GoodsContract
         self::FIELD_ENTER_READINGS => 'Вводить показания в смене',
         self::FIELD_SERIAL_NUMBER => 'Серийный номер ТМЦ',
         self::FIELD_PLACE_ID => 'Точка',
+        self::FIELD_COMMENT => 'Комментарий',
     ];
 }
