@@ -119,7 +119,7 @@ class PayCalculateController extends Controller
                 $pays[] = $data;
 
                 $calcData = [
-                    CalcsContract::FIELD_DATE => "{$now->day}.{$month}.{$year}",
+                    CalcsContract::FIELD_DATE => "{$now->day}.{$now->month}.{$now->year}",
                     CalcsContract::FIELD_TYPE_ID => $salaryLastMonthDebtOption,
                     CalcsContract::FIELD_CITY_ID => $workData->{UserWorkDataContract::FIELD_CITY_ID},
                     CalcsContract::FIELD_USER_ID => $user->{UserContract::FIELD_ID},
