@@ -1,4 +1,7 @@
 <div class="card">
+    @php
+        use App\Contracts\Salary\CalcsContract;
+    @endphp
     <div class="card-header justify-content-between">
         <div class="col-md-4">
             <div class="form-group">
@@ -24,8 +27,8 @@
         </div>
     </div>
     <div class="card-body">
-    <table class="table  table-vcenter text-nowrap table-bordered border-bottom">
-        <thead>
+    <table class="table  table-vcenter table-bordered border-bottom">
+        <thead class="text-nowrap">
             <tr>
                 <th class="border-bottom-0">#</th>
                 <th class="border-bottom-0">Дата</th>
@@ -33,6 +36,7 @@
                 <th class="border-bottom-0">Город</th>
                 <th class="border-bottom-0">Точка</th>
                 <th class="border-bottom-0">Сумма</th>
+                <th class="border-bottom-0">Комментарий</th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +64,9 @@
                     </td>
                     <td data-order="{{ $calc->amount }}" class="text-right {{ $calc->amount < 0 ? 'text-danger' : '' }}">
                         {{ $calc->amount }}₽
+                    </td>
+                    <td>
+                        {{ $calc->{ CalcsContract::FIELD_NOTE } }}
                     </td>
                 </tr>
             @endforeach

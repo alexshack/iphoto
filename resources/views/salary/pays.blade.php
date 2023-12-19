@@ -13,7 +13,9 @@
 @endsection
 
 @section('content')
-
+    @php
+        use App\Contracts\Salary\PaysContract;
+    @endphp
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
@@ -53,7 +55,7 @@
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
-											<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="pays">
+											<table class="table  table-vcenter table-bordered border-bottom" id="pays">
 												<thead>
 													<tr>
 														<th class="border-bottom-0">#</th>
@@ -65,6 +67,7 @@
 														<th class="border-bottom-0">Сотрудник</th>
 														<th class="border-bottom-0">Сумма</th>
 														<th class="border-bottom-0">Выдано</th>
+                                                        <th class="border-bottom-0">Комментарий</th>
 														<th class="border-bottom-0">Действия</th>
 													</tr>
 												</thead>
@@ -77,6 +80,7 @@
                                                         </td>
 														<td>
                                                             {{ $pay->calcType ? $pay->calcType->name : '' }}
+                                                            <p><span class="text-muted text-small">{{ $pay->payType }}</span></p>
                                                         </td><!-- Всего три типа: Аванс, Оклад, Зарплата -->
                                                         <td data-order="{{ $pay->billing_month }}">
                                                             {{ $pay->billingMonthHuman }}
@@ -104,7 +108,10 @@
                                                                 <i class="feather feather-check text-success"></i>
                                                             @endif
                                                         </td>
-														<td>
+                                                        <td>
+                                                            {{ $pay->{ PaysContract::FIELD_NOTE } }}
+                                                        </td>
+                                                        <td>
 															<!-- кнопки редактирования и удаления показываются только если Выплата.Выдано = Нет -->
                                                             @if($pay->isEditable)
                                                                     <div class="d-flex">

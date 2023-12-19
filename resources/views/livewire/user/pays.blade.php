@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="card-body">
-    <table class="table  table-vcenter text-nowrap table-bordered border-bottom">
+    <table class="table  table-vcenter table-bordered border-bottom">
         <thead>
             <tr>
                 <th class="border-bottom-0">#</th>
@@ -26,6 +26,7 @@
                 <th class="border-bottom-0">Точка</th>
                 <th class="border-bottom-0">Сумма</th>
                 <th class="border-bottom-0">Выдано</th>
+                <th class="border-bottom-0">Комментарий</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +40,10 @@
                             <a href="/money/days/0">{{ $pay->date->format('d.m.Y') }}</a>
                         @endif
                     </td>
-                    <td>{{ $pay->calcType ? $pay->calcType->name : '' }}</td>
+                    <td>
+                        {{ $pay->calcType ? $pay->calcType->name : '' }}
+                        <p><span class="text-muted text-small">{{ $pay->payType }}</span></p>
+                    </td>
                     <td data-order="{{ $pay->city ? $pay->city->name : '' }}">
                         <a href="admin/structure/cities/{{ $pay->city_id }}">
                             {{ $pay->city ? $pay->city->name : '' }}
@@ -64,6 +68,9 @@
                                 Выдано
                             </div>
                         @endif
+                    </td>
+                    <td>
+                        {{ $pay->{ PaysContract::FIELD_NOTE } }}
                     </td>
                 </tr>
             @endforeach

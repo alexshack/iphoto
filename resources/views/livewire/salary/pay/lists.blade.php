@@ -103,7 +103,9 @@
                         <tbody>
                             @foreach($data['salary25'] as $payItem)
                                 <tr>
-                                    <td>{{ $payItem->user->name }}</td>
+                                    <td>
+                                        {{ $payItem->user->name }}
+                                    </td>
                                     <td>{{ $payItem->{ PaysContract::FIELD_AMOUNT } }}</td>
                                     <td>
                                         <div class="d-flex align-items-center align-content-center">

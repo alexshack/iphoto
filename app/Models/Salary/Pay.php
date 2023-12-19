@@ -56,7 +56,8 @@ class Pay extends Model
         //return $this->attributes[PaysContract::FIELD_DATE]->format('d.m.Y');
     //}
 
-    public function getIsEditableAttribute() {
+    public function getIsEditableAttribute()
+    {
         $isEditable = false;
         if (!$this->{PaysContract::FIELD_ISSUED}) {
             $isEditable = true;
@@ -64,6 +65,14 @@ class Pay extends Model
         return $isEditable;
     }
 
+    public function getPayTypeAttribute()
+    {
+        $str = '';
+        if (isset(PaysContract::TYPES[$this->{ PaysContract::FIELD_TYPE }])) {
+            $str = PaysContract::TYPES[$this->{ PaysContract::FIELD_TYPE }];
+        }
+        return $str;
+    }
 
     public function scopeFilterData($query, $filterData)
     {
@@ -95,6 +104,7 @@ class Pay extends Model
 
         return $query;
     }
+
     public function setDateAttribute($value) {
         if (strpos($value, '.') !== false) {
             $this->attributes['date'] = (Carbon::createFromFormat('d.m.Y', $value))->format('Y-m-d');

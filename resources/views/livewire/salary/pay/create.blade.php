@@ -17,7 +17,6 @@
                     <h4 class="card-title">Данные аванса</h4>
                 </div>
                 <div class="card-body">
-                    <p>{{ serialize($pay) }}</p>
                     <form class="form-horizontal" wire:submit.prevent="submit">
                         <div class="form-group row">
                             <label class="form-label col-md-3">Дата</label>

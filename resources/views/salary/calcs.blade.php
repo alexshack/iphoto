@@ -12,7 +12,9 @@
 @endsection
 
 @section('content')
-
+    @php
+        use App\Contracts\Salary\CalcsContract;
+    @endphp
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
@@ -61,6 +63,7 @@
 														<th class="border-bottom-0">Точка</th>
 														<th class="border-bottom-0">Сотрудник</th>
 														<th class="border-bottom-0">Сумма</th>
+                                                        <th class="border-bottom-0">Комментарий</th>
 														<th class="border-bottom-0">Действия</th>
 													</tr>
 												</thead>
@@ -77,7 +80,9 @@
 
                                                             </td>
                                                             <!-- ссылка на смену ставится, только если вид начисления автоматический. если вид начисления вручную, то просто дата без ссылки -->
-                                                            <td>{{ $calc->calcType ? $calc->calcType->name : '' }}</td>
+                                                            <td>
+                                                                {{ $calc->calcType ? $calc->calcType->name : '' }}
+                                                            </td>
                                                             <td data-order="{{ $calc->city ? $calc->city->name : '' }}">
                                                                 <a href="admin/structure/cities/{{ $calc->city_id }}">
                                                                     {{ $calc->city ? $calc->city->name : '' }}
@@ -95,6 +100,9 @@
                                                             </td>
                                                             <td data-order="{{ $calc->amount }}" class="text-right {{ $calc->amount < 0 ? 'text-danger' : '' }}">
                                                                 {{ $calc->amount }}₽
+                                                            </td>
+                                                            <td>
+                                                                {{ $calc->{ CalcsContract::FIELD_NOTE } }}
                                                             </td>
                                                             <td>
                                                                 @if($calc->isEditable)
