@@ -31,4 +31,9 @@ class PlaceRepository implements PlaceRepositoryInterface
     {
         return Place::where(PlaceContract::FIELD_CITY_ID, '=', $cityId)->get();
     }
+
+    public function getByIds($ids = []): Collection
+    {
+        return Place::whereIn(PlaceContract::FIELD_ID, $ids)->get();
+    }
 }

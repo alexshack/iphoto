@@ -155,6 +155,9 @@ Route::middleware(['web'])->group(function () {
             Route::get('goods/category/create', 'App\Http\Controllers\Goods\GoodsCategoryController@create')->name('admin.goods.categories.create');
             Route::post('goods/category/add', 'App\Http\Controllers\Goods\GoodsCategoryController@store')->name('admin.goods.categories.store');
             Route::get('goods/category/{id}/edit', 'App\Http\Controllers\Goods\GoodsCategoryController@edit')->name('admin.goods.categories.edit');
+
+            //Reports
+            Route::resource('reports', 'App\Http\Controllers\Service\ReportController');
         });
 
         Route::get('/', 'App\Http\Controllers\AdminController@index')->name('home');

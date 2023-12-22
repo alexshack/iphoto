@@ -145,6 +145,12 @@
 									<span class="side-menu__label">Настройки</span>
 								</a>
 							</li>
+                            <li class="slide">
+								<a class="side-menu__item" href="{{ route('reports.index') }}">
+									<i class="feather feather-settings sidemenu_icon"></i>
+									<span class="side-menu__label">Отчеты</span>
+								</a>
+							</li>
 						</ul>
 
 					</div>

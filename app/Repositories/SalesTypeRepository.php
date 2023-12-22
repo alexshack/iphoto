@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Money\SalesTypeContract;
 use App\Contracts\UserContract;
 use App\Contracts\UserPersonalDataContract;
 use App\Contracts\UserRoleContract;
@@ -20,5 +21,11 @@ class SalesTypeRepository implements SalesTypeRepositoryInterface
     public function getAll(): Collection
     {
         return SalesType::all();
+    }
+
+    public function getActive(): Collection
+    {
+        return SalesType::where(SalesTypeContract::FIELD_STATUS, 1)
+            ->get();
     }
 }
