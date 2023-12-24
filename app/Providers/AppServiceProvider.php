@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\City;
 use App\Repositories\CalcsRepository;
 use App\Repositories\CalcsTypeRepository;
 use App\Repositories\CityManagerRepository;
@@ -63,8 +62,6 @@ use App\Repositories\WorkShiftWithdrawalRepository;
 use App\Repositories\WorkShiftPayrollRepository;
 use App\Repositories\WorkShiftFinalCashDeskRepository;
 use App\Repositories\WorkShiftVisitorsRepository;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -111,7 +108,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $menuCities = City::all();
-        View::share('menuCities', $menuCities);
+
     }
 }
