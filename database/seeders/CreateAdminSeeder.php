@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class CreateAdminSeeder extends Seeder
 {
@@ -19,18 +18,18 @@ class CreateAdminSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $user = User::withTrashed()->where(UserContract::FIELD_EMAIL, '=', 'admin@admin.com')->first();
+        $user = User::withTrashed()->where(UserContract::FIELD_EMAIL, '=', config('admin.demo_admin_login'))->first();
         if($user)
             $user->forceDelete();
 
         User::create([
-            UserContract::FIELD_EMAIL => 'admin@admin.com',
-            UserContract::FIELD_PASSWORD => Hash::make('password'),
+            UserContract::FIELD_EMAIL => config('admin.demo_admin_login'),
+            UserContract::FIELD_PASSWORD => config('admin.demo_admin_password'),
             UserContract::FIELD_PHOTO => '/assets/images/users/admin.webp',
             UserContract::FIELD_ROLE_ID => 6
         ]);
 
-        User::where(UserContract::FIELD_EMAIL, '=', 'admin@admin.com')
+        User::where(UserContract::FIELD_EMAIL, '=', config('admin.demo_admin_login'))
             ->first()
             ->personalData
             ->update([
