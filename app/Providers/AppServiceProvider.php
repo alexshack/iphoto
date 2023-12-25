@@ -32,6 +32,7 @@ use App\Repositories\Interfaces\PaysRepositoryInterface;
 use App\Repositories\Interfaces\PlaceCalcRepositoryInterface;
 use App\Repositories\Interfaces\PlaceRepositoryInterface;
 use App\Repositories\Interfaces\PlaceWorkTimeRepositoryInterface;
+use App\Repositories\Interfaces\ReportsRepositoryInterface;
 use App\Repositories\Interfaces\SalesTypeRepositoryInterface;
 use App\Repositories\Interfaces\SettingsRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -49,6 +50,7 @@ use App\Repositories\PaysRepository;
 use App\Repositories\PlaceCalcRepository;
 use App\Repositories\PlaceRepository;
 use App\Repositories\PlaceWorkTimeRepository;
+use App\Repositories\ReportsRepository;
 use App\Repositories\SalesTypeRepository;
 use App\Repositories\SettingsRepository;
 use App\Repositories\UserRepository;
@@ -98,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserSalaryDataRepositoryInterface::class, UserSalaryDataRepository::class);
         $this->app->bind(SettingsRepositoryInterface::class, SettingsRepository::class);
         $this->app->bind(PaysGeneratorRepositoryInterface::class, PaysGeneratorRepository::class);
+        $this->app->bind(ReportsRepositoryInterface::class, ReportsRepository::class);
     }
 
     /**
