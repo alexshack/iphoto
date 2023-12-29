@@ -27,7 +27,7 @@
         <div class="page">
             <div class="page-main">
                 <!-- В зависимости от роли пользователя грузится соответствующее меню-->
-                @include('layouts.verticalmenu.sidebars.admin')
+                @widget('sidebars.admin')
 
                 <div class="app-content main-content">
                     <div class="side-app">
