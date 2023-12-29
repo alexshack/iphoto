@@ -33,6 +33,13 @@ class UserRepository implements UserRepositoryInterface
         return Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)->firstOrFail()->users->all();
     }
 
+    public function getByCityAndRole(int $cityID, string $roleSlug)
+    {
+        $role = Role::where(UserRoleContract::FIELD_SLUG, '=', $roleSlug)->firstOrFail();
+        $citiesUsers = $this->getByCity($cityID);
+        return $citiesUsers->where('role_id', $role->id);
+    }
+
     public function getCountByRoleSlug(string $slug)
     {
         $role = Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)->firstOrFail();
@@ -43,7 +50,8 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::whereHas('workData', function ($query) use ($cityID) {
             return $query->where(UserWorkDataContract::FIELD_CITY_ID, $cityID);
-        })->with('personalData:id,user_id,last_name,first_name,middle_name')
+        })
+            ->with('personalData:id,user_id,last_name,first_name,middle_name')
             ->get();
     }
 
@@ -52,12 +60,12 @@ class UserRepository implements UserRepositoryInterface
      * @param  string  $slug
      * @return int
      */
-    public function getMaleCountByRoleSlug(string $slug)
+    public function getMaleCountByRoleSlug(string $slug, ?int $city_id = null)
     {
         $role_id = Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)
             ->firstOrFail()->{ UserRoleContract::FIELD_ID };
 
-        return $this->getGenderCountByRoleId(1, $role_id);
+        return $this->getGenderCountByRoleId(1, $role_id, $city_id);
     }
 
     /**
@@ -65,12 +73,12 @@ class UserRepository implements UserRepositoryInterface
      * @param  string  $slug
      * @return int
      */
-    public function getFemaleCountByRoleSlug(string $slug)
+    public function getFemaleCountByRoleSlug(string $slug, ?int $city_id = null)
     {
         $role_id = Role::where(UserRoleContract::FIELD_SLUG, '=', $slug)
             ->firstOrFail()->{ UserRoleContract::FIELD_ID };
 
-        return $this->getGenderCountByRoleId(2, $role_id);
+        return $this->getGenderCountByRoleId(2, $role_id, $city_id);
     }
 
     /**
@@ -79,12 +87,20 @@ class UserRepository implements UserRepositoryInterface
      * @param  int  $role_id
      * @return int
      */
-    private function getGenderCountByRoleId(int $gender, int $role_id):int
+    private function getGenderCountByRoleId(int $gender, int $role_id, ?int $city_id = null):int
     {
-        return User::where(UserContract::FIELD_ROLE_ID, '=', $role_id)
+        $query = User::where(UserContract::FIELD_ROLE_ID, '=', $role_id)
             ->whereHas('personalData', function($query) use ($gender){
                 $query->where(UserPersonalDataContract::FIELD_GENDER, $gender);
-            })->count();
+            });
+        
+        if ($city_id) {
+            $query = $query->whereHas('workData', function ($query) use ($city_id) {
+                return $query->where(UserWorkDataContract::FIELD_CITY_ID, $city_id);
+            });
+        }
+
+        return $query->count();
     }
 
     /**

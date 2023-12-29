@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Structure;
 
+use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
+use App\Contracts\UserWorkDataContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Structure\CreatePlaceRequest;
 use App\Http\Requests\Structure\UpdatePlaceRequest;
@@ -20,18 +22,39 @@ class PlaceController extends Controller
     private PlaceCalcRepositoryInterface $placeCalcRepository;
     private CityRepositoryInterface $cityRepository;
     private CalcsTypeRepositoryInterface $calcsTypeRepository;
+    private IAccessManager $accessManager;
 
-    public function __construct(PlaceRepositoryInterface $placeRepository, PlaceCalcRepositoryInterface $placeCalcRepository, CityRepositoryInterface $cityRepository, CalcsTypeRepositoryInterface $calcsTypeRepository)
-    {
+    public function __construct(
+        PlaceRepositoryInterface $placeRepository,
+        PlaceCalcRepositoryInterface $placeCalcRepository,
+        CityRepositoryInterface $cityRepository,
+        CalcsTypeRepositoryInterface $calcsTypeRepository,
+        IAccessManager $accessManager
+    ) {
         $this->placeRepository = $placeRepository;
         $this->placeCalcRepository = $placeCalcRepository;
         $this->cityRepository = $cityRepository;
         $this->calcsTypeRepository = $calcsTypeRepository;
+        $this->accessManager = $accessManager;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $list = $this->placeRepository->getAll();
+        $cityId = $request->query(UserWorkDataContract::FIELD_CITY_ID);
+        $access = $this->accessManager->checkFieldsAccess([
+            UserWorkDataContract::FIELD_CITY_ID => $cityId,
+        ]);
+        if (!$access) {
+            abort(403, 'Доступ запрещен!');
+        }
+
+        $list = [];
+        if ($cityId) {
+            $list = $this->placeRepository->getByCityId($cityId);
+        } else {
+            $list = $this->placeRepository->getAll();
+        }
+        
         return view('structure.places')->with(['list' => $list]);
     }
 
