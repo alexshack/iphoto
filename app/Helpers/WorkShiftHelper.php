@@ -276,10 +276,12 @@ class WorkShiftHelper {
             ->orderBy(WorkShiftContract::FIELD_ID, 'desc')
             ->first();
 
-        if ($previousWorkShift->isClosed) {
-            $access['closable'] = false;
-            $access['cancelable'] = true;
-            $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
+        if ($previousWorkShift) {
+            if ($previousWorkShift->isClosed) {
+                $access['closable'] = false;
+                $access['cancelable'] = true;
+                $errors[] = WorkShiftContract::AGENDA_ERRORS['previous_workshift_not_closed'];
+            }
         }
 
         return compact('agenda', 'access', 'errors');
