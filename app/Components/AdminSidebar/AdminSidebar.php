@@ -4,6 +4,8 @@ use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Components\AdminSidebar\Helpers\StructureHelper;
 use App\Components\AdminSidebar\Interfaces\IAdminSidebar;
 use App\Components\AdminSidebar\Models\MenuItem;
+use App\Contracts\UserWorkDataContract;
+use Illuminate\Support\Facades\Auth;
 
 class AdminSidebar implements IAdminSidebar
 {
@@ -25,6 +27,8 @@ class AdminSidebar implements IAdminSidebar
 
     protected function getStructureModel($structure)
     {
+        // TODO: del
+        // echo '<pre>' . var_export($structure, true) . '</pre>'; exit();
         $structureModel = [];
 
         foreach ($structure as $key => $item) {
@@ -33,8 +37,9 @@ class AdminSidebar implements IAdminSidebar
             }
 
             $route = $item['routeName'] ?? null;
+            $routeParams = $item['routeParams'] ?? null;
             $routeAccess = $route
-                ? $this->accessManager->checkRouteAccess($route)
+                ? $this->accessManager->checkRouteAccess($route, null, $routeParams)
                 : true;
 
             if (!$routeAccess) {
@@ -64,7 +69,13 @@ class AdminSidebar implements IAdminSidebar
 
         $route = $structureItem['routeName'] ?? null;
         if ($route) {
-            $menuItem->url = route($structureItem['routeName'], $structureItem['routeParams'] ?? null);
+            $routeParams = $structureItem['routeParams'] ?? null;
+            $routeParams = $this->fillRouteParams($routeParams, $structureItem['routeFill'] ?? null);
+            $menuItem->url = route($structureItem['routeName'], $routeParams);
+        }
+
+        if (isset($structureItem['childs']) && empty($structureItem['childs'])) {
+            return null;
         }
 
         if (isset($structureItem['childs']) && !empty($structureItem['childs'])) {
@@ -98,5 +109,37 @@ class AdminSidebar implements IAdminSidebar
         $menuItem->setType();
 
         $menuModel[$titleName] = $menuItem;
+    }
+
+    protected function fillRouteParams($currentParams, $fillFields = null)
+    {
+        if (!$fillFields || empty($fillFields)) {
+            return $currentParams;
+        }
+
+        if (!is_array($currentParams)) {
+            $currentParams = [];
+        }
+
+        foreach ($fillFields as $fieldName) {
+            switch ($fieldName) {
+                case UserWorkDataContract::FIELD_CITY_ID:
+                    $currentParams[UserWorkDataContract::FIELD_CITY_ID] = $this->getCurrentUserCityId();
+                    break;
+            }
+        }
+
+        return array_filter($currentParams);
+    }
+
+    protected function getCurrentUserCityId()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return null;
+        }
+
+
+        return $user->getWorkData()->city_id;
     }
 }

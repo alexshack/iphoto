@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Config;
 
 class Widget
 {
-    public function show($widgetName, $data =[]){
+    public function show($widgetName, $data =[]) {
         $configName = implode('.', ['widgets', $widgetName]);
         $widgetClass = Config::get($configName);
 
