@@ -2,44 +2,148 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\Structure\CityContract;
+use App\Contracts\UserPersonalDataContract;
+use App\Contracts\UserSalaryDataContract;
+use App\Contracts\UserWorkDataContract;
+use App\Contracts\UserContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use \Illuminate\Auth\Passwords\CanResetPassword;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = UserContract::FILLABLE_FIELDS;
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = UserContract::HIDDEN_FIELDS;
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    protected $casts = UserContract::CASTS_FIELDS;
+
+    public function personalData()
+    {
+        return $this->hasOne(UserPersonalData::class, UserPersonalDataContract::FIELD_USER_ID, UserContract::FIELD_ID);
+    }
+
+    public function getPersonalData(): UserPersonalData
+    {
+        return $this->personalData()->first();
+    }
+
+
+    public function salaryData() {
+        return $this->hasMany(UserSalaryData::class, UserSalaryDataContract::FIELD_USER_ID, UserContract::FIELD_ID);
+    }
+
+    public function workData()
+    {
+        return $this->hasOne(UserWorkData::class, UserWorkDataContract::FIELD_USER_ID, UserContract::FIELD_ID);
+    }
+
+    public function getWorkData(): UserWorkData
+    {
+        return $this->workData()->first();
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    protected static function booted(): void
+    {
+        // Создание анкеты при добавлении пользователя
+        static::created(function (User $user) {
+            UserPersonalData::create([
+                UserPersonalDataContract::FIELD_USER_ID => $user->{ UserContract::FIELD_ID }
+            ]);
+            UserWorkData::create([
+                UserWorkDataContract::FIELD_USER_ID => $user->{ UserContract::FIELD_ID }
+            ]);
+        });
+    }
+
+    public function getFullName($data = 'F I'):string
+    {
+        return str_replace(
+            [
+                'F',
+                'I',
+                'O'],
+            [
+                $this->getPersonalData()->{ UserPersonalDataContract::FIELD_LAST_NAME },
+                $this->getPersonalData()->{ UserPersonalDataContract::FIELD_FIRST_NAME },
+                $this->getPersonalData()->{ UserPersonalDataContract::FIELD_MIDDLE_NAME }
+            ], $data);
+    }
+
+    public function getPhoneWithoutChar()
+    {
+        return str_replace(
+            ['+', '-', '.', ' ', '(', ')'],
+            ['', '', '', '', '', ''],
+            $this->getPersonalData()->{ UserPersonalDataContract::FIELD_PHONE }
+        );
+    }
+
+    public function getAgeAttribute()
+    {
+        if(!empty($this->getPersonalData()->{ UserPersonalDataContract::FIELD_BIRTHDAY })) {
+            $birthDate = $this->getPersonalData()->{ UserPersonalDataContract::FIELD_BIRTHDAY };
+            $currentDate = Carbon::now();
+            return $currentDate->diffInYears($birthDate);
+        }
+        return 0;
+    }
+
+    public function getNameAttribute() {
+        return $this->getFullName();
+    }
+
+    public function updateUser(array $data, $photo)
+    {
+        if($this->{ UserContract::FIELD_EMAIL } != $data['user'][UserContract::FIELD_EMAIL]) {
+            $this->update([UserContract::FIELD_EMAIL => $data['user'][UserContract::FIELD_EMAIL]]);
+        }
+        if(!empty($photo)) {
+            $path = $this->uploadPhoto($photo);
+            $this->update([UserContract::FIELD_PHOTO => $path]);
+        }
+        $this->getPersonalData()->update($data['personal']);
+        $this->getWorkData()->update($data['work']);
+    }
+
+    public function uploadPhoto($photo)
+    {
+        $filename = Str::uuid().'.'.$photo->getClientOriginalExtension();
+        $path = $photo->storeAs('images', $filename);
+        return '/storage/' . $path;
+    }
+
+    public function city()
+    {
+        return $this->hasOne(City::class, CityContract::FIELD_MANAGER_ID, UserContract::FIELD_ID);
+    }
 }

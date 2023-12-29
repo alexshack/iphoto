@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -170,6 +170,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\WidgetServiceProvider::class,
+
+        App\Components\AccessManager\Providers\AccessManagerDIProvider::class,
+        App\Components\AdminSidebar\Providers\AdminSidebarDIProvider::class,
     ])->toArray(),
 
     /*
@@ -185,6 +189,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Helper' => \App\Helpers\Helper::class,
     ])->toArray(),
 
 ];

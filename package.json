@@ -8,6 +8,15 @@
     "devDependencies": {
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.5",
+        "sass": "^1.69.3",
         "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "@beaubus/single-file-upload-for-vue": "^0.2.6",
+        "@vitejs/plugin-vue": "^4.3.2",
+        "@vuepic/vue-datepicker": "^7.0.0",
+        "vue": "^3.3.4",
+        "vue-select": "^4.0.0-beta.6",
+        "vue-simple-confirm": "^1.0.5"
     }
 }
