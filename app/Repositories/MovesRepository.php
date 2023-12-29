@@ -23,25 +23,9 @@ class MovesRepository implements MovesRepositoryInterface
     }
 
     public function getByFilter($data): Collection {
-        $year = $data['year'] ?? null;
-        $month = $data['month'] ?? null;
-        $city = $data['city_id'] ?? null;
-
-        $query = new Move;
-
-        if ($year && !empty($year)) {
-            $query = $query->whereYear(MovesContract::FIELD_DATE, $year);
-        }
-
-        if ($month && !empty($month)) {
-            $query = $query->whereMonth(MovesContract::FIELD_DATE, $month);
-        }
-
-        if ($city) {
-            $query = $query->where(MovesContract::FIELD_CITY_ID, $city);
-        }
-
-        return $query->get();
+        return Move::whereYear(MovesContract::FIELD_DATE, $data['year'])
+            ->whereMonth(MovesContract::FIELD_DATE, $data['month'])
+            ->get();
     }
 
     public function getByWorkshift(WorkShift $workShift, $from = 'place') {

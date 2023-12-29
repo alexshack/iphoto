@@ -102,10 +102,6 @@ class Pay extends Model
             $query->where(PaysContract::FIELD_TYPE_ID, $filterData['calcType']);
         }
 
-        if ($filterData['city_id'] ?? null) {
-            $query->where(PaysContract::FIELD_CITY_ID, $filterData['city_id']);
-        }
-
         return $query;
     }
 

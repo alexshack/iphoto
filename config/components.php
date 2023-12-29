@@ -2,7 +2,6 @@
 
 use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Contracts\UserRoleContract;
-use App\Contracts\UserWorkDataContract;
 
 return [
     'accessManager' => [
@@ -18,8 +17,7 @@ return [
             ),
             UserRoleContract::MANAGER_SLUG => array_merge(
                 IAccessManager::COMMON_ROUTES, [
-                    ['admin.structure.places.edit', IAccessManager::COMPARE_WITH => UserWorkDataContract::FIELD_CITY_ID],
-                    'admin.structure.places.index',
+                    'admin.structure.places.*',
                     'admin.structure.employees.*',
                     'admin.money.incomes.*',
                     'admin.money.expenses.*',

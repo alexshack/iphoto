@@ -2,49 +2,25 @@
 
 namespace App\Http\Controllers\Money;
 
-use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Contracts\Money\ExpenseContract;
-use App\Contracts\UserWorkDataContract;
 use App\Http\Controllers\Controller;
-use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\ExpensesRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ExpensesController extends Controller
 {
     private ExpensesRepositoryInterface $expensesRepository;
-    private IAccessManager $accessManager;
 
-    public function __construct(
-        ExpensesRepositoryInterface $expensesRepository,
-        IAccessManager $accessManager
-    ) {
+    public function __construct(ExpensesRepositoryInterface $expensesRepository) {
         $this->expensesRepository = $expensesRepository;
-        $this->accessManager = $accessManager;
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $cityId = $request->query(UserWorkDataContract::FIELD_CITY_ID);
-        $access = $this->accessManager->checkFieldsAccess([
-            UserWorkDataContract::FIELD_CITY_ID => $cityId,
-        ]);
-        if (!$access) {
-            abort(403, 'Доступ запрещен!');
-        }
-
-        if ($cityId) {
-            $workshift = new WorkShift([
-                ExpenseContract::FIELD_CITY_ID => $cityId,
-            ]);
-            $expenses = $this->expensesRepository->getByWorkshift($workshift);
-        } else {
-            $expenses = $this->expensesRepository->getAll();
-        }
-
+        $expenses = $this->expensesRepository->getAll();
         $types = [
             'manager' => ExpenseContract::TYPE_MANAGER,
             'place' => ExpenseContract::TYPE_PLACE,
