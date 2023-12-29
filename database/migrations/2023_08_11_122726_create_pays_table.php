@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer(PaysContract::FIELD_TYPE);
             $table->integer(PaysContract::FIELD_SOURCE_TYPE);
             $table->integer(PaysContract::FIELD_SOURCE_ID);
-            $table->integer('place_id');
+            $table->integer(PaysContract::FIELD_PLACE_ID);
             $table->integer(PaysContract::FIELD_USER_ID);
             $table->integer(PaysContract::FIELD_AGENT_ID)->nullable();
             $table->float(PaysContract::FIELD_AMOUNT)->nullable();

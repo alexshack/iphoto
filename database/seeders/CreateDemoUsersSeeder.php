@@ -9,7 +9,6 @@ use App\Models\User;
 use Faker\Provider\Text;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Faker\Generator;
 
 class CreateDemoUsersSeeder extends Seeder
@@ -37,7 +36,7 @@ class CreateDemoUsersSeeder extends Seeder
         for($i = 0; $i < $count; $i++) {
             $user = new User();
             $user->{ UserContract::FIELD_EMAIL } = $this->faker->unique()->safeEmail;
-            $user->{ UserContract::FIELD_PASSWORD } = Hash::make('password');
+            $user->{ UserContract::FIELD_PASSWORD } = config('admin.demo_admin_password');
             $user->{ UserContract::FIELD_PHOTO } = '/assets/images/users/admin.webp';
             $user->{ UserContract::FIELD_ROLE_ID } = $role_id;
             $user->save();

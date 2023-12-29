@@ -34,27 +34,27 @@ Route::middleware(['web'])->group(function () {
 
 
     // Авторизованный
-    Route::middleware(['auth', 'role'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
 
         Route::group([
-            'prefix'     => 'auth',
-            'namespace'  => 'App\Http\Controllers\Auth',
-        ],
+                         'prefix'     => 'auth',
+                         'namespace'  => 'App\Http\Controllers\Auth',
+                     ],
         function () {
-            Route::get('/logout', 'LoginController@logout')->name('auth.logout');
+                Route::get('/logout', 'LoginController@logout')->name('auth.logout');
         });
 
         Route::group([
-            'prefix'     => 'account',
-            'namespace'  => 'App\Http\Controllers\User',
-        ],
-        function () {
-            Route::get('/change-password', 'AccountController@changePassword')->name('account.show_change_password_form');
-            Route::post('/change-password', 'AccountController@updatePassword')->name('account.update_password');
+                         'prefix'     => 'account',
+                         'namespace'  => 'App\Http\Controllers\User',
+                     ],
+            function () {
+                Route::get('/change-password', 'AccountController@changePassword')->name('account.show_change_password_form');
+                Route::post('/change-password', 'AccountController@updatePassword')->name('account.update_password');
         });
 
         // Роль Админа
-        Route::prefix('admin')->group(function() {
+        Route::middleware(['role:admin'])->prefix('admin')->group(function() {
             Route::get('/', 'App\Http\Controllers\AdminController@index')->name('admin.home');
 
             /**
@@ -155,6 +155,9 @@ Route::middleware(['web'])->group(function () {
             Route::get('goods/category/create', 'App\Http\Controllers\Goods\GoodsCategoryController@create')->name('admin.goods.categories.create');
             Route::post('goods/category/add', 'App\Http\Controllers\Goods\GoodsCategoryController@store')->name('admin.goods.categories.store');
             Route::get('goods/category/{id}/edit', 'App\Http\Controllers\Goods\GoodsCategoryController@edit')->name('admin.goods.categories.edit');
+
+            //Reports
+            Route::resource('reports', 'App\Http\Controllers\Service\ReportController');
         });
 
         Route::get('/', 'App\Http\Controllers\AdminController@index')->name('home');

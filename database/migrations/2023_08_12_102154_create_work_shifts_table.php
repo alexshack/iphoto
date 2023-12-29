@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date(WorkShiftContract::FIELD_DATE);
             $table->integer(WorkShiftContract::FIELD_CITY_ID);
             $table->integer(WorkShiftContract::FIELD_PLACE_ID);
-            $table->boolean('closed')->default(false);
+            $table->boolean(WorkShiftContract::FIELD_CLOSED)->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

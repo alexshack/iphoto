@@ -14,36 +14,33 @@ interface UserRoleContract
         self::FIELD_NAME,
     ];
 
-    public const EMPLOYEE_SLUG = 'employee';
-    public const POINT_SLUG = 'point';
-    public const MANAGER_SLUG = 'manager';
-    public const SUPERVISOR_SLUG = 'supervisor';
-    public const HR_SLUG = 'hr';
     public const ADMIN_SLUG = 'admin';
 
+    public const MANAGER_SLUG = 'manager';
+
     public const ROLE_LIST = [
-        self::EMPLOYEE_SLUG => [
-            'slug' => self::EMPLOYEE_SLUG,
+        [
+            'slug' => 'employee',
             'name' => 'Сотрудник'
         ],
-        self::POINT_SLUG => [
-            'slug' => self::POINT_SLUG,
+        [
+            'slug' => 'point',
             'name' => 'Точка продаж'
         ],
-        self::MANAGER_SLUG => [
+        [
             'slug' => self::MANAGER_SLUG,
             'name' => 'Менеджер'
         ],
-        self::SUPERVISOR_SLUG => [
-            'slug' => self::SUPERVISOR_SLUG,
+        [
+            'slug' => 'supervisor',
             'name' => 'Руководитель'
         ],
-        self::HR_SLUG => [
-            'slug' => self::HR_SLUG,
+        [
+            'slug' => 'hr',
             'name' => 'Рекрутер'
         ],
-        self::ADMIN_SLUG => [
-            'slug' => self::ADMIN_SLUG,
+        [
+            'slug' => 'admin',
             'name' => self::ADMIN_SLUG,
         ],
     ];
