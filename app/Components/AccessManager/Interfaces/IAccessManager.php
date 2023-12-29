@@ -8,7 +8,7 @@ interface IAccessManager
         'admin.home',
         'auth.logout',
     ];
-
+ 
     const COMPARE_WITH = 1;
 
     const ROUTE_PLACES = 1;
