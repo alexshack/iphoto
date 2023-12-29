@@ -1,6 +1,8 @@
 <?php namespace App\Components\AccessManager;
 
+use App\Components\AccessManager\Helpers\RouteAcessHelper;
 use App\Components\AccessManager\Interfaces\IAccessManager;
+use App\Contracts\UserWorkDataContract;
 use Illuminate\Support\Facades\Auth;
 
 class AccessManager implements IAccessManager
@@ -12,22 +14,9 @@ class AccessManager implements IAccessManager
         $this->config = $config;
     }
 
-    public function checkRouteAccess($routeName, $roleSlug = null)
+    public function checkRouteAccess($routeName, $roleSlug = null, $routeParams = null)
     {
-        if (!$roleSlug || empty($roleSlug)) {
-            $roleSlug = Auth::user()->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG };
-        }
-
-        if (!$roleSlug) {
-            return false;
-        }
-
-        $accessConfig = $this->config['routesAccess'] ?? null;
-        if (!$accessConfig) {
-            return false;
-        }
-
-        $slugAccess = $accessConfig[$roleSlug] ?? null;
+        $slugAccess = $this->getSlugAccess($roleSlug);
         if (!$slugAccess) {
             return false;
         }
@@ -36,21 +25,55 @@ class AccessManager implements IAccessManager
             return true;
         }
 
-        return $this->checkSlugRouteAccess($slugAccess, $routeName);
+        return RouteAcessHelper::checkSlugRouteAccess($slugAccess, $routeName, $routeParams);
     }
 
-    protected function checkSlugRouteAccess($slugAccess, $routeName)
+    public function checkFieldsAccess(array $fields, $roleSlug = null)
     {
-        if (!is_array($slugAccess)) {
-            return fnmatch($slugAccess, $routeName);
+        $slugAccess = $this->getSlugAccess($roleSlug);
+        if (!$slugAccess) {
+            return false;
         }
 
-        foreach ($slugAccess as $pattern) {
-            if (fnmatch($pattern, $routeName)) {
-                return true;
+        if ($slugAccess === self::FULL_ACCESS) {
+            return true;
+        }
+
+        $access = true;
+        foreach ($fields as $fieldName => $fieldValue) {
+            switch ($fieldName) {
+                case UserWorkDataContract::FIELD_CITY_ID:
+                    $cityId = Auth::user()->getWorkData()->city_id;
+                    $access = $fieldValue == $cityId;
+                    break;
+                default:
+                    $access = false;
+                    break;
+            }
+
+            if (!$access) {
+                return false;
             }
         }
 
-        return false;
+        return $access;
+    }
+
+    protected function getSlugAccess($roleSlug = null)
+    {
+        if (!$roleSlug || empty($roleSlug)) {
+            $roleSlug = Auth::user()->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG };
+        }
+
+        if (!$roleSlug) {
+            return null;
+        }
+
+        $accessConfig = $this->config['routesAccess'] ?? null;
+        if (!$accessConfig) {
+            return null;
+        }
+
+        return $accessConfig[$roleSlug] ?? null;
     }
 }

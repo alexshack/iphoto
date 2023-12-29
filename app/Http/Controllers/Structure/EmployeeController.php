@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Structure;
 
+use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Contracts\UserContract;
+use App\Contracts\UserRoleContract;
+use App\Contracts\UserWorkDataContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -14,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     private UserRepositoryInterface $userRepository;
+    private IAccessManager $accessManager;
+
     private $text = [
         'title' => 'Сотрудники',
         'count' => 'Всего сотрудников',
@@ -24,18 +29,34 @@ class EmployeeController extends Controller
         'role' => 'employees'
     ];
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        IAccessManager $accessManager
+    ) {
         $this->userRepository = $userRepository;
+        $this->accessManager = $accessManager;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $list = $this->userRepository->getByRoleSlug('employee');
+        $cityId = $request->query(UserWorkDataContract::FIELD_CITY_ID);
+        $access = $this->accessManager->checkFieldsAccess([
+            UserWorkDataContract::FIELD_CITY_ID => $cityId,
+        ]);
+        if (!$access) {
+            abort(403, 'Доступ запрещен!');
+        }
+
+        if ($cityId) {
+            $list = $this->userRepository->getByCityAndRole($cityId, UserRoleContract::EMPLOYEE_SLUG);
+        } else {
+            $list = $this->userRepository->getByRoleSlug('employee');
+        }
+
         $counts = [
             'all' => count($list),
-            'male' => $this->userRepository->getMaleCountByRoleSlug('employee'),
-            'female' => $this->userRepository->getFemaleCountByRoleSlug('employee'),
+            'male' => $this->userRepository->getMaleCountByRoleSlug(UserRoleContract::EMPLOYEE_SLUG, $cityId),
+            'female' => $this->userRepository->getFemaleCountByRoleSlug(UserRoleContract::EMPLOYEE_SLUG, $cityId),
         ];
         return view('structure.managers')->with(['text' => $this->text, 'list' => $list, 'counts' => $counts]);
     }
