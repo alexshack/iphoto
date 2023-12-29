@@ -1,8 +1,6 @@
 <?php namespace App\Components\AccessManager;
 
-use App\Components\AccessManager\Helpers\RouteAcessHelper;
 use App\Components\AccessManager\Interfaces\IAccessManager;
-use App\Contracts\UserWorkDataContract;
 use Illuminate\Support\Facades\Auth;
 
 class AccessManager implements IAccessManager
@@ -14,66 +12,45 @@ class AccessManager implements IAccessManager
         $this->config = $config;
     }
 
-    public function checkRouteAccess($routeName, $roleSlug = null, $routeParams = null)
-    {
-        $slugAccess = $this->getSlugAccess($roleSlug);
-        if (!$slugAccess) {
-            return false;
-        }
-
-        if ($slugAccess === self::FULL_ACCESS) {
-            return true;
-        }
-
-        return RouteAcessHelper::checkSlugRouteAccess($slugAccess, $routeName, $routeParams);
-    }
-
-    public function checkFieldsAccess(array $fields, $roleSlug = null)
-    {
-        $slugAccess = $this->getSlugAccess($roleSlug);
-        if (!$slugAccess) {
-            return false;
-        }
-
-        if ($slugAccess === self::FULL_ACCESS) {
-            return true;
-        }
-
-        $access = true;
-        foreach ($fields as $fieldName => $fieldValue) {
-            switch ($fieldName) {
-                case UserWorkDataContract::FIELD_CITY_ID:
-                    $cityId = Auth::user()->getWorkData()->city_id;
-                    $access = $fieldValue == $cityId;
-                    break;
-                default:
-                    $access = false;
-                    break;
-            }
-
-            if (!$access) {
-                return false;
-            }
-        }
-
-        return $access;
-    }
-
-    protected function getSlugAccess($roleSlug = null)
+    public function checkRouteAccess($routeName, $roleSlug = null)
     {
         if (!$roleSlug || empty($roleSlug)) {
             $roleSlug = Auth::user()->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG };
         }
 
         if (!$roleSlug) {
-            return null;
+            return false;
         }
 
         $accessConfig = $this->config['routesAccess'] ?? null;
         if (!$accessConfig) {
-            return null;
+            return false;
         }
 
-        return $accessConfig[$roleSlug] ?? null;
+        $slugAccess = $accessConfig[$roleSlug] ?? null;
+        if (!$slugAccess) {
+            return false;
+        }
+
+        if ($slugAccess === self::FULL_ACCESS) {
+            return true;
+        }
+
+        return $this->checkSlugRouteAccess($slugAccess, $routeName);
+    }
+
+    protected function checkSlugRouteAccess($slugAccess, $routeName)
+    {
+        if (!is_array($slugAccess)) {
+            return fnmatch($slugAccess, $routeName);
+        }
+
+        foreach ($slugAccess as $pattern) {
+            if (fnmatch($pattern, $routeName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -2,7 +2,6 @@
 
 use App\Contracts\Structure\CityContract;
 use App\Contracts\Structure\PlaceContract;
-use App\Contracts\UserWorkDataContract;
 use App\Models\City;
 
 class StructureHelper
@@ -59,7 +58,6 @@ class StructureHelper
                     [
                         'caption' => 'Точки',
                         'routeName' => 'admin.structure.places.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Менеджеры',
@@ -68,7 +66,6 @@ class StructureHelper
                     [
                         'caption' => 'Сотрудники',
                         'routeName' => 'admin.structure.employees.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Рекрутеры',
@@ -94,12 +91,10 @@ class StructureHelper
                     [
                         'caption' => 'Расходы ДС',
                         'routeName' => 'admin.money.expenses.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Перемещение ДС',
                         'routeName' => 'admin.money.moves.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                 ],
             ],
@@ -132,17 +127,14 @@ class StructureHelper
                     [
                         'caption' => 'Начисления',
                         'routeName' => 'admin.salary.calc.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Выплаты',
                         'routeName' => 'admin.salary.pay.index',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Списки на зп и оклад',
                         'routeName' => 'admin.salary.pays_list',
-                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                 ],
             ],
