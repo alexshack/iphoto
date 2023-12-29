@@ -7,13 +7,10 @@ return [
     'accessManager' => [
         'routesAccess' => [
             UserRoleContract::ADMIN_SLUG => IAccessManager::FULL_ACCESS,
-            UserRoleContract::EMPLOYEE_SLUG => array_merge(
+            UserRoleContract::POINT_SLUG => array_merge(
                 IAccessManager::COMMON_ROUTES, [
                     'money.days*',
                 ]
-            ),
-            UserRoleContract::POINT_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
             ),
             UserRoleContract::MANAGER_SLUG => array_merge(
                 IAccessManager::COMMON_ROUTES, [
@@ -28,10 +25,12 @@ return [
                 ]
             ),
             UserRoleContract::SUPERVISOR_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
+                IAccessManager::COMMON_ROUTES, [
+                ]
             ),
             UserRoleContract::HR_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
+                IAccessManager::COMMON_ROUTES, [
+                ]
             ),
         ],
     ],

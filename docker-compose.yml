@@ -1,6 +1,5 @@
 version: "3"
 
-name: 24photo
 services:
   iphoto_nginx:
     container_name: iphoto_nginx
