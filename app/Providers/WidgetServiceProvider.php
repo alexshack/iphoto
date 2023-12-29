@@ -9,7 +9,7 @@ class WidgetServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('widget', function ($name) {
-            return "<?= app('widget')->show($name); ?>";
+            return app('widget')->show($name);
         });
     }
 
