@@ -7,7 +7,7 @@ interface IAccessManager
         'home',
         'admin.home',
         'auth.logout',
-    ];
+    ]; 
 
     const COMPARE_WITH = 1;
 
