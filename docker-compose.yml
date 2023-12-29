@@ -1,0 +1,53 @@
+version: "3"
+
+name: 24photo
+services:
+  iphoto_nginx:
+    container_name: iphoto_nginx
+    image: nginx:1.25
+    ports:
+      - 80:80
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./:/var/www/html
+    restart: always
+    links:
+      - iphoto_php8:php_fpm_sock
+    depends_on:
+      - iphoto_php8
+
+  iphoto_php8:
+    container_name: iphoto_php8
+    build: ./docker/php8/build
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./:/var/www/html
+    links:
+      - iphoto_mysql:db
+    restart: always
+    depends_on:
+      - iphoto_mysql
+    environment:
+      UPLOAD_LIMIT: 64M
+
+  iphoto_mysql:
+    container_name: iphoto_mysql
+    image: mysql:8
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/conf.d/common.cnf:/etc/mysql/conf.d/common.cnf
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_ROOT_HOST: '%'
+
+  # @dev
+  iphoto_adminer:
+    container_name: iphoto_adminer
+    image: adminer:4.8.1-standalone
+    ports:
+      - 8081:8080
+    links:
+      - iphoto_mysql:db

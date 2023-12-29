@@ -20,9 +20,25 @@ class ExpensesRepository implements ExpensesRepositoryInterface
     }
 
     public function getByWorkshift(WorkShift $workShift) {
-        $expenses = Expense::whereDate(ExpenseContract::FIELD_DATE, $workShift->{WorkShiftContract::FIELD_DATE})
-            ->where(ExpenseContract::FIELD_PLACE_ID, $workShift->{WorkShiftContract::FIELD_PLACE_ID})
-            ->where(ExpenseContract::FIELD_CITY_ID, $workShift->{WorkShiftContract::FIELD_CITY_ID})
+        $date = $workShift->{WorkShiftContract::FIELD_DATE};
+        $place = $workShift->{WorkShiftContract::FIELD_PLACE_ID};
+        $city = $workShift->{WorkShiftContract::FIELD_CITY_ID};
+
+        $query = new Expense;
+
+        if ($date) {
+            $query = $query->whereDate(ExpenseContract::FIELD_DATE, $date);
+        }
+
+        if ($place) {
+            $query = $query->where(ExpenseContract::FIELD_PLACE_ID, $place);
+        }
+
+        if ($city) {
+            $query = $query->where(ExpenseContract::FIELD_CITY_ID, $city);
+        }
+
+        $expenses = $query
             ->with(
                 'expenseType',
                 'city',
@@ -30,6 +46,7 @@ class ExpensesRepository implements ExpensesRepositoryInterface
                 'manager'
             )
             ->get();
+
         return $expenses;
     }
 

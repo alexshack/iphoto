@@ -31,14 +31,6 @@ class WorkShiftRepository implements WorkShiftRepositoryInterface
             ->get();
     }
 
-
-    public function getByDateAndPlace($date, $placeID) : WorkShift | null
-    {
-        return WorkShift::where(WorkShiftContract::FIELD_DATE, $date)
-            ->where(WorkShiftContract::FIELD_PLACE_ID, $placeID)
-            ->first();
-    }
-
     public function getNext(WorkShift $workshift) {
         return WorkShift::where(WorkShiftContract::FIELD_PLACE_ID, $workshift->{WorkShiftContract::FIELD_PLACE_ID
     })

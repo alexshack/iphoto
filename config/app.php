@@ -170,6 +170,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\WidgetServiceProvider::class,
+
+        App\Components\AccessManager\Providers\AccessManagerDIProvider::class,
+        App\Components\AdminSidebar\Providers\AdminSidebarDIProvider::class,
     ])->toArray(),
 
     /*

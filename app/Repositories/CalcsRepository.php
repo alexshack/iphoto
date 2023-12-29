@@ -42,9 +42,25 @@ class CalcsRepository implements CalcsRepositoryInterface
     }
 
     public function getByFilter($data): Collection {
-        return Calc::whereYear(CalcsContract::FIELD_DATE, $data['year'])
-            ->whereMonth(CalcsContract::FIELD_DATE, $data['month'])
-            ->get();
+        $year = $data['year'] ?? null;
+        $month = $data['month'] ?? null;
+        $city = $data['city_id'] ?? null;
+
+        $query = new Calc;
+
+        if ($year && !empty($year)) {
+            $query = $query->whereYear(CalcsContract::FIELD_DATE, $year);
+        }
+
+        if ($month && !empty($month)) {
+            $query = $query->whereMonth(CalcsContract::FIELD_DATE, $month);
+        }
+
+        if ($city) {
+            $query = $query->where(CalcsContract::FIELD_CITY_ID, $city);
+        }
+
+        return $query->get();
     }
 
     public function getByUserID($userID, $filterData = [], $paginate = true)

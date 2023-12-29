@@ -65,6 +65,7 @@ class ExcelGeneratorController extends Controller
         ];
 
         $data = array_merge($header, $items);
+        file_put_contents($fileName . ".json", json_encode($data));
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray($data);
