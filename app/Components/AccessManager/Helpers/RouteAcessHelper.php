@@ -1,5 +1,7 @@
 <?php namespace App\Components\AccessManager\Helpers;
 
+use App\Components\AccessManager\Helpers\RoutesAccess\EmployeesAccess;
+use App\Components\AccessManager\Helpers\RoutesAccess\ManagersAccess;
 use App\Components\AccessManager\Helpers\RoutesAccess\PlacesAccess;
 use App\Components\AccessManager\Interfaces\IAccessManager;
 
@@ -55,6 +57,10 @@ class RouteAcessHelper
         switch ($activeRouteType) {
             case IAccessManager::ROUTE_PLACES:
                 return PlacesAccess::applyRule($rule, $routeParams);
+            case IAccessManager::ROUTE_MANAGERS:
+                return ManagersAccess::applyRule($rule, $routeParams);
+            case IAccessManager::ROUTE_EMPLOYEES:
+                return EmployeesAccess::applyRule($rule, $routeParams);
         }
 
         return false;

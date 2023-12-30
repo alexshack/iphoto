@@ -86,10 +86,12 @@ class StructureHelper
                     [
                         'caption' => 'Смены',
                         'routeName' => 'money.days',
+                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Поступления ДС',
                         'routeName' => 'admin.money.incomes.index',
+                        'routeFill' => [UserWorkDataContract::FIELD_CITY_ID],
                     ],
                     [
                         'caption' => 'Расходы ДС',

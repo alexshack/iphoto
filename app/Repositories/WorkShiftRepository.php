@@ -26,9 +26,25 @@ class WorkShiftRepository implements WorkShiftRepositoryInterface
 
     public function getByFilter($data): Collection
     {
-        return WorkShift::whereYear(WorkShiftContract::FIELD_DATE, $data['year'])
-            ->whereMonth(WorkShiftContract::FIELD_DATE, $data['month'])
-            ->get();
+        $year = $data['year'] ?? null;
+        $month = $data['month'] ?? null;
+        $city = $data['city_id'] ?? null;
+
+        $query = new WorkShift;
+
+        if ($year && !empty($year)) {
+            $query = $query->whereYear(WorkShiftContract::FIELD_DATE, $year);
+        }
+
+        if ($month && !empty($month)) {
+            $query = $query->whereMonth(WorkShiftContract::FIELD_DATE, $month);
+        }
+
+        if ($city) {
+            $query = $query->where(WorkShiftContract::FIELD_CITY_ID, $city);
+        }
+
+        return $query->get();
     }
 
     public function getNext(WorkShift $workshift) {
