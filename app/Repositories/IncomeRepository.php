@@ -19,8 +19,24 @@ class IncomeRepository implements IncomeRepositoryInterface
 
     public function getByFilter($data): Collection
     {
-        return Income::whereYear(IncomeContract::FIELD_DATE, $data['year'])
-            ->whereMonth(IncomeContract::FIELD_DATE, $data['month'])
-            ->get();
+        $year = $data['year'] ?? null;
+        $month = $data['month'] ?? null;
+        $city = $data['city_id'] ?? null;
+
+        $query = new Income;
+
+        if ($year && !empty($year)) {
+            $query = $query->whereYear(IncomeContract::FIELD_DATE, $year);
+        }
+
+        if ($month && !empty($month)) {
+            $query = $query->whereMonth(IncomeContract::FIELD_DATE, $month);
+        }
+
+        if ($city) {
+            $query = $query->where(IncomeContract::FIELD_CITY_ID, $city);
+        }
+
+        return $query->get();
     }
 }

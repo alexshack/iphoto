@@ -1,6 +1,7 @@
 <?php
 
 use App\Components\AccessManager\Interfaces\IAccessManager;
+use App\Contracts\UserContract;
 use App\Contracts\UserRoleContract;
 use App\Contracts\UserWorkDataContract;
 
@@ -11,6 +12,10 @@ return [
             UserRoleContract::EMPLOYEE_SLUG => array_merge(
                 IAccessManager::COMMON_ROUTES, [
                     'money.days*',
+                    'home',
+                    'admin.home',
+                    ['admin.structure.employees.edit', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
+                    ['admin.structure.employees.update', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
                 ]
             ),
             UserRoleContract::POINT_SLUG => array_merge(
@@ -24,9 +29,13 @@ return [
                     'admin.money.incomes.*',
                     'admin.money.expenses.*',
                     'admin.money.moves.*',
+                    'money.days*',
                     'admin.salary.calc.*',
                     'admin.salary.pay.*',
                     'admin.salary.pays_list',
+                    'home',
+                    'admin.home',
+                    ['admin.structure.managers.*', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
                 ]
             ),
             UserRoleContract::SUPERVISOR_SLUG => array_merge(
