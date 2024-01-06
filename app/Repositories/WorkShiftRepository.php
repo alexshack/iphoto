@@ -6,6 +6,7 @@ use App\Contracts\WorkShift\WorkShiftContract;
 use App\Models\WorkShift\WorkShift;
 use App\Repositories\Interfaces\WorkShiftRepositoryInterface;
 use Carbon\Carbon;
+use Auth;
 use Illuminate\Database\Eloquent\Collection;
 
 class WorkShiftRepository implements WorkShiftRepositoryInterface
@@ -55,13 +56,31 @@ class WorkShiftRepository implements WorkShiftRepositoryInterface
         ->first();
     }
 
-    public function getToday(): Collection
+    public function getToday($data): Collection
     {
-        return WorkShift::whereDate('created_at', Carbon::today())->get();
+        $city = $data['city_id'] ?? null;
+        $query = new WorkShift;
+        $query = $query->whereDate('created_at', Carbon::today());
+        $user = Auth::user();
+        $city = $user->getWorkData()->city_id;
+        if ($city) {
+            $query = $query->where(WorkShiftContract::FIELD_CITY_ID, $city);
+        }
+        return $query->get();   
+        //return WorkShift::whereDate('created_at', Carbon::today())->get();
     }
 
-    public function getYesterday(): Collection
+    public function getYesterday($data): Collection
     {
-        return WorkShift::whereDate('created_at', Carbon::yesterday())->get();
+        $city = $data['city_id'] ?? null;
+        $query = new WorkShift;
+        $query = $query->whereDate('created_at', Carbon::yesterday());
+        $user = Auth::user();
+        $city = $user->getWorkData()->city_id;        
+        if ($city) {
+            $query = $query->where(WorkShiftContract::FIELD_CITY_ID, $city);
+        }
+        return $query->get();         
+        //return WorkShift::whereDate('created_at', Carbon::yesterday())->get();
     }
 }

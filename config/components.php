@@ -12,6 +12,8 @@ return [
             UserRoleContract::EMPLOYEE_SLUG => array_merge(
                 IAccessManager::COMMON_ROUTES, [
                     'money.days*',
+                    'home',
+                    'admin.home',
                     ['admin.structure.employees.edit', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
                     ['admin.structure.employees.update', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
                 ]
@@ -31,6 +33,8 @@ return [
                     'admin.salary.calc.*',
                     'admin.salary.pay.*',
                     'admin.salary.pays_list',
+                    'home',
+                    'admin.home',
                     ['admin.structure.managers.*', IAccessManager::COMPARE_WITH => UserContract::FIELD_ID],
                 ]
             ),
