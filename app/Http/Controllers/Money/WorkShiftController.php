@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Money;
 
+use App\Components\AccessManager\Interfaces\IAccessManager;
 use App\Contracts\UserRoleContract;
+use App\Contracts\UserWorkDataContract;
 use App\Contracts\WorkShift\WorkShiftContract;
 use App\Models\WorkShift\WorkShift;
 use App\Helpers\Helper;
@@ -15,9 +17,14 @@ use Illuminate\Http\Request;
 class WorkShiftController extends Controller
 {
     private WorkShiftRepositoryInterface $workshiftRepository;
+    private IAccessManager $accessManager;
 
-    public function __construct(WorkShiftRepositoryInterface $workshiftRepository) {
+    public function __construct(
+        WorkShiftRepositoryInterface $workshiftRepository,
+        IAccessManager $accessManager
+    ) {
         $this->workshiftRepository = $workshiftRepository;
+        $this->accessManager = $accessManager;
     }
 
     public function accessReview(WorkShift $workshift) {
@@ -45,21 +52,31 @@ class WorkShiftController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $cityId = $request->query(UserWorkDataContract::FIELD_CITY_ID);
+        $access = $this->accessManager->checkFieldsAccess([
+            UserWorkDataContract::FIELD_CITY_ID => $cityId,
+        ]);
+        if (!$access) {
+            abort(403, 'Доступ запрещен!');
+        }
+
         $filter = [
             'month' => date('m'),
             'year' => date('Y')
         ];
         $period = null;
-        if(request()->query('filter')) {
-            $filter = Helper::dateFilterFormat(request()->query('filter'));
-            $period = request()->query('filter');
+        if($request->query('filter')) {
+            $filter = Helper::dateFilterFormat($request->query('filter'));
+            $period = $request->query('filter');
         } else {
             $month = Helper::getMonthName((int)date('m'));
             $year = date('Y');
             $period = "$month $year";
         }
+
+        $filter['city_id'] = $cityId;
         $workshifts = $this->workshiftRepository->getByFilter($filter);
 
         return view('money.days', compact('workshifts', 'period'));

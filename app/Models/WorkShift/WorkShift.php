@@ -79,7 +79,7 @@ class WorkShift extends Model
             $workTimes = $this->place->place_work_times;
             $originalDate = $this->getOriginal(WorkShiftContract::FIELD_DATE);
             $workShiftDate = Carbon::parse($originalDate);
-            $startTime = $workTimes[$workShiftDate->weekday() - 1][PlaceWorkTimeContract::FIELD_START_TIME];
+            $startTime = $workTimes[$workShiftDate->weekday() - 1][PlaceWorkTimeContract::FIELD_START_TIME] ?? '08:00';
             $this->{WorkShiftContract::FIELD_START_TIME} = $startTime;
             $this->saveQuietly();
         }

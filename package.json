@@ -15,7 +15,14 @@
         "@beaubus/single-file-upload-for-vue": "^0.2.6",
         "@vitejs/plugin-vue": "^4.3.2",
         "@vuepic/vue-datepicker": "^7.0.0",
+        "mime": "^3.0.0",
+        "mime-types": "^2.1.35",
+        "mitt": "^3.0.1",
         "vue": "^3.3.4",
+        "vue-easy-lightbox": "^1.16.0",
+        "vue-image-lightbox": "^7.2.0",
+        "vue-lazyload": "^3.0.0",
+        "vue-media-upload": "^2.1.2",
         "vue-select": "^4.0.0-beta.6",
         "vue-simple-confirm": "^1.0.5"
     }

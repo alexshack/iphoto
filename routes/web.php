@@ -195,9 +195,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('structure/cities/add', function () {
             return view('structure.city');
         });
-        Route::get('structure/cities/dashboard/0', function () {
-            return view('structure.city-dashboard');
-        });
+        Route::get('structure/cities/dashboard/{id}', 'App\Http\Controllers\Structure\CityController@dashboard');
         //Route::get('structure/places', function () {
             //return view('structure.places');
         //});

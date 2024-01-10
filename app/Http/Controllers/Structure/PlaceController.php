@@ -54,7 +54,7 @@ class PlaceController extends Controller
         } else {
             $list = $this->placeRepository->getAll();
         }
-        
+
         return view('structure.places')->with(['list' => $list]);
     }
 

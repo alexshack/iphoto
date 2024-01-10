@@ -34,7 +34,7 @@
 												</span>
 											</a>
 											<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
-												<a class="dropdown-item d-flex" href="#">
+												<a class="dropdown-item d-flex" href="/admin/structure/{{ Auth::user()->role->{ \App\Contracts\UserRoleContract::FIELD_SLUG } }}s/{{ Auth::id() }}">
 													<i class="feather feather-user mr-3 fs-16 my-auto"></i>
 													<div class="mt-1">Профиль</div>
 												</a>

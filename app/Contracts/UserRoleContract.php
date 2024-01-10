@@ -16,7 +16,15 @@ interface UserRoleContract
 
     public const ADMIN_SLUG = 'admin';
 
+    public const EMPLOYEE_SLUG = 'employee';
+
     public const MANAGER_SLUG = 'manager';
+
+    public const POINT_SLUG = 'point';
+
+    public const SUPERVISOR_SLUG = 'supervisor';
+
+    public const HR_SLUG = 'hr';
 
     public const ROLE_LIST = [
         [

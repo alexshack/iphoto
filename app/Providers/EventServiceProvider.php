@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Money\Move;
 use App\Models\WorkShift\WorkShiftEmployee;
 use App\Models\WorkShift\WorkShiftGood;
 use App\Models\WorkShift\WorkShiftVisitor;
+use App\Observers\Money\MovesObserver;
 use App\Observers\WorkShiftEmployeeObserver;
 use App\Observers\WorkShiftGoodObserver;
 use App\Observers\WorkShift\WorkShiftVisitorObserver;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
+        Move::class => [
+            MovesObserver::class,
+        ],
         WorkShiftEmployee::class => [
             WorkShiftEmployeeObserver::class,
         ],

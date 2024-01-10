@@ -70,7 +70,7 @@
                                                                 <a class="btn btn-primary btn-icon btn-sm"  href="{{ route('admin.structure.cities.edit', ['id' => $item->{ \App\Contracts\Structure\CityContract::FIELD_ID }]) }}">
                                                                     <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
                                                                 </a>
-                                                                <a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/dashboard/0')}}">
+                                                                <a class="btn btn-primary btn-icon btn-sm"  href="{{url('structure/cities/dashboard/' . $item->{ \App\Contracts\Structure\CityContract::FIELD_ID })}}">
                                                                     <i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
                                                                 </a>
                                                             </td>

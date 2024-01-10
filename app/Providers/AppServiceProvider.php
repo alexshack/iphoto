@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Components\AccessManager\Interfaces\IAccessManager;
+use App\Components\AccessManager\AccessManager;
 use App\Repositories\CalcsRepository;
 use App\Repositories\CalcsTypeRepository;
 use App\Repositories\CityManagerRepository;
@@ -101,6 +103,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SettingsRepositoryInterface::class, SettingsRepository::class);
         $this->app->bind(PaysGeneratorRepositoryInterface::class, PaysGeneratorRepository::class);
         $this->app->bind(ReportsRepositoryInterface::class, ReportsRepository::class);
+        $this->app->bind(IAccessManager::class, AccessManager::class);
     }
 
     /**

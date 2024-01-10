@@ -30,6 +30,10 @@ class AccessManager implements IAccessManager
 
     public function checkFieldsAccess(array $fields, $roleSlug = null)
     {
+        if (!$this->config) {
+            $this->config = config('components.accessManager');
+        }
+
         $slugAccess = $this->getSlugAccess($roleSlug);
         if (!$slugAccess) {
             return false;
