@@ -175,10 +175,19 @@ class StructureHelper
                 'title' => 'goodsTitle',
                 'routeName' => 'admin.goods.index',
             ],
+
+            'serviceTitle' => ['caption' => 'Служебное'],
             [
                 'caption' => 'Настройки',
                 'icon' => 'feather-settings',
                 'routeName' => 'settings.index',
+                'title' => 'serviceTitle',
+            ],
+            [
+                'caption' => 'Отчеты',
+                'icon' => 'feather-list',
+                'title' => 'serviceTitle',
+                'routeName' => 'reports.index',
             ],
         ];
 

@@ -8,7 +8,11 @@ interface IAccessManager
         'admin.home',
         'auth.logout',
     ];
- 
+
+    const WORKSHIFT_ROUTES = [
+        'workshift.*',
+    ];
+
     const COMPARE_WITH = 1;
 
     const ROUTE_PLACES = 1;

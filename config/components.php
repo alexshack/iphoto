@@ -10,7 +10,7 @@ return [
         'routesAccess' => [
             UserRoleContract::ADMIN_SLUG => IAccessManager::FULL_ACCESS,
             UserRoleContract::EMPLOYEE_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, [
+                IAccessManager::COMMON_ROUTES, IAccessManager::WORKSHIFT_ROUTES, [
                     'money.days*',
                     'home',
                     'admin.home',
@@ -19,10 +19,10 @@ return [
                 ]
             ),
             UserRoleContract::POINT_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
+                IAccessManager::COMMON_ROUTES, IAccessManager::WORKSHIFT_ROUTES,  []
             ),
             UserRoleContract::MANAGER_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, [
+                IAccessManager::COMMON_ROUTES, IAccessManager::WORKSHIFT_ROUTES,  [
                     ['admin.structure.places.edit', IAccessManager::COMPARE_WITH => UserWorkDataContract::FIELD_CITY_ID],
                     'admin.structure.places.index',
                     'admin.structure.employees.*',
@@ -39,10 +39,10 @@ return [
                 ]
             ),
             UserRoleContract::SUPERVISOR_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
+                IAccessManager::COMMON_ROUTES, IAccessManager::WORKSHIFT_ROUTES, []
             ),
             UserRoleContract::HR_SLUG => array_merge(
-                IAccessManager::COMMON_ROUTES, []
+                IAccessManager::COMMON_ROUTES, IAccessManager::WORKSHIFT_ROUTES, []
             ),
         ],
     ],

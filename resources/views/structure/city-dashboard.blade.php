@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+    use App\Contracts\Structure\CityContract;
+@endphp
+
 @section('styles')
 
 		<!-- INTERNAL Data table css -->
@@ -13,7 +17,7 @@
 						<!--Page header-->
 						<div class="page-header d-xl-flex d-block">
 							<div class="page-leftheader">
-								<h4 class="page-title">Название города<span class="font-weight-normal text-muted ml-2">25 500₽</span></h4>
+                                <h4 class="page-title">{{ $city->{ CityContract::FIELD_NAME  }  }}<span class="font-weight-normal text-muted ml-2">{{ $total  }}₽</span></h4>
 							</div>
 							<div class="page-rightheader ml-md-auto">
 								<div class="align-items-end flex-wrap my-auto right-content breadcrumb-right">
@@ -21,7 +25,7 @@
 							</div>
 						</div>
 						<!--End Page header-->
-						
+
 						<!--Row-->
 						<div class="row">
 							<div class="col-xl-12 col-md-12 col-lg-12">
@@ -54,6 +58,9 @@
                                                     @foreach($list as $item)
                                                         <tr>
                                                             <td>{{ $item->{ \App\Contracts\Structure\PlaceContract::FIELD_NAME } }}</td>
+                                                            <td>
+                                                                {{ $item->{ \App\Contracts\Structure\PlaceContract::FIELD_CURRENT_BALANCE  }  }}
+                                                            </td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
@@ -62,7 +69,7 @@
                                                                 <a class="btn btn-primary btn-icon btn-sm" href="{{ route('admin.structure.places.edit', ['id' => $item->{ \App\Contracts\Structure\PlaceContract::FIELD_ID }]) }}">
                                                                     <i class="feather feather-edit" data-toggle="tooltip" data-original-title="Редактировать"></i>
                                                                 </a>
-                                                                <a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/dashboard/0')}}">
+                                                                <a class="btn btn-primary btn-icon btn-sm" href="{{url('structure/places/dashboard/' . $item->{ \App\Contracts\Structure\PlaceContract::FIELD_ID  })}}">
                                                                     <i class="feather feather-eye" data-toggle="tooltip" data-original-title="Дашборд"></i>
                                                                 </a>
                                                             </td>

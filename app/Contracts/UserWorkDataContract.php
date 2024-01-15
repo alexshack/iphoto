@@ -12,6 +12,7 @@ interface UserWorkDataContract
     public const FIELD_STATUS = 'status'; // Статус
     public const FIELD_DATE_OF_EMPLOYMENT = 'date_of_employment'; // Дата приема
     public const FIELD_DATE_OF_TERMINATION = 'date_of_termination'; // Дата увольнения
+    public const FIELD_CURRENT_BALANCE = 'current_balance';
 
     public const STATUS_LIST = [
         1 => 'Не указан',
@@ -38,7 +39,7 @@ interface UserWorkDataContract
         self::FIELD_STATUS,
         self::FIELD_DATE_OF_EMPLOYMENT,
         self::FIELD_DATE_OF_TERMINATION,
-        self::FIELD_DATE_OF_TERMINATION
+        self::FIELD_CURRENT_BALANCE,
     ];
 
     public const CASTS_FIELDS = [
